@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP TRM Hedge Management – Verständnis-Landkarte</title>
+<style>
+  :root {
+    --ink: #1c1c1a;
+    --ink-soft: #55544f;
+    --ink-faint: #88867e;
+    --paper: #f7f8fa;
+    --rule: #dde0e6;
+    --rule-strong: #c2c6cf;
+    --accent: #0f6e56;
+    --max: 820px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 72px 28px 120px; }
+  .eyebrow {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-size: 40px;
+    line-height: 1.12;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
+  }
+  .lede {
+    font-size: 19px;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+    max-width: 64ch;
+  }
+  .meta {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin: 28px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  h2 {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    margin: 64px 0 4px;
+    padding-top: 28px;
+    border-top: 2px solid var(--rule-strong);
+  }
+  h2 .num {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+  h3 { font-size: 19px; font-weight: 600; margin: 36px 0 6px; }
+  p { margin: 14px 0; max-width: 68ch; }
+  strong { font-weight: 600; }
+  ul, ol { max-width: 66ch; padding-left: 22px; }
+  li { margin: 8px 0; }
+  code {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 0.82em;
+    background: #e9ecf1;
+    padding: 1.5px 5px;
+    border-radius: 4px;
+    color: #3a3937;
+  }
+  figure {
+    margin: 32px 0;
+    padding: 24px 20px 16px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+  }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+  }
+  blockquote {
+    margin: 24px 0;
+    padding: 16px 20px;
+    background: #fdf6e9;
+    border-left: 3px solid #c98a1a;
+    border-radius: 0 8px 8px 0;
+    font-size: 17px;
+  }
+  blockquote p { margin: 6px 0; max-width: none; }
+  .gloss {
+    margin: 24px 0;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .gloss div {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .gloss div:first-child { border-top: 0; }
+  .gloss dt {
+    padding: 12px 16px;
+    background: #eef1f5;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .gloss dd {
+    padding: 12px 16px;
+    margin: 0;
+    font-size: 16px;
+    color: var(--ink-soft);
+  }
+  hr.soft { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+  @media (max-width: 600px) {
+    body { font-size: 16.5px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 22px; }
+    .wrap { padding: 48px 18px 80px; }
+    .gloss div { grid-template-columns: 1fr; }
+    .gloss dd { border-top: 1px solid var(--rule); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">SAP TRM Hedge Management · Verständnis-Landkarte</p>
+  <h1>Hedge Management &amp; Accounting</h1>
+  <p class="lede">Wie SAP TRM das Hedge Accounting für offene Netto-Exposures (Devisenrisiko) operativ abbildet — die normative Schicht, übersetzt in ein verständliches mentales Modell. Fokus: Cashflow-Hedge nach IFRS 9, automatische Designation.</p>
+  <p class="meta">Quelle der Struktur: SAP Help Portal — Treasury and Risk Management → Hedge Management (S/4HANA, Version 2602). Inhalte in eigenen Worten zusammengefasst, keine Wiedergabe der Originaltexte.</p>
+
+  <h2><span class="num">00</span>Das Grundbild: ein Lebenszyklus, kein Hub</h2>
+  <p>Anders als APM (ein Trichter mit Verteiler) ist Hedge Management ein <strong>Lebenszyklus über Zeit</strong>. Eine Sicherungsbeziehung wird geboren (Designation), lebt über mehrere Perioden (Bewertung &amp; Klassifikation), und stirbt (Dedesignation &amp; Reklassifikation). Die Schwierigkeit liegt nicht in der Topologie, sondern im <em>Timing</em>: <strong>wann</strong> wird was gebucht, und <strong>wann</strong> wandern Beträge aus dem Eigenkapital (OCI) in die GuV.</p>
+  <p>Drei Begriffspaare tragen das ganze Modell. Wer die versteht, versteht 80 % von Hedge Management:</p>
+  <ul>
+    <li><strong>Exposure ↔ Sicherungsinstrument</strong> — das Risiko (geplanter Fremdwährungs-Cashflow) und das Geschäft, das es absichert (FX-Termin, -Swap, -Option).</li>
+    <li><strong>Designation ↔ Dedesignation</strong> — die formale Verknüpfung der beiden zu einer Sicherungsbeziehung, und ihre spätere Auflösung.</li>
+    <li><strong>Klassifikation ↔ Reklassifikation</strong> — das Parken von Wertänderungen im OCI, und ihr späteres Umbuchen in die GuV.</li>
+  </ul>
+
+  <h2><span class="num">01</span>Das Vokabular (die Begriffe, die SAP voraussetzt)</h2>
+  <p>SAP wirft mit Begriffen um sich, die ineinander verschachtelt sind. Hier die Hierarchie von groß nach klein:</p>
+  <div class="gloss">
+    <div><dt>Sicherungsbereich</dt><dd>Die oberste Stammdaten-Klammer — ein Abschnitt deiner Sicherungsrichtlinie. Legt den Granularitätsgrad fest, mit dem das Devisenrisiko überwacht wird (welche Buchungskreise, Risikowährungen, Aggregationsebene). Speist das Hedge-Management-Cockpit.</dd></div>
+    <div><dt>Exposure-Posten</dt><dd>Das aggregierte Risiko — ein- und ausgehende Cashflows, nach Kriterien und Zeitraster zusammengefasst. Kann netto oder brutto gesichert werden.</dd></div>
+    <div><dt>Exposure-Teilposten</dt><dd>Die kleinste Einheit, auf die tatsächlich designiert wird. Mehrere Teilposten bündeln sich zum Exposure-Posten.</dd></div>
+    <div><dt>Sicherungsinstrument</dt><dd>Das Finanzgeschäft, das absichert. Aktuell: FX-Termin, FX-Swap, einfache &amp; Collar-FX-Optionen, NDFs.</dd></div>
+    <div><dt>Sicherungsbeziehung</dt><dd>Die designierte Verknüpfung Exposure-Teilposten ↔ Sicherungsinstrument. Das eigentliche Hedge-Accounting-Objekt.</dd></div>
+    <div><dt>Hypothetisches Derivat</dt><dd>Das gedachte „perfekte" Sicherungsinstrument, gegen das die Effektivität gemessen wird (der Maßstab, nicht ein echtes Geschäft).</dd></div>
+    <div><dt>Sicherungsrücklage</dt><dd>Der OCI-Topf (Eigenkapital), in dem der effektive Teil der Wertänderung geparkt wird, bis er in die GuV reklassifiziert wird.</dd></div>
+  </div>
+
+  <h2><span class="num">02</span>Der Lebenszyklus einer Sicherungsbeziehung</h2>
+  <p>Das ist der rote Faden. Vier Phasen, von der Geburt bis zum Tod der Sicherungsbeziehung:</p>
+  <figure>
+    <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lebenszyklus einer Sicherungsbeziehung in vier Phasen">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="20" y="40" width="150" height="58" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="95" y="62" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#04342C">1 · Designation</text>
+    <text x="95" y="80" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">Geschäft sichern →</text>
+    <text x="95" y="93" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">Beziehung anlegen</text>
+    <line x1="170" y1="69" x2="196" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="198" y="40" width="150" height="58" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="273" y="62" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C">2 · Periodenabschluss</text>
+    <text x="273" y="80" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">Bewerten,</text>
+    <text x="273" y="93" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">klassifizieren (→ OCI)</text>
+    <line x1="348" y1="69" x2="374" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="376" y="40" width="150" height="58" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text x="451" y="62" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#26215C">3 · Reklassifikation</text>
+    <text x="451" y="80" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">OCI → GuV,</text>
+    <text x="451" y="93" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">zum richtigen Datum</text>
+    <line x1="526" y1="69" x2="552" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="554" y="40" width="110" height="58" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="609" y="62" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#412402">4 · Vertrags-</text>
+    <text x="609" y="76" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#412402">abschluss</text>
+    <text x="609" y="92" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">Dedesignation</text>
+    <path d="M273 98 L273 130 L451 130 L451 100" fill="none" stroke="#888780" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ar)"/>
+    <text x="362" y="148" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#888780">Phase 2 wiederholt sich jede Periode, bis die Beziehung endet</text>
+    <rect x="120" y="180" width="440" height="48" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text x="340" y="200" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#501313">Quer dazu: Über-/Untersicherung</text>
+    <text x="340" y="217" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A32D2D">Swap- · Dedesignations- · Beendigungsanforderung aus dem Cockpit</text>
+    </svg>
+    <figcaption>Vier Phasen über Zeit. Phase 2 ist eine Schleife pro Periode. Korrekturen laufen quer über das Cockpit.</figcaption>
+  </figure>
+  <p>Der entscheidende Unterschied zu einem Prozessfluss wie APM: <strong>Phase 2 ist eine Schleife.</strong> Solange die Sicherungsbeziehung lebt, wird zu jedem Periodenabschluss neu bewertet und klassifiziert. Erst am Ende (Fälligkeit oder vorzeitige Auflösung) kommen Reklassifikation und Vertragsabschluss.</p>
+
+  <h2><span class="num">03</span>Phase 1 — Automatische Designation</h2>
+  <p>Der elegante Teil, der SAP-spezifisch ist: Die Designation passiert <strong>automatisch</strong>, sobald ein Händler ein Finanzgeschäft als Vertrag anlegt (oder eine Order ausführt) und es als Sicherungsinstrument sichert. Das System legt dann selbsttätig Exposure-Teilposten, Sicherungsbeziehung, Sicherungsobjekt und Sicherungsinstrument an.</p>
+  <figure>
+    <svg viewBox="0 0 680 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ablauf der automatischen Designation">
+    <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="200" y="20" width="280" height="46" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="40" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#04342C">Händler sichert Finanzgeschäft als Vertrag</text>
+    <text x="340" y="56" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">auf Hedge-Accounting-relevantem Sicherungsbereich</text>
+    <line x1="340" y1="66" x2="340" y2="90" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <rect x="200" y="92" width="280" height="46" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="340" y="112" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#0C447C">System designiert automatisch</text>
+    <text x="340" y="128" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">Teilposten · Beziehung · Objekt · Instrument</text>
+    <path d="M200 115 L110 115 L110 160" fill="none" stroke="#A32D2D" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ar2)"/>
+    <text x="105" y="150" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A32D2D">Fehler?</text>
+    <rect x="20" y="162" width="180" height="56" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text x="110" y="184" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#501313">Nachbearbeiten-App</text>
+    <text x="110" y="201" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A32D2D">Warnungen analysieren,</text>
+    <text x="110" y="213" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A32D2D">Geschäft korrigieren</text>
+    <line x1="340" y1="138" x2="340" y2="162" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <rect x="230" y="162" width="220" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text x="340" y="184" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#26215C">Freigeben (Release-App)</text>
+    <text x="340" y="201" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">prospektiver Effektivitätstest,</text>
+    <text x="340" y="213" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">Dokumentation anlegen</text>
+    <line x1="340" y1="218" x2="340" y2="244" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <rect x="240" y="246" width="200" height="36" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+    <text x="340" y="268" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#173404">Sicherungsbeziehung steht</text>
+    </svg>
+    <figcaption>Automatische Designation mit Fehlerabzweig und manueller Freigabe inkl. prospektivem Effektivitätstest.</figcaption>
+  </figure>
+  <p>Zwei Dinge, die hier passieren und die du buchhalterisch im Blick haben musst:</p>
+  <ul>
+    <li><strong>Vertragsabrechnung als Voraussetzung fürs Buchen:</strong> Bevor Bewegungen gebucht werden können, muss der Status des Finanzgeschäfts auf <em>Vertragsabrechnung</em> stehen — das passiert nach Eingang der Kontrahenten-Bestätigung (manuell oder über den Korrespondenzprozess).</li>
+    <li><strong>Freigabe = Effektivitätstest + Dokumentation:</strong> Erst die Freigabe über die App <em>Sicherungsgeschäftsvorfälle freigeben</em> schließt die Designation ab. Ist der Effektivitätstest im Sicherungsprofil aktiv, läuft hier der prospektive Test; ist Dokumentation obligatorisch, wird sie angelegt. <strong>Das ist die IFRS-9-Qualifikationshürde, in SAP-Mechanik gegossen.</strong></li>
+  </ul>
+
+  <h2><span class="num">04</span>Phase 2 — Periodenabschluss (die Schleife)</h2>
+  <p>Solange die Beziehung lebt, läuft zu jedem Periodenabschluss derselbe Dreischritt. Das ist der Teil, der regelmäßig (per Job) ausgeführt werden muss:</p>
+  <figure>
+    <svg viewBox="0 0 680 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Drei Schritte des Periodenabschlusses">
+    <defs><marker id="ar4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="30" y="40" width="190" height="58" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="125" y="62" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#0C447C">1 · Barwerte berechnen</text>
+    <text x="125" y="80" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">Marktwertkomponenten,</text>
+    <text x="125" y="92" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">Forward/CCBS/Other</text>
+    <line x1="220" y1="69" x2="246" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar4)"/>
+    <rect x="248" y="40" width="180" height="58" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="338" y="62" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#04342C">2 · Stichtagsbewertung</text>
+    <text x="338" y="80" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">Position zum Stichtag</text>
+    <text x="338" y="92" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">neu bewerten</text>
+    <line x1="428" y1="69" x2="454" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar4)"/>
+    <rect x="456" y="40" width="194" height="58" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text x="553" y="62" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#26215C">3 · Klassifikation</text>
+    <text x="553" y="80" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">effektiver Teil → OCI</text>
+    <text x="553" y="92" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">(Sicherungsrücklage)</text>
+    </svg>
+    <figcaption>Der Dreischritt jedes Periodenabschlusses — bewerten, neu bewerten, in OCI klassifizieren.</figcaption>
+  </figure>
+  <p>Bei der Freigabe der Designation berechnet das System die Hedge-Accounting-Kennzahlen für Sicherungsinstrument und hypothetisches Derivat — die Marktwertkomponenten <code>ELEM_FWD</code> (Forward), <code>ELEM_CCBS</code> (Cross-Currency-Basis-Spread) und <code>ELEM_OTHER</code>. Diese Zerlegung ist der Hebel, mit dem IFRS 9 erlaubt, bestimmte Komponenten (z. B. den Forward-Punkt oder den Währungsbasis-Spread) separat als „Kosten der Sicherung" zu behandeln. <strong>Der effektive Teil wandert ins OCI (Sicherungsrücklage), nicht in die GuV — das ist der Kern des Cashflow-Hedge.</strong></p>
+
+  <h2><span class="num">05</span>Phase 3 — Reklassifikation (das Timing-Nadelöhr)</h2>
+  <p>Das ist der schwierigste und liability-trägste Teil: <strong>wann</strong> die im OCI geparkten Beträge in die GuV umgebucht werden. SAP steuert das über das Feld <em>Erstbilanzierung</em> auf der Registerkarte „Hedge Accounting I" des Sicherungsbereichs, mit vier Einstellungen:</p>
+  <div class="gloss">
+    <div><dt>0 — Ohne</dt><dd>Keine Reklassifikation während der Laufzeit. Beträge werden erst zur berechneten Fälligkeit des Exposure-Teilpostens gebucht (Versatz über den Reklassifikationsversatztyp).</dd></div>
+    <div><dt>1 — Umgehend</dt><dd>Sicherungsrücklage + Kosten werden zum Erstbilanzierungsdatum sofort in die GuV reklassifiziert.</dd></div>
+    <div><dt>2 — Zum Enddatum</dt><dd>Klassifikationsbeträge zwischen Designation und Erstbilanzierung werden eingefroren und bis zum Enddatum des Exposure-Teilpostens gehalten.</dd></div>
+    <div><dt>3 — Abweichendes Datum</dt><dd>Beträge werden am Erstbilanzierungsdatum summiert/fixiert und zu einem abweichenden Datum reklassifiziert. Formel: Fälligkeit Sicherungsinstrument + Days Inventory Outstanding − Zahlungslaufzeit.</dd></div>
+  </div>
+  <blockquote>
+    <p><strong>Warum das der wertvolle Teil ist:</strong> Diese vier Einstellungen sind keine Customizing-Trivialität — sie entscheiden, in welcher Periode der Sicherungserfolg die GuV trifft. Genau hier sitzt die Abnahmehoheit: Wer beurteilen kann, ob Einstellung 0/1/2/3 zur tatsächlichen IFRS-9-Designation passt, hält die liability-tragende Entscheidung. Das System rechnet; ob es <em>richtig</em> rechnet, ist ein Bilanzierungsurteil.</p>
+  </blockquote>
+
+  <h2><span class="num">06</span>Phase 4 — Vertragsabschluss &amp; Korrekturen aus dem Cockpit</h2>
+  <p>Am Ende der Sicherungsbeziehung passieren zwei Dinge: <strong>Dedesignation</strong> zur Fälligkeit des Devisengeschäfts und <strong>Reklassifikation</strong> zum Enddatum des Exposure-Teilpostens (letzteres nur, wenn Erstbilanzierung auf 2 steht).</p>
+  <p>Quer über den ganzen Lebenszyklus läuft die Steuerung über das <strong>Hedge-Management-Cockpit</strong>. Es meldet die offenen Netto-Exposures (den ungesicherten Anteil) und erlaubt, bei Über- oder Untersicherung gegenzusteuern:</p>
+  <ul>
+    <li><strong>Devisensicherungsanforderung</strong> — bei Untersicherung neue Sicherung anstoßen (geht an die Händler / Trading-Platform-Integration).</li>
+    <li><strong>Devisenswapanforderung</strong> — Laufzeiten anpassen.</li>
+    <li><strong>Dedesignationsanforderung</strong> — bei Übersicherung Teile auflösen (wird automatisch ausgeführt).</li>
+    <li><strong>Beendigungsanforderung</strong> — Sicherungsinstrument ganz beenden.</li>
+  </ul>
+  <p>Wichtig fürs Verständnis der Buchungsdisziplin: Die App <em>Sicherungsgeschäftsvorfälle freigeben</em> ist der zentrale Taktgeber — Designation, Swap-Umbuchung, Reklassifikation und Dedesignation werden erst mit ihrer Freigabe fixiert. Deshalb muss sie regelmäßig laufen (manuell oder als Treasury-Buchhalterjob).</p>
+
+  <hr class="soft">
+
+  <h3>Wie diese Landkarte zu deinem Profil steht</h3>
+  <p>Hedge Management ist die <strong>normative</strong> Schicht — anders als die topologische Wegfindung in APM. Diese Landkarte macht die <em>Struktur</em> sichtbar (Lebenszyklus, Begriffe, Phasen), aber der eigentliche Wert sitzt nicht in der Struktur, sondern im Urteil: ob eine Designation IFRS-9-konform ist, ob die Reklassifikationseinstellung passt, ob die Effektivität trägt. Das System bildet ab — die liability-tragende Beurteilung bleibt menschlich. Genau diese Beurteilungshoheit ist die teuerste Schicht, und sie ist der Grund, warum Hedge dein höchstes Tagessatz-Ceiling hat, auch wenn APM dir kognitiv leichter fällt.</p>
+
+  <h3>Anschlusspunkte (mögliche nächste Teile)</h3>
+  <ul>
+    <li><strong>Hedge-Accounting-Regeln im Detail</strong> — welche Buchungssätze pro Sicherungsgeschäftsvorfall entstehen (die eigentliche Buchungslogik).</li>
+    <li><strong>Sicherungsszenarien</strong> — die nummerierten Szenarien (z. B. 990 NIH) für Cashflow-, Bilanz- und Net-Investment-Hedge nach IFRS vs. US-GAAP.</li>
+    <li><strong>Hedge Management für Bilanzdevisenrisiko</strong> — der zweite Hauptzweig neben dem Net-Open-Exposure-Ansatz.</li>
+    <li><strong>Position Management Integration</strong> — wie Bewertungsbereiche und PMP die designierten Subpositionen buchen (deine Accounting-Kernbrücke).</li>
+  </ul>
+
+  <p class="meta">Erstellt als Verständnis-Landkarte auf Basis der Struktur des SAP Help Portal (Treasury and Risk Management, Hedge Management, Version 2602). Inhalte in eigenen Worten zusammengefasst, keine Wiedergabe der Originaltexte.</p>
+
+</div>
+</body>
+</html>
