@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP TRM Analytics + Market Data – Verständnis-Landkarte</title>
+<style>
+  :root {
+    --ink: #1c1c1a;
+    --ink-soft: #55544f;
+    --ink-faint: #88867e;
+    --paper: #faf8eb;
+    --rule: #e3ddc6;
+    --rule-strong: #c8c0a3;
+    --accent: #7a6f0d;
+    --max: 820px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 18px; line-height: 1.65;
+  }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 72px 28px 120px; position: relative; }
+  .eyebrow {
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 18px;
+  }
+  .backlink {
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px; color: var(--ink-faint);
+    text-decoration: none; display: inline-block; margin-bottom: 28px;
+  }
+  .backlink:hover { color: var(--accent); }
+  .draft-badge {
+    position: absolute; top: 72px; right: 28px;
+    font-family: "SF Mono", monospace; font-size: 10px;
+    letter-spacing: 0.18em; color: var(--ink-faint);
+    padding: 3px 9px; border: 1px dashed var(--rule-strong); border-radius: 4px;
+  }
+  h1 {
+    font-size: 40px; line-height: 1.12; font-weight: 600;
+    letter-spacing: -0.01em; margin: 0 0 10px;
+  }
+  .lede {
+    font-size: 19px; color: var(--ink-soft); margin: 0 0 8px; max-width: 64ch;
+  }
+  .meta {
+    font-family: "SF Mono", monospace; font-size: 12.5px; color: var(--ink-faint);
+    margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--rule);
+  }
+  h2 {
+    font-size: 26px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 64px 0 4px; padding-top: 28px;
+    border-top: 2px solid var(--rule-strong);
+  }
+  h2 .num {
+    font-family: "SF Mono", monospace; font-size: 14px;
+    color: var(--accent); font-weight: 500;
+    display: block; margin-bottom: 6px; letter-spacing: 0.04em;
+  }
+  h3 { font-size: 19px; font-weight: 600; margin: 36px 0 6px; }
+  p { margin: 14px 0; max-width: 68ch; }
+  strong { font-weight: 600; }
+  ul, ol { max-width: 66ch; padding-left: 22px; }
+  li { margin: 8px 0; }
+  code {
+    font-family: "SF Mono", monospace; font-size: 0.82em;
+    background: #efe8c9; padding: 1.5px 5px; border-radius: 4px; color: #3a3937;
+  }
+  figure {
+    margin: 32px 0; padding: 24px 20px 16px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
+  }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption {
+    font-family: "SF Mono", monospace; font-size: 11.5px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule);
+  }
+  blockquote {
+    margin: 24px 0; padding: 16px 20px;
+    background: #fdf6e9; border-left: 3px solid #c98a1a;
+    border-radius: 0 8px 8px 0; font-size: 17px;
+  }
+  blockquote p { margin: 6px 0; max-width: none; }
+  .gloss {
+    margin: 24px 0; border: 1px solid var(--rule);
+    border-radius: 10px; overflow: hidden;
+  }
+  .gloss div {
+    display: grid; grid-template-columns: 220px 1fr; gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .gloss div:first-child { border-top: 0; }
+  .gloss dt {
+    padding: 12px 16px; background: #f1ecd2;
+    font-weight: 600; font-size: 16px;
+  }
+  .gloss dd {
+    padding: 12px 16px; margin: 0; font-size: 16px; color: var(--ink-soft);
+  }
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 24px 0;
+  }
+  .col-card {
+    background: #fff; border: 1px solid var(--rule);
+    border-radius: 10px; padding: 18px 20px;
+  }
+  .col-card h3 {
+    margin-top: 0; font-size: 17px;
+    font-family: "SF Mono", monospace;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .col-card ul { padding-left: 20px; margin: 8px 0 0; }
+  .col-card li { font-size: 16px; margin: 6px 0; color: var(--ink-soft); }
+  hr.soft { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+  @media (max-width: 600px) {
+    body { font-size: 16.5px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 22px; }
+    .wrap { padding: 48px 18px 80px; }
+    .gloss div { grid-template-columns: 1fr; }
+    .gloss dd { border-top: 1px solid var(--rule); }
+    .two-col { grid-template-columns: 1fr; }
+    .draft-badge { top: 22px; right: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="draft-badge">ENTWURF</span>
+  <a class="backlink" href="index.html">← Wissenssammlung</a>
+  <p class="eyebrow">SAP TRM Service-Layer · Verständnis-Landkarte</p>
+  <h1>Treasury Analytics + Market Data</h1>
+  <p class="lede">
+    Der Boden, auf dem alle anderen TRM-Module stehen. Market Data ist der
+    <em>Eingangsstrom</em> aus der Außenwelt — Zinsen, Kurse, Volatilitäten.
+    Treasury Analytics ist das <em>Ausgangsbild</em> für das Management —
+    Dashboards, Reports, Alerts. Ein Strom rein, ein Bild raus.
+  </p>
+  <p class="meta">
+    Quelle der Struktur: SAP Help Portal — Treasury and Risk Management →
+    Market Data Management + Treasury Analytics (S/4HANA on-prem, Version
+    2025.001). Strukturmodell aus dem lokalen TRM-Knowledge-Graph
+    destilliert, in eigenen Worten skizziert — Stimme noch zu überarbeiten.
+  </p>
+
+  <h2><span class="num">00</span>Das Grundbild: Strom rein, Bild raus</h2>
+  <p>
+    Anders als die Buchungsmodule (Hedge, TM, APM) und anders als die
+    Analyzer (Risk Mgmt) <strong>buchen oder rechnen die Service-Module
+    nicht selbst</strong>. Sie versorgen — auf der einen Seite mit Daten,
+    auf der anderen Seite mit Sicht. Konzeptuell sitzen beide unter den
+    operativen Modulen, in zwei verschiedenen Richtungen:
+  </p>
+  <ul>
+    <li>
+      <strong>Market Data Management</strong> kümmert sich um den
+      <em>Eingang</em>: woher kommen die Kurven, wie werden sie geladen,
+      wie werden sie validiert, wann werden sie gültig.
+    </li>
+    <li>
+      <strong>Treasury Analytics</strong> kümmert sich um den
+      <em>Ausgang</em>: welche Sichten brauchen Treasury und CFO, mit
+      welchem Aktualitätsgrad, in welchem Aggregations-Schnitt.
+    </li>
+  </ul>
+  <p>
+    Beide sind in dem Sinne <em>flach</em>: viele kleine Funktionen, keine
+    tiefe Lebenszyklus-Mechanik. Die Lernkurve liegt nicht in der Logik,
+    sondern in der <strong>Vollständigkeit</strong> — was es alles gibt
+    und wann es greift.
+  </p>
+
+  <h2><span class="num">01</span>Das Vokabular</h2>
+  <div class="gloss">
+    <div>
+      <dt>Yield Curve (Zinskurve)</dt>
+      <dd>
+        Die Zuordnung Laufzeit → Zinssatz für eine Währung. Treibt die
+        Diskontierung aller zukünftigen Cashflows — also den NPV jedes
+        Geschäfts.
+      </dd>
+    </div>
+    <div>
+      <dt>Datafeed</dt>
+      <dd>
+        Die Echtzeit-Anbindung an Marktdaten-Provider (Bloomberg, Reuters,
+        FactSet). Schreibt periodisch in die Marktdaten-Tabellen.
+      </dd>
+    </div>
+    <div>
+      <dt>Spot vs. Forward Rate</dt>
+      <dd>
+        <em>Spot</em>: Kurs für sofortige Erfüllung. <em>Forward</em>:
+        Terminkurs für zukünftige Erfüllung, abgeleitet aus Zinsdifferenz.
+      </dd>
+    </div>
+    <div>
+      <dt>Volatilitätsoberfläche</dt>
+      <dd>
+        Zwei- oder dreidimensionales Gitter aus implizierten Volatilitäten
+        (Laufzeit × Strike). Eingangsdatum für jede Optionsbewertung.
+      </dd>
+    </div>
+    <div>
+      <dt>Cash Position</dt>
+      <dd>
+        Aktueller und prognostizierter Stand aller verfügbaren liquiden
+        Mittel pro Buchungskreis, Bank und Währung. Der erste Blick am
+        Morgen.
+      </dd>
+    </div>
+    <div>
+      <dt>Maturity Profile</dt>
+      <dd>
+        Die Fälligkeitsstruktur von Schulden und Anlagen über die Zeit —
+        zeigt Refinanzierungs-Cliffs und Anlage-Tals.
+      </dd>
+    </div>
+    <div>
+      <dt>Treasury Alert</dt>
+      <dd>
+        Regelbasierte Benachrichtigung: Limit-Überschreitung, Datenausfall,
+        ungewöhnliche Bewegung. Verbindet Analytics mit dem operativen
+        Handeln.
+      </dd>
+    </div>
+    <div>
+      <dt>CDS View</dt>
+      <dd>
+        Core Data Service in S/4HANA — wiederverwendbare semantische
+        Modellierung der TRM-Daten als Abfrage-Schicht. Die moderne
+        Reporting-Grundlage.
+      </dd>
+    </div>
+  </div>
+
+  <h2><span class="num">02</span>Der Datenfluss von links nach rechts</h2>
+  <figure>
+    <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Service-Layer: Market Data links, Konsumenten Mitte, Analytics rechts">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Left: Market Data sources -->
+      <rect x="14" y="20" width="200" height="240" rx="10"
+            fill="#f3eecf" stroke="#7a6f0d" stroke-width="0.5"/>
+      <text x="114" y="42" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#3b3506">Market Data</text>
+      <text x="114" y="58" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#7a6f0d">Eingangsstrom</text>
+      <line x1="34" y1="74" x2="194" y2="74" stroke="#c8c0a3" stroke-width="0.5"/>
+
+      <text x="114" y="96"  text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Datafeed (Bloomberg/Reuters)</text>
+      <text x="114" y="118" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">FX-Kurs-Import</text>
+      <text x="114" y="140" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Zinskurven-Import</text>
+      <text x="114" y="162" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Manuelle Eingabe</text>
+      <text x="114" y="184" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">File Interfaces</text>
+      <text x="114" y="206" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Currency Converter</text>
+      <text x="114" y="228" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Market Data Generator</text>
+
+      <!-- Arrows to consumers -->
+      <line x1="214" y1="140" x2="252" y2="140" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+
+      <!-- Middle: Consumers -->
+      <rect x="254" y="20" width="200" height="240" rx="10"
+            fill="#fbfaf6" stroke="#c5c2b6" stroke-width="0.6"
+            stroke-dasharray="3 3"/>
+      <text x="354" y="42" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#55544f">Konsumenten</text>
+      <text x="354" y="58" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">die operativen Module</text>
+      <line x1="274" y1="74" x2="434" y2="74" stroke="#c5c2b6" stroke-width="0.5"/>
+
+      <text x="354" y="100" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#251f4d">Transaction Manager (NPV)</text>
+      <text x="354" y="122" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#04342c">Hedge Mgmt (Effektivität)</text>
+      <text x="354" y="144" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#4b1326">Risk Mgmt (VaR, Sensitivität)</text>
+      <text x="354" y="166" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#04394b">Exposure 2.0 (Aggregation)</text>
+      <text x="354" y="188" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#0c447c">APM (FX-Umrechnung)</text>
+
+      <!-- Arrow to analytics -->
+      <line x1="454" y1="140" x2="492" y2="140" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+
+      <!-- Right: Treasury Analytics outputs -->
+      <rect x="494" y="20" width="210" height="240" rx="10"
+            fill="#f3eecf" stroke="#7a6f0d" stroke-width="0.5"/>
+      <text x="599" y="42" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#3b3506">Treasury Analytics</text>
+      <text x="599" y="58" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#7a6f0d">Ausgangsbild</text>
+      <line x1="514" y1="74" x2="694" y2="74" stroke="#c8c0a3" stroke-width="0.5"/>
+
+      <text x="599" y="96"  text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Treasury Executive Dashboard</text>
+      <text x="599" y="118" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Cash Position / Financial Status</text>
+      <text x="599" y="140" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">FX / Interest Rate Overview</text>
+      <text x="599" y="162" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Maturity Profile</text>
+      <text x="599" y="184" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Credit Line Analysis</text>
+      <text x="599" y="206" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">Treasury Alerts</text>
+      <text x="599" y="228" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#3b3506">CDS Views / Reporting</text>
+    </svg>
+    <figcaption>
+      Drei Spalten, eine Richtung. Market Data füttert; die operativen
+      Module rechnen; Analytics zeigt — und schließt mit Treasury Alerts
+      den Rückkanal ins Handeln.
+    </figcaption>
+  </figure>
+
+  <h2><span class="num">03</span>Die Sub-Bereiche je Modul</h2>
+  <div class="two-col">
+    <div class="col-card">
+      <h3>Market Data Management</h3>
+      <ul>
+        <li><strong>Datafeed</strong> — Provider-Anbindung (Bloomberg, Reuters, …)</li>
+        <li><strong>Import Foreign Exchange Rates</strong> — FX-Kurs-Ladelauf</li>
+        <li><strong>Import Market Data</strong> — generischer MD-Import</li>
+        <li><strong>Manual Market Data Entry</strong> — manuelle Stützstellen</li>
+        <li><strong>Currency Converter</strong> — Umrechnungs-Service</li>
+        <li><strong>Market Data Generator</strong> — Ableitung fehlender Stützstellen</li>
+        <li><strong>File Interfaces</strong> — CSV/XML-Schnittstellen</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <h3>Treasury Analytics</h3>
+      <ul>
+        <li><strong>Treasury Executive Dashboard</strong> (SAP Analytics Cloud)</li>
+        <li><strong>Financial Status</strong> — aktueller Cash- und Liquiditätsstand</li>
+        <li><strong>Foreign Exchange Overview</strong> — FX-Sicht über alle BUKs</li>
+        <li><strong>Interest Rate Overview</strong> — Zinsentwicklung</li>
+        <li><strong>Debt and Investment Maturity Profile</strong></li>
+        <li><strong>Debt and Investment Analysis</strong></li>
+        <li><strong>Credit Line Analysis</strong> — verfügbare Kreditlinien</li>
+        <li><strong>Review Balance Sheet FX Risk</strong></li>
+        <li><strong>Treasury Position Reporting</strong></li>
+        <li><strong>Market Data Overview</strong> — Sicht auf die geladenen MDs</li>
+        <li><strong>Display Treasury Alerts</strong> — die Warnschicht</li>
+        <li><strong>CDS Views for Treasury and Risk Management</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><span class="num">04</span>Verbindungen zu den Nachbar-Modulen</h2>
+  <ul>
+    <li>
+      <strong>Market Data → alle</strong>: ohne Yield Curve kein NPV, ohne
+      FX-Kurs keine Bewertung, ohne Vola keine Optionspreise. Das Modul ist
+      die <em>kritische Abhängigkeit</em> für TM, Hedge, Risk, Exposure 2.0
+      und APM (Umrechnung).
+    </li>
+    <li>
+      <strong>Treasury Analytics ← alle</strong>: jedes Modul, das Cashflows
+      oder Risikometriken erzeugt, hat eine Reporting-Sicht oben in
+      Analytics. Die Sub-Bereiche „Maturity Profile" und „Credit Line
+      Analysis" hängen direkt an Transaction Manager bzw. Loans Mgmt.
+    </li>
+    <li>
+      <strong>CDS Views</strong>: die moderne S/4-Brücke ins Reporting —
+      anstatt klassischer ABAP-Reports werden Analytics-Apps und Dashboards
+      auf semantischen CDS-Views aufgebaut.
+    </li>
+    <li>
+      <strong>Treasury Alerts</strong>: die Stelle, an der Analytics nicht
+      mehr nur passiv anzeigt, sondern aktiv warnt — und damit den
+      Rückkanal ins operative Handeln öffnet (Limit-Verstoß im Risk Mgmt,
+      Kursabweichung in Market Data, Cash-Defizit in der Position).
+    </li>
+  </ul>
+
+  <blockquote>
+    <p>
+      <strong>Praktischer Hebel:</strong> Wenn Bewertungen plötzlich Unsinn
+      liefern, beginne fast immer beim <em>Market Data Overview</em> — eine
+      fehlende Stützstelle in der Zinskurve oder ein nicht aktualisierter
+      FX-Kurs verursacht die meisten falschen NPVs. Das Service-Modul ist
+      flach in der Logik, aber der erste Ort, an dem fast jede Fehlersuche
+      ankommt.
+    </p>
+  </blockquote>
+
+  <hr class="soft">
+  <p class="meta">
+    Stand: Knowledge-Graph-Snapshot vom 2026-06-14 (12 Analytics + 7 Market
+    Data Sub-Bereiche). Diese Landkarte ist ein Entwurfsgerüst — die
+    Cockpit-Apps der SAP-Fiori-Welt entwickeln sich schnell, ein eigener
+    Praxis-Durchgang lohnt.
+  </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP TRM Exposure Management 2.0 – Verständnis-Landkarte</title>
+<style>
+  :root {
+    --ink: #1c1c1a;
+    --ink-soft: #55544f;
+    --ink-faint: #88867e;
+    --paper: #f4faec;
+    --paper-cool: #f3fbfd;
+    --rule: #d6e3e6;
+    --rule-strong: #bcccd0;
+    --accent: #0e7ea0;
+    --max: 820px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper-cool); color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 18px; line-height: 1.65;
+  }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 72px 28px 120px; position: relative; }
+  .eyebrow {
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 18px;
+  }
+  .backlink {
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px; color: var(--ink-faint);
+    text-decoration: none; display: inline-block; margin-bottom: 28px;
+  }
+  .backlink:hover { color: var(--accent); }
+  .draft-badge {
+    position: absolute; top: 72px; right: 28px;
+    font-family: "SF Mono", monospace; font-size: 10px;
+    letter-spacing: 0.18em; color: var(--ink-faint);
+    padding: 3px 9px; border: 1px dashed var(--rule-strong); border-radius: 4px;
+  }
+  h1 {
+    font-size: 40px; line-height: 1.12; font-weight: 600;
+    letter-spacing: -0.01em; margin: 0 0 10px;
+  }
+  .lede {
+    font-size: 19px; color: var(--ink-soft); margin: 0 0 8px; max-width: 64ch;
+  }
+  .meta {
+    font-family: "SF Mono", monospace; font-size: 12.5px; color: var(--ink-faint);
+    margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--rule);
+  }
+  h2 {
+    font-size: 26px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 64px 0 4px; padding-top: 28px;
+    border-top: 2px solid var(--rule-strong);
+  }
+  h2 .num {
+    font-family: "SF Mono", monospace; font-size: 14px;
+    color: var(--accent); font-weight: 500;
+    display: block; margin-bottom: 6px; letter-spacing: 0.04em;
+  }
+  h3 { font-size: 19px; font-weight: 600; margin: 36px 0 6px; }
+  p { margin: 14px 0; max-width: 68ch; }
+  strong { font-weight: 600; }
+  ul, ol { max-width: 66ch; padding-left: 22px; }
+  li { margin: 8px 0; }
+  code {
+    font-family: "SF Mono", monospace; font-size: 0.82em;
+    background: #def2f7; padding: 1.5px 5px; border-radius: 4px; color: #04394b;
+  }
+  figure {
+    margin: 32px 0; padding: 24px 20px 16px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
+  }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption {
+    font-family: "SF Mono", monospace; font-size: 11.5px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule);
+  }
+  blockquote {
+    margin: 24px 0; padding: 16px 20px;
+    background: #fdf6e9; border-left: 3px solid #c98a1a;
+    border-radius: 0 8px 8px 0; font-size: 17px;
+  }
+  blockquote p { margin: 6px 0; max-width: none; }
+  .gloss {
+    margin: 24px 0; border: 1px solid var(--rule);
+    border-radius: 10px; overflow: hidden;
+  }
+  .gloss div {
+    display: grid; grid-template-columns: 220px 1fr; gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .gloss div:first-child { border-top: 0; }
+  .gloss dt {
+    padding: 12px 16px; background: #e5f4f7;
+    font-weight: 600; font-size: 16px;
+  }
+  .gloss dd {
+    padding: 12px 16px; margin: 0; font-size: 16px; color: var(--ink-soft);
+  }
+  hr.soft { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+  @media (max-width: 600px) {
+    body { font-size: 16.5px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 22px; }
+    .wrap { padding: 48px 18px 80px; }
+    .gloss div { grid-template-columns: 1fr; }
+    .gloss dd { border-top: 1px solid var(--rule); }
+    .draft-badge { top: 22px; right: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="draft-badge">ENTWURF</span>
+  <a class="backlink" href="index.html">← Wissenssammlung</a>
+  <p class="eyebrow">SAP TRM Exposure Management 2.0 · Verständnis-Landkarte</p>
+  <h1>Exposure Management 2.0</h1>
+  <p class="lede">
+    Was du nicht messen kannst, kannst du nicht sichern. Exposure 2.0 ist
+    die Klammer, die vor Hedge Management kommt: ein eigenes Stammdaten-Modell
+    für Risiken, die noch nicht designiert sind. Es trennt das
+    <em>Modellieren</em> von Exposure sauber vom <em>Buchen</em> einer
+    Sicherung.
+  </p>
+  <p class="meta">
+    Quelle der Struktur: SAP Help Portal — Treasury and Risk Management →
+    Exposure Management 2.0 (S/4HANA on-prem, Version 2025.001).
+    Strukturmodell aus dem lokalen TRM-Knowledge-Graph destilliert,
+    in eigenen Worten skizziert — Stimme noch zu überarbeiten.
+  </p>
+
+  <h2><span class="num">00</span>Das Grundbild: Risiko als eigener Stammdatentyp</h2>
+  <p>
+    Der konzeptuelle Sprung in „2.0" ist klein, aber tragend: Risiko bekommt
+    eine <strong>eigene Identität, unabhängig vom operativen Geschäft</strong>.
+    Vorher waren Exposures Nebenprodukte von Bestellungen, Aufträgen oder
+    Planpositionen. In 2.0 ist eine <em>Exposure-Position</em> ein selbständiges
+    Objekt — mit Lifecycle, Status und Verbindung zum operativen Beleg.
+  </p>
+  <p>
+    Drei Folgen sind wichtig:
+  </p>
+  <ul>
+    <li>
+      Eine Exposure-Position kann existieren, <strong>bevor</strong> ein
+      operativer Beleg vorliegt (Forecast, Sales Plan). Du kannst Risiko
+      planen, statt nur zu reagieren.
+    </li>
+    <li>
+      Eine Exposure-Position hat einen Lifecycle: sie reift, sie verändert
+      sich, sie wird realisiert — und schlägt sich in jeder Phase im
+      Hedging-Bedarf nieder.
+    </li>
+    <li>
+      Exposure und Hedge sind <strong>entkoppelt</strong>: Hedge-Designation
+      ist ein eigener Schritt, der Exposure-Positionen aufnimmt und in
+      Hedge Accounting übersetzt (Transfer to E-HA).
+    </li>
+  </ul>
+
+  <h2><span class="num">01</span>Das Vokabular</h2>
+  <div class="gloss">
+    <div>
+      <dt>Exposure-Position</dt>
+      <dd>
+        Die Stammdaten-Klammer: eine geplante oder reale Cashflow-Reihe in
+        Risiko-Währung. Ein- oder ausgehend, mit Buchungskreis, Belegquelle,
+        Risikomerkmalen. Die Einheit, auf der das Hedging-Modell rechnet.
+      </dd>
+    </div>
+    <div>
+      <dt>Operative vs. strategische Exposure</dt>
+      <dd>
+        <em>Operativ</em>: aus tatsächlich existierenden Belegen (Aufträge,
+        Rechnungen, geplante Cashflows aus Verträgen). <em>Strategisch</em>:
+        aus Planung oder Forecast (Sales Plan, FX-Budget). Beide leben unter
+        derselben Position, sind aber in der Aggregation unterscheidbar.
+      </dd>
+    </div>
+    <div>
+      <dt>Raw / Adjusted Exposure</dt>
+      <dd>
+        <em>Raw</em>: das ursprünglich erfasste Risiko. <em>Adjusted</em>:
+        nach Korrekturen, Stornierungen, Realisierungen. Das Adjusted-Volumen
+        ist die Basis für Hedging-Quoten.
+      </dd>
+    </div>
+    <div>
+      <dt>Hedge Quota</dt>
+      <dd>
+        Der Anteil des Adjusted Exposure, der gesichert werden soll oder ist.
+        Wird durch die Sicherungsrichtlinie vorgegeben (z. B. 80 % aller
+        12-Monats-Exposures sichern).
+      </dd>
+    </div>
+    <div>
+      <dt>Exposure Lifecycle Status</dt>
+      <dd>
+        Phase im Leben einer Exposure-Position: erfasst → genehmigt →
+        gesichert (designiert) → realisiert → archiviert. Steuert,
+        welche Aktionen erlaubt sind.
+      </dd>
+    </div>
+    <div>
+      <dt>Transfer to E-HA</dt>
+      <dd>
+        Der formale Übergang einer Exposure-Position in eine Hedge-Designation
+        (Hedge Accounting for Exposures). Verbindet die Modellierungsschicht
+        (Exposure) mit der buchhalterischen Schicht (Hedge Accounting).
+      </dd>
+    </div>
+    <div>
+      <dt>Reportable Period</dt>
+      <dd>
+        Das Zeitfenster, über das eine Exposure aggregiert wird (Monat,
+        Quartal, Jahr). Liefert das Raster für das Hedge-Management-Cockpit.
+      </dd>
+    </div>
+  </div>
+
+  <h2><span class="num">02</span>Der Exposure-Lifecycle</h2>
+  <p>
+    Die zentrale Mechanik. Eine Exposure-Position wandert durch vier
+    Phasen — jede Phase verändert das Hedging-relevante Volumen:
+  </p>
+  <figure>
+    <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Exposure-Lifecycle: vier Phasen">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <rect x="14" y="50" width="150" height="60" rx="8"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
+      <text x="89" y="74" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#04394b">1 · Raw</text>
+      <text x="89" y="92" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">erfasst aus Belegen</text>
+      <text x="89" y="106" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">oder Forecast</text>
+      <line x1="164" y1="80" x2="192" y2="80" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+
+      <rect x="194" y="50" width="150" height="60" rx="8"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
+      <text x="269" y="74" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#04394b">2 · Adjusted</text>
+      <text x="269" y="92" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">netto nach Korrektur,</text>
+      <text x="269" y="106" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">Storno, Realisierung</text>
+      <line x1="344" y1="80" x2="372" y2="80" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+
+      <rect x="374" y="50" width="150" height="60" rx="8"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
+      <text x="449" y="74" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#04394b">3 · Hedged</text>
+      <text x="449" y="92" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">designiert in</text>
+      <text x="449" y="106" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">Sicherungs-Beziehung</text>
+      <line x1="524" y1="80" x2="552" y2="80" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+
+      <rect x="554" y="50" width="150" height="60" rx="8"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
+      <text x="629" y="74" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#04394b">4 · Released</text>
+      <text x="629" y="92" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">realisiert oder</text>
+      <text x="629" y="106" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">dedesigniert</text>
+
+      <!-- Transfer label -->
+      <rect x="395" y="138" width="110" height="22" rx="6"
+            fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
+      <text x="450" y="153" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#04342c">Transfer → E-HA</text>
+      <line x1="449" y1="110" x2="449" y2="138" stroke="#0f6e56" stroke-width="1.2"/>
+
+      <!-- Bottom line: feedback -->
+      <text x="360" y="200" text-anchor="middle" font-family="sans-serif" font-size="13"
+            fill="#55544f">
+        Jede Korrektur in Phase 2 verändert das hedgebare Volumen,
+      </text>
+      <text x="360" y="218" text-anchor="middle" font-family="sans-serif" font-size="13"
+            fill="#55544f">
+        also die Hedge-Quota und potenziell die Effektivität in Phase 3.
+      </text>
+    </svg>
+    <figcaption>
+      Raw → Adjusted → Hedged → Released. Der Übergang Phase 2→3 ist
+      das, was im Hedge Management als „Designation" gebucht wird.
+    </figcaption>
+  </figure>
+
+  <h2><span class="num">03</span>Die Sub-Bereiche im Help-Portal</h2>
+  <ul>
+    <li>
+      <strong>Exposure Management 2.0: Process</strong> — der End-to-End-Ablauf
+      von Erfassung bis Reporting. Der Einstieg, wenn du wissen willst,
+      welche Schritte ein User durchläuft.
+    </li>
+    <li>
+      <strong>Exposure Positions</strong> — die Stammdaten-Mechanik:
+      Anlage, Pflege, Statusübergänge. Das Herzstück des Moduls.
+    </li>
+    <li>
+      <strong>Exposure Lifecycle</strong> — die formale Sicht auf die
+      Status-Maschine (Raw / Adjusted / …).
+    </li>
+    <li>
+      <strong>Setting Up Exposure Management 2.0</strong> — Customizing:
+      Risikoklassen, Status-Schema, Berechnungsregeln.
+    </li>
+    <li>
+      <strong>Transferring Exposures to E-HA</strong> — die Brücke ins
+      Hedge Accounting for Exposures.
+    </li>
+    <li>
+      <strong>Integration of Operating Exposures in Market Risk Analysis</strong>
+      — Übergabe in den Market Risk Analyzer für Sensitivitäten und VaR.
+    </li>
+    <li>
+      <strong>Terms in Exposure Management 2.0</strong> — das offizielle
+      Glossar (deckt sich teilweise mit Hedge-Glossar, aber mit eigener
+      Perspektive).
+    </li>
+  </ul>
+
+  <h2><span class="num">04</span>Verbindungen zu den Nachbar-Modulen</h2>
+  <ul>
+    <li>
+      <strong>← Operative Belege</strong> (Sales Orders, Purchase Orders,
+      Forecasts): die Quellen, aus denen Exposure-Positionen entstehen.
+      Strategische Exposures kommen aus Planungs-Welten (CO, IBP).
+    </li>
+    <li>
+      <strong>→ Hedge Management of FX Risks (E-HA)</strong>: der Transfer
+      einer Exposure-Position erzeugt einen Exposure-Posten in der
+      Hedge-Welt, der für Designation bereit ist. Das ist die Naht,
+      an der „Exposure 2.0" und „Hedge Accounting" sich treffen.
+    </li>
+    <li>
+      <strong>→ Market Risk Analyzer</strong>: operative Exposures werden
+      in die Marktrisiko-Analyse integriert — sie tragen zur
+      Sensitivitäts- und VaR-Rechnung bei, auch wenn sie noch nicht
+      gesichert sind.
+    </li>
+    <li>
+      <strong>→ Transaction Manager</strong>: technische
+      Sicherungs-Instrumente (FX-Termin, -Swap, -Option), die für die
+      Designation gebraucht werden, leben im Transaction Manager — nicht
+      hier in Exposure 2.0.
+    </li>
+  </ul>
+
+  <blockquote>
+    <p>
+      <strong>Begriffsfalle:</strong> „Exposure-Position" (Exposure 2.0) ist
+      <em>nicht</em> dasselbe wie der „Exposure-Posten" aus Hedge Management.
+      Erste ist die Modellierungs-Klammer (eigenes Stammdaten-Objekt), zweite
+      ist die aggregierte Hedge-Sicht, die für die Designation aufbereitet
+      wird. Der Transfer übersetzt eine Exposure-Position in einen
+      Exposure-Posten (bzw. dessen Teilposten) — das ist die einzige Stelle,
+      wo die beiden Welten direkt aneinanderrühren.
+    </p>
+  </blockquote>
+
+  <hr class="soft">
+  <p class="meta">
+    Stand: Knowledge-Graph-Snapshot vom 2026-06-14 (7 Sub-Bereiche).
+    Diese Landkarte ist ein Entwurfsgerüst — sie beschreibt die Mechanik;
+    den Praxisanteil (welche Belegtypen wirklich genutzt werden, wie der
+    Status-Übergang im Cockpit aussieht) schreibst du aus eigener Erfahrung.
+  </p>
+</div>
+</body>
+</html>

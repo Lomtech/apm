@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP TRM Transaction Manager – Verständnis-Landkarte</title>
+<style>
+  :root {
+    --ink: #1c1c1a;
+    --ink-soft: #55544f;
+    --ink-faint: #88867e;
+    --paper: #f7f7fb;
+    --rule: #dde0e6;
+    --rule-strong: #c2c6cf;
+    --accent: #3f3b8a;
+    --max: 820px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 18px; line-height: 1.65;
+  }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 72px 28px 120px; position: relative; }
+  .eyebrow {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 18px;
+  }
+  .backlink {
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px; color: var(--ink-faint);
+    text-decoration: none; display: inline-block; margin-bottom: 28px;
+  }
+  .backlink:hover { color: var(--accent); }
+  .draft-badge {
+    position: absolute; top: 72px; right: 28px;
+    font-family: "SF Mono", monospace; font-size: 10px;
+    letter-spacing: 0.18em; color: var(--ink-faint);
+    padding: 3px 9px; border: 1px dashed var(--rule-strong); border-radius: 4px;
+  }
+  h1 {
+    font-size: 40px; line-height: 1.12; font-weight: 600;
+    letter-spacing: -0.01em; margin: 0 0 10px;
+  }
+  .lede {
+    font-size: 19px; color: var(--ink-soft); margin: 0 0 8px; max-width: 64ch;
+  }
+  .meta {
+    font-family: "SF Mono", monospace; font-size: 12.5px; color: var(--ink-faint);
+    margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--rule);
+  }
+  h2 {
+    font-size: 26px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 64px 0 4px; padding-top: 28px;
+    border-top: 2px solid var(--rule-strong);
+  }
+  h2 .num {
+    font-family: "SF Mono", monospace; font-size: 14px;
+    color: var(--accent); font-weight: 500;
+    display: block; margin-bottom: 6px; letter-spacing: 0.04em;
+  }
+  h3 { font-size: 19px; font-weight: 600; margin: 36px 0 6px; }
+  p { margin: 14px 0; max-width: 68ch; }
+  strong { font-weight: 600; }
+  ul, ol { max-width: 66ch; padding-left: 22px; }
+  li { margin: 8px 0; }
+  code {
+    font-family: "SF Mono", monospace; font-size: 0.82em;
+    background: #ebebf3; padding: 1.5px 5px; border-radius: 4px; color: #3a3937;
+  }
+  figure {
+    margin: 32px 0; padding: 24px 20px 16px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
+  }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption {
+    font-family: "SF Mono", monospace; font-size: 11.5px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule);
+  }
+  blockquote {
+    margin: 24px 0; padding: 16px 20px;
+    background: #fdf6e9; border-left: 3px solid #c98a1a;
+    border-radius: 0 8px 8px 0; font-size: 17px;
+  }
+  blockquote p { margin: 6px 0; max-width: none; }
+  .gloss {
+    margin: 24px 0; border: 1px solid var(--rule);
+    border-radius: 10px; overflow: hidden;
+  }
+  .gloss div {
+    display: grid; grid-template-columns: 220px 1fr; gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .gloss div:first-child { border-top: 0; }
+  .gloss dt {
+    padding: 12px 16px; background: #ecebf3;
+    font-weight: 600; font-size: 16px;
+  }
+  .gloss dd {
+    padding: 12px 16px; margin: 0; font-size: 16px; color: var(--ink-soft);
+  }
+  .tx-table {
+    margin: 24px 0; border: 1px solid var(--rule); border-radius: 10px;
+    overflow: hidden; font-size: 16px;
+  }
+  .tx-table div {
+    display: grid; grid-template-columns: 120px 1fr;
+    border-top: 1px solid var(--rule);
+  }
+  .tx-table div:first-child { border-top: 0; }
+  .tx-table code.tx {
+    background: #ecebf3; padding: 12px 16px; font-weight: 600;
+    color: #251f4d; border-radius: 0;
+  }
+  .tx-table .desc { padding: 12px 16px; color: var(--ink-soft); }
+  hr.soft { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+  @media (max-width: 600px) {
+    body { font-size: 16.5px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 22px; }
+    .wrap { padding: 48px 18px 80px; }
+    .gloss div, .tx-table div { grid-template-columns: 1fr; }
+    .gloss dd, .tx-table .desc { border-top: 1px solid var(--rule); }
+    .draft-badge { top: 22px; right: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="draft-badge">ENTWURF</span>
+  <a class="backlink" href="index.html">← Wissenssammlung</a>
+  <p class="eyebrow">SAP TRM Transaction Manager · Verständnis-Landkarte</p>
+  <h1>Transaction Manager</h1>
+  <p class="lede">
+    Der konzeptuelle Hub der TRM-Welt. Ein Geschäft (Vertrag) wird einmal
+    abgeschlossen — und lebt danach auf drei Ebenen weiter: als Position
+    (Bestand), als Bewertung (NPV), als Buchung. Drei Ebenen, eine Identität.
+  </p>
+  <p class="meta">
+    Quelle der Struktur: SAP Help Portal — Treasury and Risk Management →
+    Transaction Manager (S/4HANA on-prem, Version 2025.001).
+    Strukturmodell aus dem lokalen TRM-Knowledge-Graph destilliert,
+    in eigenen Worten skizziert — Stimme noch zu überarbeiten.
+  </p>
+
+  <h2><span class="num">00</span>Das Grundbild: drei Ebenen, eine Identität</h2>
+  <p>
+    Der einfachste Satz über den Transaction Manager: <strong>er verwaltet
+    Geschäfte</strong>. Aber „Geschäft" bedeutet drei verschiedene Dinge,
+    je nachdem aus welcher Höhe man draufschaut:
+  </p>
+  <ul>
+    <li>
+      Aus der <strong>Vertrags-Perspektive</strong> ist ein Geschäft ein
+      <em>Trade</em>: Wer mit wem, was, zu welchen Konditionen, bis wann.
+    </li>
+    <li>
+      Aus der <strong>Bestands-Perspektive</strong> ist ein Geschäft eine
+      <em>Position</em>: ein laufender Bestand, der bewertet, gebucht und
+      irgendwann geschlossen wird.
+    </li>
+    <li>
+      Aus der <strong>Bewertungs-Perspektive</strong> ist ein Geschäft ein
+      <em>NPV</em>: ein heutiger Wert, der sich täglich ändert.
+    </li>
+  </ul>
+  <p>
+    Anders als Hedge Management (Lebenszyklus über Zeit) oder APM (Hub mit
+    Verteiler) ist der Transaction Manager eine <strong>Schichtenarchitektur</strong>:
+    dasselbe Geschäft, drei Blickwinkel. Wer den Übergang zwischen den
+    Schichten versteht — wo aus einem Vertrag eine Position wird, wo aus
+    einer Position eine NPV-Bewertung — versteht 70 % vom Transaction Manager.
+  </p>
+
+  <h2><span class="num">01</span>Das Vokabular</h2>
+  <p>
+    SAP unterscheidet hier sauberer als die Umgangssprache. Die Hierarchie
+    von oben nach unten:
+  </p>
+  <div class="gloss">
+    <div>
+      <dt>Geschäftsart (Product Type)</dt>
+      <dd>
+        Die Klasse des Instruments. Money Market, FX, Derivat, Wertpapier,
+        Darlehen — jede Geschäftsart hat ihre eigenen Eingabefelder und
+        ihren eigenen Buchungsschema.
+      </dd>
+    </div>
+    <div>
+      <dt>Geschäft (Trade)</dt>
+      <dd>
+        Der konkrete Abschluss. Hat eine Geschäftsnummer, Geschäftspartner,
+        Konditionen, Fälligkeiten. Wird in einer <em>Geschäftsart</em>
+        innerhalb eines <em>Buchungskreises</em> angelegt.
+      </dd>
+    </div>
+    <div>
+      <dt>Geschäftsvorfall (Activity Type)</dt>
+      <dd>
+        Ein Vorgang innerhalb des Geschäfts-Lebenszyklus: Anlage, Bestätigung,
+        Korrektur, Stornierung, Settlement, Vertragsabschluss. Steuert,
+        welche Buchungen entstehen.
+      </dd>
+    </div>
+    <div>
+      <dt>Position</dt>
+      <dd>
+        Die Bestands-Sicht: alle Geschäfte derselben Klasse (Wertpapier,
+        Darlehen, …) im selben Bewertungsbereich werden zu einer Position
+        aggregiert. Die Einheit, auf der bewertet und gebucht wird.
+      </dd>
+    </div>
+    <div>
+      <dt>Bewertungsbereich (Valuation Area)</dt>
+      <dd>
+        Die Klammer für parallele Rechnungslegung: lokales HGB, IFRS,
+        Konzernabschluss — jeder bekommt seinen eigenen Bewertungsbereich,
+        mit eigenen Verfahren und eigenen Konten.
+      </dd>
+    </div>
+    <div>
+      <dt>Position Management Procedure</dt>
+      <dd>
+        Das Rezept, wie eine Position in einem Bewertungsbereich bewertet
+        und gebucht wird (Bewertungsmethode, Bewertungsklasse,
+        Kontenfindung). Hier wandelt sich „Vertrag" in „Buchungssatz".
+      </dd>
+    </div>
+    <div>
+      <dt>Net Present Value (NPV)</dt>
+      <dd>
+        Der heutige Barwert eines Geschäfts, abgezinst über die Zinskurve.
+        Treibt die Bewertung der Position und ist die Grundlage für
+        Effektivitätstests im Hedge Management.
+      </dd>
+    </div>
+  </div>
+
+  <h2><span class="num">02</span>Der Lebenszyklus eines Geschäfts</h2>
+  <p>
+    Ein Geschäft ist nicht statisch. Es durchläuft Stationen, und an jeder
+    Station entstehen Buchungen, Korrespondenz oder Bewertungen:
+  </p>
+  <figure>
+    <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Lebenszyklus eines Geschäfts im Transaction Manager">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <rect x="14" y="40" width="130" height="58" rx="8"
+            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
+      <text x="79" y="64" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="500" fill="#251f4d">1 · Anlage</text>
+      <text x="79" y="82" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">Abschluss erfassen</text>
+      <line x1="144" y1="69" x2="170" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+
+      <rect x="172" y="40" width="130" height="58" rx="8"
+            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
+      <text x="237" y="64" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="500" fill="#251f4d">2 · Bestätigung</text>
+      <text x="237" y="82" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">Korrespondenz, Settlement</text>
+      <line x1="302" y1="69" x2="328" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+
+      <rect x="330" y="40" width="130" height="58" rx="8"
+            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
+      <text x="395" y="64" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="500" fill="#251f4d">3 · Bewertung</text>
+      <text x="395" y="82" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">Periodenabschluss</text>
+      <line x1="460" y1="69" x2="486" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+
+      <rect x="488" y="40" width="130" height="58" rx="8"
+            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
+      <text x="553" y="64" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="500" fill="#251f4d">4 · Abschluss</text>
+      <text x="553" y="82" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">Verfall, Stornierung</text>
+
+      <!-- Caption row underneath -->
+      <text x="79"  y="148" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM1 · FTR_CREATE</text>
+      <text x="237" y="148" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM18 · TBB1</text>
+      <text x="395" y="148" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM1 · TPM60</text>
+      <text x="553" y="148" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM13 · TPM40</text>
+
+      <!-- Bottom layer: three perspectives -->
+      <rect x="14" y="180" width="604" height="44" rx="9"
+            fill="#fbfaff" stroke="#c2c6cf" stroke-width="0.5"
+            stroke-dasharray="3 3"/>
+      <text x="316" y="204" text-anchor="middle" font-family="sans-serif"
+            font-size="12" fill="#55544f">
+        durchgängig: Vertrag · Position · Bewertung
+      </text>
+      <text x="316" y="220" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">
+        TBB1 (Buchung) · TPM10/12/13 (Position) · TPM60 (NPV)
+      </text>
+    </svg>
+    <figcaption>
+      Vier Stationen oben, drei Perspektiven darunter — jede Station
+      schreibt in alle drei Sichten gleichzeitig.
+    </figcaption>
+  </figure>
+
+  <h2><span class="num">03</span>Die Sub-Bereiche</h2>
+  <p>
+    Im Help-Portal hängen unter dem Transaction Manager 14 Sub-Bereiche.
+    Konzeptuell zerfallen sie in drei Gruppen:
+  </p>
+  <h3>Kern — Geschäfte verwalten</h3>
+  <ul>
+    <li><strong>Financial Transaction Management</strong> — der eigentliche Trade-Lifecycle. Anlage, Bestätigung, Settlement, Stornierung. Hier wohnt das Geschäft.</li>
+    <li><strong>Securities Account Management</strong> — Verwaltung von Wertpapierbeständen über Depotkonten.</li>
+    <li><strong>Treasury Correspondence</strong> — Bestätigungen, SWIFT-Nachrichten, Format-Mapping. Der „Außenkanal" zum Geschäftspartner.</li>
+    <li><strong>Corporate Action</strong> — Kapitalmaßnahmen (Dividenden, Splits, Bezugsrechte).</li>
+  </ul>
+
+  <h3>Bewertung &amp; Buchung — Position wird Buchungssatz</h3>
+  <ul>
+    <li><strong>Accounting</strong> — Position Management, Bewertungsbereiche, Kontenfindung. Hier passiert die parallele Rechnungslegung.</li>
+    <li><strong>Hedge Accounting</strong> — der Hedge-Mechanismus auf TM-Ebene (P-HA, „Hedge Accounting for Positions"). Vorgänger / Alternative zu E-HA aus Exposure Management 2.0.</li>
+  </ul>
+
+  <h3>Querschnitt — was alle teilen</h3>
+  <ul>
+    <li><strong>Information System</strong> — die Reports über alle Geschäfte hinweg.</li>
+    <li><strong>BAPIs for the Transaction Manager</strong> — die Programmier-Schnittstelle, hauptsächlich <code>BAPI_FTR_*</code> für Trades, <code>BAPI_TPM_*</code> für Positionen.</li>
+    <li><strong>Terms in FTM</strong> — das offizielle Glossar.</li>
+    <li><strong>Country/Region-Specific Functions</strong> — Sonderlogik pro Land.</li>
+    <li><strong>Currency Changeover</strong> — Migrations-Werkzeuge bei Währungsumstellungen.</li>
+  </ul>
+
+  <h2><span class="num">04</span>Die wichtigsten Transaktionen</h2>
+  <p>
+    Eine schmale Auswahl, geordnet nach Lebenszyklus-Phase. Vollständiger
+    in den Sub-Bereichen.
+  </p>
+  <div class="tx-table">
+    <div><code class="tx">TPM1</code><span class="desc">Treasury-Position-Cockpit — die Eintrittstür für Bewertung &amp; Buchung</span></div>
+    <div><code class="tx">FTR_CREATE</code><span class="desc">Geschäft anlegen (generisch, alle Produktarten)</span></div>
+    <div><code class="tx">FTR_EDIT</code><span class="desc">Bestehendes Geschäft bearbeiten / Geschäftsvorfälle ausführen</span></div>
+    <div><code class="tx">TPM18</code><span class="desc">Settlement der fälligen Geschäftsvorfälle</span></div>
+    <div><code class="tx">TBB1</code><span class="desc">Buchungslauf — Geschäftsvorfälle als FI-Beleg auf die Konten bringen</span></div>
+    <div><code class="tx">TPM10 / TPM12 / TPM13</code><span class="desc">Positions-Listen / -Belege / -Anzeige</span></div>
+    <div><code class="tx">TPM60</code><span class="desc">NPV-Berechnung pro Geschäft (auch CVA-Variante als <code>TPM60CVA</code>)</span></div>
+    <div><code class="tx">TPM100 / TPM101 / TPM120</code><span class="desc">Stammdaten der Bewertungsbereiche, Position Management Procedures, Bewertungsklassen</span></div>
+    <div><code class="tx">TPM40</code><span class="desc">Vertragsabschluss / Endbuchung einer Position</span></div>
+  </div>
+
+  <h2><span class="num">05</span>Verbindungen zu den Nachbar-Modulen</h2>
+  <p>
+    Der Transaction Manager steht nicht für sich allein. Vier Berührungen
+    sind tragend:
+  </p>
+  <ul>
+    <li>
+      <strong>→ Hedge Management of FX Risks (E-HA)</strong>: Sicherungs-Instrumente
+      werden hier als Geschäfte angelegt, Hedge Mgmt verknüpft sie mit
+      Exposure-Posten und buchut die Effektivitätsergebnisse zurück
+      auf TM-Positionen.
+    </li>
+    <li>
+      <strong>→ Exposure Management 2.0</strong>: Exposure-Positionen können
+      automatisch zu Hedge-Designations werden — die operativen
+      Sicherungs-Geschäfte daraus leben aber wieder im Transaction Manager.
+    </li>
+    <li>
+      <strong>→ Risk Management</strong>: NPV-Berechnung,
+      Sensitivitäts-Analysen, Limits — die Analyzer (Market, Credit,
+      Portfolio) lesen TM-Positionen und liefern Risikometriken zurück.
+    </li>
+    <li>
+      <strong>→ APM (Payments)</strong>: Settlement-Zahlungen aus
+      Geschäftsvorfällen (TPM18 → TBB1 → Zahlungsvorschlag) werden über
+      APM zur Bankdatei.
+    </li>
+  </ul>
+
+  <blockquote>
+    <p>
+      <strong>Stolperdraht:</strong> „Geschäft anlegen" (FTR_CREATE) bucht
+      noch nichts. Erst Settlement (TPM18) erzeugt fällige Geschäftsvorfälle,
+      und erst TBB1 macht daraus FI-Belege. Die Trennung von <em>fachlichem
+      Vorgang</em> und <em>buchhalterischer Wirkung</em> ist absichtlich —
+      sie erlaubt Korrekturen vor der Buchung.
+    </p>
+  </blockquote>
+
+  <hr class="soft">
+  <p class="meta">
+    Stand: Knowledge-Graph-Snapshot vom 2026-06-14 (buildNo 1779, 14
+    Sub-Bereiche, ~40 TM-spezifische Transaktionen indexiert). Diese
+    Landkarte ist ein Entwurfsgerüst — sie soll dir helfen, das mentale
+    Modell zu prüfen und mit eigener Stimme zu überschreiben.
+  </p>
+</div>
+</body>
+</html>
