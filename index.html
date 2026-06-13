@@ -152,6 +152,17 @@
       .hedge .arrow {
         color: #0f6e56;
       }
+      /* IHB accent */
+      .ihb {
+        --accent: #854f0b;
+      }
+      .ihb .tag {
+        background: #faeeda;
+        color: #412402;
+      }
+      .ihb .arrow {
+        color: #854f0b;
+      }
       /* Planned (disabled) */
       .card.planned {
         background: transparent;
@@ -395,7 +406,7 @@
             font-weight="500"
             fill="#412402"
           >
-            In-House Banking (geplant)
+            In-House Banking
           </text>
         </svg>
         <figcaption>
@@ -433,19 +444,21 @@
           </p>
           <span class="arrow">Öffnen →</span>
         </a>
+        <a class="card ihb" href="APM_InHouse_Banking_Landkarte.html">
+          <span class="tag">IHB · Konzernbank</span>
+          <h3>In-House Banking</h3>
+          <p>
+            Der Konzern als eigene Bank seiner Töchter. Bankkreis,
+            Inhouse-Bankkonto, Tagesendverarbeitung — die Naht zum „internen
+            Clearingposten" aus APM, mit der Buchungsmechanik von „Payment on
+            Behalf of".
+          </p>
+          <span class="arrow">Öffnen →</span>
+        </a>
       </div>
 
       <h2>Geplant</h2>
       <div class="grid">
-        <div class="card planned">
-          <span class="tag">IHB · Konzernbank</span>
-          <h3>In-House Banking</h3>
-          <p>
-            Die Konzernbank-Schicht, die an den „internen Clearingposten" aus
-            APM andockt. Bankkreis, IHB-Konto, Tagesendverarbeitung — die Naht
-            zwischen Payment-Hub und Banking-Welt.
-          </p>
-        </div>
         <div class="card planned">
           <span class="tag">Hedge · Buchungslogik</span>
           <h3>Hedge-Accounting-Regeln &amp; Buchungssätze</h3>
