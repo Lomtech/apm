@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IHB-Außenseite – Cash Pooling & MBC</title>
+<style>
+  :root {
+    --ink: #1c1c1a;
+    --ink-soft: #55544f;
+    --ink-faint: #88867e;
+    --paper: #f6f8f7;
+    --rule: #dde3e0;
+    --rule-strong: #c3ccc7;
+    --accent: #0f6e56;
+    --max: 820px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 18px; line-height: 1.65;
+  }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 72px 28px 120px; }
+  .eyebrow {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 18px;
+  }
+  .backlink {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px; color: var(--ink-faint); text-decoration: none;
+    display: inline-block; margin-bottom: 28px;
+  }
+  .backlink:hover { color: var(--accent); }
+  h1 { font-size: 40px; line-height: 1.12; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 10px; }
+  .lede { font-size: 19px; color: var(--ink-soft); margin: 0 0 8px; max-width: 64ch; }
+  .meta {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px; color: var(--ink-faint); margin: 28px 0 0;
+    padding-top: 20px; border-top: 1px solid var(--rule);
+  }
+  h2 {
+    font-size: 26px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 64px 0 4px; padding-top: 28px; border-top: 2px solid var(--rule-strong);
+  }
+  h2 .num {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 14px; color: var(--accent); font-weight: 500;
+    display: block; margin-bottom: 6px; letter-spacing: 0.04em;
+  }
+  h3 { font-size: 19px; font-weight: 600; margin: 36px 0 6px; }
+  p { margin: 14px 0; max-width: 68ch; }
+  strong { font-weight: 600; }
+  ul, ol { max-width: 66ch; padding-left: 22px; }
+  li { margin: 8px 0; }
+  code {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 0.82em; background: #e7edea; padding: 1.5px 5px;
+    border-radius: 4px; color: #3a3937;
+  }
+  figure {
+    margin: 32px 0; padding: 24px 20px 16px; background: #fff;
+    border: 1px solid var(--rule); border-radius: 10px;
+  }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--ink-faint); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule);
+  }
+  blockquote {
+    margin: 24px 0; padding: 16px 20px; background: #fdf6e9;
+    border-left: 3px solid #c98a1a; border-radius: 0 8px 8px 0; font-size: 17px;
+  }
+  blockquote p { margin: 6px 0; max-width: none; }
+  .gloss { margin: 24px 0; border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+  .gloss div { display: grid; grid-template-columns: 210px 1fr; gap: 0; border-top: 1px solid var(--rule); }
+  .gloss div:first-child { border-top: 0; }
+  .gloss dt { padding: 12px 16px; background: #e8efec; font-weight: 600; font-size: 16px; }
+  .gloss dd { padding: 12px 16px; margin: 0; font-size: 16px; color: var(--ink-soft); }
+  hr.soft { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+  @media (max-width: 600px) {
+    body { font-size: 16.5px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 22px; }
+    .wrap { padding: 48px 18px 80px; }
+    .gloss div { grid-template-columns: 1fr; }
+    .gloss dd { border-top: 1px solid var(--rule); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="backlink" href="index.html">← Wissenssammlung</a>
+  <p class="eyebrow">IHB-Außenseite · Verständnis-Landkarte</p>
+  <h1>Cash Pooling &amp; MBC</h1>
+  <p class="lede">Die zwei Ränder der internen Bank: nach innen, wie die IHB-Salden zur Konzernliquidität verschmelzen (Cash Pooling), und nach außen, wie die gebündelten Zahlungen tatsächlich zur Bank gelangen (Multi-Bank Connectivity).</p>
+  <p class="meta">Quelle der Struktur: SAP Help Portal — Payments and Bank Communications → Konnektor für SAP Multi-Bank Connectivity, sowie Cash- und Liquiditätsmanagement-Integration (S/4HANA, 2025 FPS01). Inhalte in eigenen Worten zusammengefasst, keine Wiedergabe der Originaltexte.</p>
+
+  <h2><span class="num">00</span>Wo wir stehen</h2>
+  <p>Im IHB-Dokument war die interne Bank ein in sich geschlossenes Buchungssystem: Töchter haben Konten, Zahlungen werden zu Umbuchungen, das Hauptbuch nimmt die Intercompany-Forderungen auf. Diese Landkarte schaut auf die <strong>zwei Ränder</strong>, an denen die interne Bank mit der Außenwelt verbunden ist:</p>
+  <figure>
+    <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Die zwei Ränder der internen Bank">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="240" y="60" width="200" height="60" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="340" y="84" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#412402">In-House Bank</text>
+    <text x="340" y="103" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">interne Konten, Salden, EOD</text>
+    <line x1="240" y1="90" x2="180" y2="90" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="180" y1="90" x2="240" y2="90" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="20" y="62" width="158" height="56" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="99" y="84" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#04342C">Rand nach innen</text>
+    <text x="99" y="101" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">Cash Pooling</text>
+    <line x1="440" y1="90" x2="500" y2="90" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="500" y1="90" x2="440" y2="90" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="502" y="62" width="158" height="56" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="581" y="84" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#0C447C">Rand nach außen</text>
+    <text x="581" y="101" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">MBC → Banken</text>
+    </svg>
+    <figcaption>Cash Pooling bündelt nach innen zur Konzernliquidität; MBC verbindet nach außen mit den echten Banken.</figcaption>
+  </figure>
+
+  <h2><span class="num">01</span>Cash Pooling — von Konten zu Konzernliquidität</h2>
+  <p>Eine interne Bank voller Tochterkonten nützt wenig, wenn das Geld auf den einzelnen Konten liegen bleibt. <strong>Cash Pooling</strong> ist der Mechanismus, der die verstreuten Salden zu einer steuerbaren Konzernliquidität zusammenzieht. Zwei Grundformen, die sich fundamental unterscheiden:</p>
+  <figure>
+    <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Zero Balancing versus Notional Pooling">
+    <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="30" y="24" width="290" height="200" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="175" y="48" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#04342C">Zero Balancing (physisch)</text>
+    <rect x="55" y="64" width="70" height="34" rx="6" fill="#fff" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="90" y="85" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#04342C">Tochter A</text>
+    <rect x="135" y="64" width="70" height="34" rx="6" fill="#fff" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="170" y="85" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#04342C">Tochter B</text>
+    <rect x="215" y="64" width="70" height="34" rx="6" fill="#fff" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="250" y="85" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#04342C">Tochter C</text>
+    <line x1="90" y1="98" x2="160" y2="150" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <line x1="170" y1="98" x2="175" y2="150" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <line x1="250" y1="98" x2="190" y2="150" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar2)"/>
+    <rect x="110" y="152" width="130" height="38" rx="6" fill="#0F6E56" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="175" y="175" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#fff">Header-Konto</text>
+    <text x="175" y="210" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">Salden werden real geleert →</text>
+    <text x="175" y="221" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">Intercompany-Darlehen entstehen</text>
+    <rect x="360" y="24" width="290" height="200" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="505" y="48" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C">Notional Pooling (rechnerisch)</text>
+    <rect x="385" y="64" width="70" height="34" rx="6" fill="#fff" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="420" y="85" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0C447C">Tochter A</text>
+    <rect x="465" y="64" width="70" height="34" rx="6" fill="#fff" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="500" y="85" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0C447C">Tochter B</text>
+    <rect x="545" y="64" width="70" height="34" rx="6" fill="#fff" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="580" y="85" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0C447C">Tochter C</text>
+    <line x1="420" y1="98" x2="490" y2="150" stroke="#888780" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="500" y1="98" x2="505" y2="150" stroke="#888780" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="580" y1="98" x2="520" y2="150" stroke="#888780" stroke-width="1" stroke-dasharray="4 3"/>
+    <rect x="440" y="152" width="130" height="38" rx="6" fill="#fff" stroke="#185FA5" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="505" y="175" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#0C447C">virtuelle Summe</text>
+    <text x="505" y="210" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">Salden bleiben stehen →</text>
+    <text x="505" y="221" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">nur Zinssaldierung, kein Transfer</text>
+    </svg>
+    <figcaption>Zwei Welten: Zero Balancing bewegt echtes Geld (durchgezogene Pfeile), Notional Pooling rechnet nur zusammen (gestrichelt).</figcaption>
+  </figure>
+  <p>Der Unterschied ist nicht kosmetisch, sondern buchhalterisch fundamental:</p>
+  <ul>
+    <li><strong>Zero Balancing (physisches Pooling):</strong> Am Tagesende werden die Tochterkonten real auf null gezogen, das Geld fließt aufs Header-Konto. Dabei entstehen echte <strong>Intercompany-Darlehensbeziehungen</strong> — die Tochter hat nun eine Forderung/Verbindlichkeit gegen den Pool-Header. In der IHB-Welt sind das genau die Bankzeilen auf den Inhouse-Bankkonten.</li>
+    <li><strong>Notional Pooling (rechnerisches Pooling):</strong> Die Salden bleiben physisch auf den Konten, die Bank rechnet sie nur <em>zinstechnisch</em> zusammen (Soll gegen Haben), sodass der Konzern netto weniger Sollzinsen zahlt. Kein Geldtransfer, keine Intercompany-Darlehen — aber regulatorisch und bilanziell heikler (Aufrechnungsfähigkeit, Bürgschaften).</li>
+  </ul>
+  <blockquote>
+    <p><strong>Warum das deine Accounting-Hoheit berührt:</strong> Ob ein Pool als Zero Balancing oder Notional aufgesetzt ist, entscheidet, ob Intercompany-Darlehen in der Bilanz erscheinen und wie sie verzinst/bewertet werden. Das ist keine Treasury-Spielerei, sondern eine Bilanzierungs- und Verrechnungspreisfrage — genau die Schicht, in der du urteilst.</p>
+  </blockquote>
+  <p>In SAP fließen die IHB-Salden über die Integration mit <strong>Cash Management</strong> in die Liquiditätssicht. Das Hedge-Management-Cockpit (siehe Hedge-Dokument) meldet übrigens dieselben Exposures aus Exposure Management <em>und</em> Cash Management — hier schließt sich der Kreis zwischen den Knoten der Sammlung.</p>
+
+  <h2><span class="num">02</span>MBC — der Rand nach außen</h2>
+  <p>Am anderen Ende muss die interne Bank mit den <em>echten</em> Banken reden. Das macht <strong>SAP Multi-Bank Connectivity (MBC)</strong> — eine von SAP gehostete SaaS-Cloud, die als ein einziger digitaler Kanal zwischen dem ERP und allen angebundenen Banken sitzt. Statt zu jeder Bank eine eigene Leitung zu bauen, redet das ERP nur mit MBC; MBC verteilt an die Banken.</p>
+  <figure>
+    <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MBC als zentraler Kanal zwischen ERP und Banken">
+    <defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="30" y="78" width="150" height="54" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="105" y="100" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#412402">APM / IHB</text>
+    <text x="105" y="117" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">erzeugt Zahlungsnachricht</text>
+    <line x1="180" y1="105" x2="236" y2="105" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <text x="208" y="96" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">Konnektor</text>
+    <rect x="238" y="70" width="170" height="70" rx="9" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="323" y="98" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C">MBC (SaaS-Cloud)</text>
+    <text x="323" y="117" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">ein Kanal, viele Banken</text>
+    <line x1="408" y1="90" x2="470" y2="64" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <line x1="408" y1="105" x2="470" y2="105" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <line x1="408" y1="120" x2="470" y2="146" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <rect x="472" y="48" width="178" height="32" rx="7" fill="#fff" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="561" y="68" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0C447C">Bank A (SWIFT)</text>
+    <rect x="472" y="90" width="178" height="32" rx="7" fill="#fff" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="561" y="110" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0C447C">Bank B (EBICS)</text>
+    <rect x="472" y="132" width="178" height="32" rx="7" fill="#fff" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="561" y="152" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0C447C">Bank C (Host-to-Host)</text>
+    </svg>
+    <figcaption>Eine Konnektor-Instanz, eine MBC-Cloud, beliebig viele Banken über verschiedene Kanäle.</figcaption>
+  </figure>
+  <p>Drei Dinge, die das Verständnis tragen:</p>
+  <ul>
+    <li><strong>Kein physisches File mehr:</strong> Sagt die Formateinstellung „an MBC senden", wird <em>keine</em> physische Zahlungsdatei mehr erzeugt — die Nachricht geht direkt als Datenstrom über den Konnektor. (Im APM-Dokument war das die Stelle, wo der File Handler sonst die Bankdatei schrieb; mit MBC entfällt das File.)</li>
+    <li><strong>Jede Nachricht trägt Routing-Metadaten:</strong> Sender-ID, Empfänger-ID, Nachrichtentyp, Dateiname — daran erkennt MBC, an welche Bank welche Nachricht geht.</li>
+    <li><strong>Asynchron in beide Richtungen:</strong> Der Konnektor sendet ausgehend (Zahlungen) und empfängt eingehend (Statusmeldungen, Kontoauszüge) über Webservice-Schnittstellen — automatisch nach dem Zahllauf.</li>
+  </ul>
+
+  <h2><span class="num">03</span>Die Nachrichtentypen (das ISO-20022-Vokabular)</h2>
+  <p>Was über MBC läuft, ist standardisiert. Die Begriffe begegnen dir überall im Payment-Umfeld:</p>
+  <div class="gloss">
+    <div><dt>pain.001</dt><dd>Die ausgehende Zahlungsanweisung (Payment Initiation) — „bitte zahle".</dd></div>
+    <div><dt>pain.002</dt><dd>Der Zahlungsstatusbericht zurück — Bestätigung oder Ablehnung. (Das ist die Nachricht aus der „späten Ablehnung" im IHB-Dokument.)</dd></div>
+    <div><dt>camt.053</dt><dd>Der elektronische Tageskontoauszug (Bank-to-Customer Statement) — die Grundlage fürs Ausgleichen der Verrechnungskonten.</dd></div>
+    <div><dt>camt.052 / .054</dt><dd>Intraday-Saldenmeldung (.052) und Einzelposten-/Avis-Meldung (.054).</dd></div>
+    <div><dt>SWIFT ACK/NACK</dt><dd>Technische Empfangsbestätigung bzw. -ablehnung auf Transportebene.</dd></div>
+  </div>
+  <p>Wichtig fürs Statustracking: Banken bestätigen in <strong>zwei Stufen</strong>. Das <em>File-Level-Acknowledgement</em> (Level 0) heißt nur „Datei angekommen und syntaktisch korrekt". Erst das <em>Transaction-Level-Acknowledgement</em> (Level 1) heißt „inhaltlich verarbeitet". Wer die zwei verwechselt, hält eine Zahlung für durch, die noch gar nicht angenommen ist — ein klassischer Abstimmungsfehler.</p>
+
+  <h2><span class="num">04</span>Die zentrale Überwachung — „Banknachrichten verwalten"</h2>
+  <p>Der ganze Nachrichtenverkehr läuft durch eine Stelle: die Fiori-App <strong>Banknachrichten verwalten</strong> (und den <strong>Konnektor-Monitor</strong>). Das ist die Leitwarte:</p>
+  <ul>
+    <li><strong>Sichtbarkeit:</strong> Liste aller ein- und ausgehenden Nachrichten mit Status und Protokoll; Payloads anzeigen und herunterladen.</li>
+    <li><strong>Eingriff:</strong> Verarbeitung oder Versand bei Problemen erneut anstoßen; Status manuell ändern; Ping-Test zur Bank.</li>
+    <li><strong>Statushandhabung:</strong> MBC meldet zurück, ob eine ausgehende Nachricht tatsächlich an die Bank weitergeleitet wurde — lückenlose Nachverfolgung.</li>
+    <li><strong>Sicherheit:</strong> Secure-Store-and-Forward (SSF) stellt sicher, dass nur der vorgesehene Empfänger die Nachricht lesen kann, plus Manipulationsschutz und Berechtigungen für sensible Payloads.</li>
+  </ul>
+
+  <hr class="soft">
+
+  <h3>Wie diese Landkarte zu deinem Profil steht</h3>
+  <p>Beide Ränder sind topologisch — Pooling ist ein Graph aus Konten und Transfers, MBC ein Stern aus einem Hub und vielen Banken. Das ist dein Terrain. Aber an beiden Rändern sitzt wieder eine Accounting-Naht: Beim Pooling die Intercompany-Darlehen und ihre Bewertung, bei MBC das Ausgleichen der Verrechnungskonten gegen den camt.053. Dieselbe Brücke wie überall in dieser Sammlung — du denkst die Topologie und urteilst über die Buchung. Genau deshalb ist die „Außenseite der internen Bank" ein guter Knoten für dich: Sie ist intellektuell offen genug, um Spaß zu machen, und buchhalterisch genug, um auf deinen Kern einzuzahlen.</p>
+
+  <h3>Damit ist der IHB-Zweig rund</h3>
+  <p>Mit dem IHB-Kern (interne Buchungen) und dieser Außenseite (Pooling + MBC) ist die Konzernbank-Geschichte weitgehend geschlossen. Echte weitere Tiefe läge nur noch in Detail-Mechanik (EOD-Zins-/Gebührenrechnung, einzelne Pooling-Varianten) — die holt pro Stunde weniger neues Verständnis als ein Sprung zum nächsten <em>Hauptknoten</em> der Sammlung: Position Management &amp; Bewertung oder die Hedge-Buchungssätze, beide näher an deinem Credibility-Kern.</p>
+
+  <p class="meta">Erstellt als Verständnis-Landkarte auf Basis der Struktur des SAP Help Portal (Payments and Bank Communications, Konnektor für SAP Multi-Bank Connectivity, 2025 FPS01) und gängiger Cash-Pooling-Konzepte. Inhalte in eigenen Worten zusammengefasst, keine Wiedergabe der Originaltexte.</p>
+
+</div>
+</body>
+</html>

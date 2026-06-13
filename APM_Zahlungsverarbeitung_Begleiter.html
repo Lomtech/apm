@@ -1,1537 +1,346 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SAP APM – Verständnis-Begleiter, Teil 1</title>
-    <style>
-      :root {
-        --ink: #1c1c1a;
-        --ink-soft: #55544f;
-        --ink-faint: #88867e;
-        --paper: #faf9f5;
-        --rule: #e3e1d8;
-        --rule-strong: #c9c6ba;
-        --accent: #185fa5;
-        --max: 820px;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      html {
-        -webkit-text-size-adjust: 100%;
-      }
-      body {
-        margin: 0;
-        background: var(--paper);
-        color: var(--ink);
-        font-family:
-          "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-        font-size: 18px;
-        line-height: 1.65;
-      }
-      .wrap {
-        max-width: var(--max);
-        margin: 0 auto;
-        padding: 72px 28px 120px;
-      }
-      .eyebrow {
-        font-family:
-          "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
-        font-size: 12px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--accent);
-        margin: 0 0 18px;
-      }
-      h1 {
-        font-size: 40px;
-        line-height: 1.12;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-        margin: 0 0 10px;
-      }
-      .lede {
-        font-size: 19px;
-        color: var(--ink-soft);
-        margin: 0 0 8px;
-        max-width: 64ch;
-      }
-      .meta {
-        font-family:
-          "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
-        font-size: 12.5px;
-        color: var(--ink-faint);
-        margin: 28px 0 0;
-        padding-top: 20px;
-        border-top: 1px solid var(--rule);
-      }
-      h2 {
-        font-size: 26px;
-        font-weight: 600;
-        letter-spacing: -0.005em;
-        margin: 64px 0 4px;
-        padding-top: 28px;
-        border-top: 2px solid var(--rule-strong);
-      }
-      h2 .num {
-        font-family:
-          "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
-        font-size: 14px;
-        color: var(--accent);
-        font-weight: 500;
-        display: block;
-        margin-bottom: 6px;
-        letter-spacing: 0.04em;
-      }
-      h3 {
-        font-size: 19px;
-        font-weight: 600;
-        margin: 36px 0 6px;
-      }
-      p {
-        margin: 14px 0;
-        max-width: 68ch;
-      }
-      strong {
-        font-weight: 600;
-      }
-      ul,
-      ol {
-        max-width: 66ch;
-        padding-left: 22px;
-      }
-      li {
-        margin: 8px 0;
-      }
-      code {
-        font-family:
-          "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
-        font-size: 0.82em;
-        background: #efece3;
-        padding: 1.5px 5px;
-        border-radius: 4px;
-        color: #3a3937;
-      }
-      figure {
-        margin: 32px 0;
-        padding: 24px 20px 16px;
-        background: #fff;
-        border: 1px solid var(--rule);
-        border-radius: 10px;
-      }
-      figure svg {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-      figcaption {
-        font-family:
-          "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
-        font-size: 11.5px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: var(--ink-faint);
-        margin-top: 14px;
-        padding-top: 12px;
-        border-top: 1px solid var(--rule);
-      }
-      blockquote {
-        margin: 24px 0;
-        padding: 16px 20px;
-        background: #fdf6e9;
-        border-left: 3px solid #c98a1a;
-        border-radius: 0 8px 8px 0;
-        font-size: 17px;
-      }
-      blockquote p {
-        margin: 6px 0;
-        max-width: none;
-      }
-      .callout {
-        margin: 24px 0;
-        padding: 18px 22px;
-        background: #eef4fb;
-        border: 1px solid #cfe0f2;
-        border-radius: 10px;
-      }
-      .callout p {
-        margin: 6px 0;
-      }
-      hr.soft {
-        border: 0;
-        border-top: 1px solid var(--rule);
-        margin: 40px 0;
-      }
-      @media (max-width: 600px) {
-        body {
-          font-size: 16.5px;
-        }
-        h1 {
-          font-size: 30px;
-        }
-        h2 {
-          font-size: 22px;
-        }
-        .wrap {
-          padding: 48px 18px 80px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <p class="eyebrow">SAP Advanced Payment Management · Begleiter</p>
-      <h1>Die Kern-Zahlungsverarbeitung</h1>
-      <p class="lede">
-        Teil 1. Die Mechanik von SAP APM (S/4HANA on-premise, 2025 FPS01) in
-        node-edge-Logik und in eigenen Worten — kein Nachdruck der SAP-Hilfe,
-        sondern eine Übersetzung ihrer Struktur in ein verständliches mentales
-        Modell.
-      </p>
-      <p class="meta">
-        Quelle der Struktur: SAP Help Portal — Payments and Bank Communications
-        → Erweiterte Zahlungsverwaltung. Inhalte zusammengefasst und neu
-        formuliert.
-      </p>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP APM – Verständnis-Begleiter, Teil 1</title>
+<style>
+  :root {
+    --ink: #1c1c1a;
+    --ink-soft: #55544f;
+    --ink-faint: #88867e;
+    --paper: #faf9f5;
+    --rule: #e3e1d8;
+    --rule-strong: #c9c6ba;
+    --accent: #185fa5;
+    --max: 820px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 72px 28px 120px; }
+  .eyebrow {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 18px;
+  }
+  .backlink {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px; color: var(--ink-faint); text-decoration: none;
+    display: inline-block; margin-bottom: 28px;
+  }
+  .backlink:hover { color: var(--accent); }
+  h1 {
+    font-size: 40px;
+    line-height: 1.12;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
+  }
+  .lede {
+    font-size: 19px;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+    max-width: 64ch;
+  }
+  .meta {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin: 28px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  h2 {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    margin: 64px 0 4px;
+    padding-top: 28px;
+    border-top: 2px solid var(--rule-strong);
+  }
+  h2 .num {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+  h3 { font-size: 19px; font-weight: 600; margin: 36px 0 6px; }
+  p { margin: 14px 0; max-width: 68ch; }
+  strong { font-weight: 600; }
+  ul, ol { max-width: 66ch; padding-left: 22px; }
+  li { margin: 8px 0; }
+  code {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 0.82em;
+    background: #efece3;
+    padding: 1.5px 5px;
+    border-radius: 4px;
+    color: #3a3937;
+  }
+  figure {
+    margin: 32px 0;
+    padding: 24px 20px 16px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+  }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption {
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+  }
+  blockquote {
+    margin: 24px 0;
+    padding: 16px 20px;
+    background: #fdf6e9;
+    border-left: 3px solid #c98a1a;
+    border-radius: 0 8px 8px 0;
+    font-size: 17px;
+  }
+  blockquote p { margin: 6px 0; max-width: none; }
+  .callout {
+    margin: 24px 0;
+    padding: 18px 22px;
+    background: #eef4fb;
+    border: 1px solid #cfe0f2;
+    border-radius: 10px;
+  }
+  .callout p { margin: 6px 0; }
+  hr.soft { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+  @media (max-width: 600px) {
+    body { font-size: 16.5px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 22px; }
+    .wrap { padding: 48px 18px 80px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
 
-      <h2>
-        <span class="num">00</span>Das Grundbild: APM ist ein Hub, kein Prozess
-      </h2>
-      <p>
-        Die zentrale Fehlvorstellung beim Lesen der SAP-Doku ist, dass APM eine
-        <em>Kette</em> sei. Es ist eher ein
-        <strong>Trichter mit Verteiler</strong>: oben kommen Zahlungen aus
-        vielen Quellen rein (FI, TRM, In-House Cash, externe Dateien), in der
-        Mitte werden sie geprüft, einem Weg zugeordnet und gebucht, unten gehen
-        sie gebündelt als Bankdateien wieder raus.
-      </p>
-      <p>
-        Die ganze Intelligenz von APM sitzt in
-        <strong>drei Entscheidungen</strong>, die nacheinander getroffen werden:
-      </p>
-      <ol>
-        <li>
-          <strong>Sind die Daten korrekt?</strong> → Anreicherung &amp;
-          Validierung
-        </li>
-        <li>
-          <strong>Wohin und auf welchem Weg geht die Zahlung?</strong> →
-          Leitwegsteuerung
-        </li>
-        <li>
-          <strong>Wie und wann wird sie gebucht und gebündelt?</strong> →
-          Clearingverarbeitung
-        </li>
-      </ol>
-      <p>
-        Alles, was dabei schiefgeht, fällt in einen vierten Bereich: die
-        <strong>Ausnahmesteuerung</strong> (das Fehler-Postfach). Der Motor, der
-        das Ganze im Hintergrund antreibt, sind die
-        <strong>Batch-Prozesse</strong>.
-      </p>
+  <a class="backlink" href="index.html">← Wissenssammlung</a>
+  <p class="eyebrow">SAP Advanced Payment Management · Begleiter</p>
+  <h1>Die Kern-Zahlungsverarbeitung</h1>
+  <p class="lede">Teil 1. Die Mechanik von SAP APM (S/4HANA on-premise, 2025 FPS01) in node-edge-Logik und in eigenen Worten — kein Nachdruck der SAP-Hilfe, sondern eine Übersetzung ihrer Struktur in ein verständliches mentales Modell.</p>
+  <p class="meta">Quelle der Struktur: SAP Help Portal — Payments and Bank Communications → Erweiterte Zahlungsverwaltung. Inhalte zusammengefasst und neu formuliert.</p>
 
-      <h2>
-        <span class="num">01</span>Der End-to-End-Fluss (der „Standardablauf")
-      </h2>
-      <p>
-        Der durchgängige Weg einer Zahlung durch APM — der rote Faden, an dem
-        alles andere hängt.
-      </p>
-      <figure>
-        <svg
-          viewBox="0 0 680 250"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-          aria-label="End-to-End-Fluss einer Zahlung durch APM"
-        >
-          <defs>
-            <marker
-              id="ar"
-              viewBox="0 0 10 10"
-              refX="8"
-              refY="5"
-              markerWidth="6"
-              markerHeight="6"
-              orient="auto-start-reverse"
-            >
-              <path
-                d="M2 1L8 5L2 9"
-                fill="none"
-                stroke="#5F5E5A"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </marker>
-          </defs>
-          <rect
-            x="20"
-            y="100"
-            width="110"
-            height="50"
-            rx="8"
-            fill="#F1EFE8"
-            stroke="#5F5E5A"
-            stroke-width="0.5"
-          />
-          <text
-            x="75"
-            y="120"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="13"
-            font-weight="500"
-            fill="#2C2C2A"
-          >
-            Import
-          </text>
-          <text
-            x="75"
-            y="137"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#5F5E5A"
-          >
-            Datei/IDoc/API
-          </text>
-          <line
-            x1="130"
-            y1="125"
-            x2="160"
-            y2="125"
-            stroke="#5F5E5A"
-            stroke-width="1.5"
-            marker-end="url(#ar)"
-          />
-          <rect
-            x="162"
-            y="100"
-            width="118"
-            height="50"
-            rx="8"
-            fill="#E6F1FB"
-            stroke="#185FA5"
-            stroke-width="0.5"
-          />
-          <text
-            x="221"
-            y="120"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#0C447C"
-          >
-            Anreicherung
-          </text>
-          <text
-            x="221"
-            y="137"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#185FA5"
-          >
-            &amp; Validierung
-          </text>
-          <line
-            x1="280"
-            y1="125"
-            x2="310"
-            y2="125"
-            stroke="#5F5E5A"
-            stroke-width="1.5"
-            marker-end="url(#ar)"
-          />
-          <rect
-            x="312"
-            y="100"
-            width="118"
-            height="50"
-            rx="8"
-            fill="#EEEDFE"
-            stroke="#534AB7"
-            stroke-width="0.5"
-          />
-          <text
-            x="371"
-            y="120"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#26215C"
-          >
-            Leitweg-
-          </text>
-          <text
-            x="371"
-            y="137"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#534AB7"
-          >
-            steuerung
-          </text>
-          <line
-            x1="430"
-            y1="125"
-            x2="460"
-            y2="125"
-            stroke="#5F5E5A"
-            stroke-width="1.5"
-            marker-end="url(#ar)"
-          />
-          <rect
-            x="462"
-            y="100"
-            width="118"
-            height="50"
-            rx="8"
-            fill="#E1F5EE"
-            stroke="#0F6E56"
-            stroke-width="0.5"
-          />
-          <text
-            x="521"
-            y="120"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#04342C"
-          >
-            Clearing-
-          </text>
-          <text
-            x="521"
-            y="137"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#0F6E56"
-          >
-            verarbeitung
-          </text>
-          <line
-            x1="580"
-            y1="125"
-            x2="610"
-            y2="125"
-            stroke="#5F5E5A"
-            stroke-width="1.5"
-            marker-end="url(#ar)"
-          />
-          <rect
-            x="612"
-            y="100"
-            width="56"
-            height="50"
-            rx="8"
-            fill="#EAF3DE"
-            stroke="#3B6D11"
-            stroke-width="0.5"
-          />
-          <text
-            x="640"
-            y="122"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            font-weight="500"
-            fill="#173404"
-          >
-            Bank-
-          </text>
-          <text
-            x="640"
-            y="137"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#3B6D11"
-          >
-            datei
-          </text>
-          <rect
-            x="240"
-            y="195"
-            width="200"
-            height="44"
-            rx="8"
-            fill="#FCEBEB"
-            stroke="#A32D2D"
-            stroke-width="0.5"
-          />
-          <text
-            x="340"
-            y="213"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#501313"
-          >
-            Ausnahmesteuerung
-          </text>
-          <text
-            x="340"
-            y="230"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#A32D2D"
-          >
-            fängt Fehler aus jedem Schritt
-          </text>
-          <line
-            x1="221"
-            y1="150"
-            x2="270"
-            y2="193"
-            stroke="#A32D2D"
-            stroke-width="0.5"
-            stroke-dasharray="4 3"
-          />
-          <line
-            x1="371"
-            y1="150"
-            x2="340"
-            y2="193"
-            stroke="#A32D2D"
-            stroke-width="0.5"
-            stroke-dasharray="4 3"
-          />
-          <line
-            x1="521"
-            y1="150"
-            x2="410"
-            y2="193"
-            stroke="#A32D2D"
-            stroke-width="0.5"
-            stroke-dasharray="4 3"
-          />
-        </svg>
-        <figcaption>
-          Obere Reihe = Straight-Through-Processing (Normalfall). Gestrichelt =
-          Fehlerabzweig in die Ausnahmesteuerung.
-        </figcaption>
-      </figure>
-      <p>
-        Die obere Reihe ist der Glücksfall —
-        <strong>Straight-Through-Processing (STP)</strong>: Die Zahlung läuft
-        ohne menschliches Eingreifen von der Importdatei bis zur fertigen
-        Bankdatei durch. Jeder Entscheidungsschritt kann aber einen Fehler
-        werfen (gestrichelte Linien), der dann in der Ausnahmesteuerung landet.
-        <strong
-          >STP ist der Normalfall, die Ausnahmesteuerung die
-          Notaufnahme.</strong
-        >
-      </p>
-      <p>
-        Ein wichtiges Detail: Das Anreicherungs-Framework läuft
-        <strong>zweimal</strong> — einmal am Anfang (sind die Eingangsdaten
-        gültig?) und ein zweites Mal kurz bevor die Bankdatei erzeugt wird
-        (stimmen alle Felder fürs Ausgabeformat?). Validierung ist also eine
-        Klammer um den ganzen Prozess, kein einmaliges Tor am Eingang.
-      </p>
+  <h2><span class="num">00</span>Das Grundbild: APM ist ein Hub, kein Prozess</h2>
+  <p>Die zentrale Fehlvorstellung beim Lesen der SAP-Doku ist, dass APM eine <em>Kette</em> sei. Es ist eher ein <strong>Trichter mit Verteiler</strong>: oben kommen Zahlungen aus vielen Quellen rein (FI, TRM, In-House Cash, externe Dateien), in der Mitte werden sie geprüft, einem Weg zugeordnet und gebucht, unten gehen sie gebündelt als Bankdateien wieder raus.</p>
+  <p>Die ganze Intelligenz von APM sitzt in <strong>drei Entscheidungen</strong>, die nacheinander getroffen werden:</p>
+  <ol>
+    <li><strong>Sind die Daten korrekt?</strong> → Anreicherung &amp; Validierung</li>
+    <li><strong>Wohin und auf welchem Weg geht die Zahlung?</strong> → Leitwegsteuerung</li>
+    <li><strong>Wie und wann wird sie gebucht und gebündelt?</strong> → Clearingverarbeitung</li>
+  </ol>
+  <p>Alles, was dabei schiefgeht, fällt in einen vierten Bereich: die <strong>Ausnahmesteuerung</strong> (das Fehler-Postfach). Der Motor, der das Ganze im Hintergrund antreibt, sind die <strong>Batch-Prozesse</strong>.</p>
 
-      <h2>
-        <span class="num">02</span>Anreicherung &amp; Validierung — „Sind die
-        Daten korrekt?"
-      </h2>
-      <p>
-        Der Türsteher. Bevor eine Zahlung einen Weg zugewiesen bekommt, prüft
-        APM sie auf vier Arten von Korrektheit — eine saubere Hierarchie von
-        „oberflächlich" zu „inhaltlich":
-      </p>
-      <figure>
-        <svg
-          viewBox="0 0 680 230"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-          aria-label="Vier Prüfkategorien der Anreicherung und Validierung"
-        >
-          <rect
-            x="40"
-            y="30"
-            width="600"
-            height="44"
-            rx="8"
-            fill="#E6F1FB"
-            stroke="#185FA5"
-            stroke-width="0.5"
-          />
-          <text
-            x="60"
-            y="52"
-            font-family="sans-serif"
-            font-size="13"
-            font-weight="500"
-            fill="#0C447C"
-          >
-            Formelle Richtigkeit
-          </text>
-          <text
-            x="620"
-            y="56"
-            text-anchor="end"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#185FA5"
-          >
-            z. B. Kontoformat gültig für dieses Land?
-          </text>
-          <rect
-            x="40"
-            y="82"
-            width="600"
-            height="44"
-            rx="8"
-            fill="#E1F5EE"
-            stroke="#0F6E56"
-            stroke-width="0.5"
-          />
-          <text
-            x="60"
-            y="104"
-            font-family="sans-serif"
-            font-size="13"
-            font-weight="500"
-            fill="#04342C"
-          >
-            Referenzielle Richtigkeit
-          </text>
-          <text
-            x="620"
-            y="108"
-            text-anchor="end"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#0F6E56"
-          >
-            z. B. IBAN vorhanden und korrekt?
-          </text>
-          <rect
-            x="40"
-            y="134"
-            width="600"
-            height="44"
-            rx="8"
-            fill="#FAEEDA"
-            stroke="#854F0B"
-            stroke-width="0.5"
-          />
-          <text
-            x="60"
-            y="156"
-            font-family="sans-serif"
-            font-size="13"
-            font-weight="500"
-            fill="#412402"
-          >
-            Materielle Fehler
-          </text>
-          <text
-            x="620"
-            y="160"
-            text-anchor="end"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#854F0B"
-          >
-            z. B. Betrag über dem Limit dieser Auftragsart?
-          </text>
-          <rect
-            x="40"
-            y="186"
-            width="600"
-            height="44"
-            rx="8"
-            fill="#EEEDFE"
-            stroke="#534AB7"
-            stroke-width="0.5"
-          />
-          <text
-            x="60"
-            y="208"
-            font-family="sans-serif"
-            font-size="13"
-            font-weight="500"
-            fill="#26215C"
-          >
-            Konsistenz
-          </text>
-          <text
-            x="620"
-            y="212"
-            text-anchor="end"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#534AB7"
-          >
-            z. B. Soll = Haben über alle Posten?
-          </text>
-        </svg>
-        <figcaption>
-          Vier Korrektheitsebenen, von formaler Oberfläche bis inhaltlicher
-          Konsistenz.
-        </figcaption>
-      </figure>
-      <p>
-        Die Prüfungen sind <strong>Prüfroutinen</strong>, im Customizing zu
-        <strong>Prüfsets</strong> gebündelt und auf Geschäftsobjekte angewendet.
-        Welche laufen, hängt von Verarbeitungsmodus, Kanal und Vorgangsart ab.
-        Manche brauchen Stammdaten aus einer
-        <strong>Service-Level-Vereinbarung (SLA)</strong> — dem Objekt, das
-        festhält, <em>wie</em> eine Zahlung behandelt werden soll.
-      </p>
-      <p>
-        Der für die Accounting-Brücke entscheidende Punkt:
-        <strong>Anreicherung</strong> heißt, dass APM fehlende Felder ergänzt,
-        die später fürs Routing und fürs Bankformat gebraucht werden. Die
-        Zahlung wird also angereichert weitergereicht. Schlägt etwas fehl, geht
-        ein Fehlercode an die Ausnahmesteuerung — und das System kann aus
-        manuellen Korrekturen <em>lernen</em>: einmal genehmigt, wendet es
-        dieselbe Korrektur künftig automatisch an. Nur erfolgreich validierte
-        Aufträge, deren Ausführungstermin nicht in der Zukunft liegt, gehen
-        weiter an die Leitwegsteuerung.
-      </p>
+  <h2><span class="num">01</span>Der End-to-End-Fluss (der „Standardablauf")</h2>
+  <p>Der durchgängige Weg einer Zahlung durch APM — der rote Faden, an dem alles andere hängt.</p>
+  <figure>
+    <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="End-to-End-Fluss einer Zahlung durch APM">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="20" y="100" width="110" height="50" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+    <text x="75" y="120" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#2C2C2A">Import</text>
+    <text x="75" y="137" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">Datei/IDoc/API</text>
+    <line x1="130" y1="125" x2="160" y2="125" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="162" y="100" width="118" height="50" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="221" y="120" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#0C447C">Anreicherung</text>
+    <text x="221" y="137" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">&amp; Validierung</text>
+    <line x1="280" y1="125" x2="310" y2="125" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="312" y="100" width="118" height="50" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text x="371" y="120" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#26215C">Leitweg-</text>
+    <text x="371" y="137" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">steuerung</text>
+    <line x1="430" y1="125" x2="460" y2="125" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="462" y="100" width="118" height="50" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="521" y="120" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#04342C">Clearing-</text>
+    <text x="521" y="137" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">verarbeitung</text>
+    <line x1="580" y1="125" x2="610" y2="125" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+    <rect x="612" y="100" width="56" height="50" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+    <text x="640" y="122" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="500" fill="#173404">Bank-</text>
+    <text x="640" y="137" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3B6D11">datei</text>
+    <rect x="240" y="195" width="200" height="44" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text x="340" y="213" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#501313">Ausnahmesteuerung</text>
+    <text x="340" y="230" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A32D2D">fängt Fehler aus jedem Schritt</text>
+    <line x1="221" y1="150" x2="270" y2="193" stroke="#A32D2D" stroke-width="0.5" stroke-dasharray="4 3"/>
+    <line x1="371" y1="150" x2="340" y2="193" stroke="#A32D2D" stroke-width="0.5" stroke-dasharray="4 3"/>
+    <line x1="521" y1="150" x2="410" y2="193" stroke="#A32D2D" stroke-width="0.5" stroke-dasharray="4 3"/>
+    </svg>
+    <figcaption>Obere Reihe = Straight-Through-Processing (Normalfall). Gestrichelt = Fehlerabzweig in die Ausnahmesteuerung.</figcaption>
+  </figure>
+  <p>Die obere Reihe ist der Glücksfall — <strong>Straight-Through-Processing (STP)</strong>: Die Zahlung läuft ohne menschliches Eingreifen von der Importdatei bis zur fertigen Bankdatei durch. Jeder Entscheidungsschritt kann aber einen Fehler werfen (gestrichelte Linien), der dann in der Ausnahmesteuerung landet. <strong>STP ist der Normalfall, die Ausnahmesteuerung die Notaufnahme.</strong></p>
+  <p>Ein wichtiges Detail: Das Anreicherungs-Framework läuft <strong>zweimal</strong> — einmal am Anfang (sind die Eingangsdaten gültig?) und ein zweites Mal kurz bevor die Bankdatei erzeugt wird (stimmen alle Felder fürs Ausgabeformat?). Validierung ist also eine Klammer um den ganzen Prozess, kein einmaliges Tor am Eingang.</p>
 
-      <h2>
-        <span class="num">03</span>Leitwegsteuerung — „Wohin und auf welchem
-        Weg?"
-      </h2>
-      <p>
-        Das Herz des Hubs und der Teil, der kognitiv am meisten Spaß macht, weil
-        er reine Wegfindung in einem Graphen ist. Hier wird
-        <em>nichts gebucht</em> — hier wird nur <em>entschieden</em>.
-      </p>
-      <figure>
-        <svg
-          viewBox="0 0 680 330"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-          aria-label="Entscheidungsbaum der Leitwegsteuerung"
-        >
-          <defs>
-            <marker
-              id="ar3"
-              viewBox="0 0 10 10"
-              refX="8"
-              refY="5"
-              markerWidth="6"
-              markerHeight="6"
-              orient="auto-start-reverse"
-            >
-              <path
-                d="M2 1L8 5L2 9"
-                fill="none"
-                stroke="#5F5E5A"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </marker>
-          </defs>
-          <rect
-            x="270"
-            y="20"
-            width="140"
-            height="46"
-            rx="8"
-            fill="#EEEDFE"
-            stroke="#534AB7"
-            stroke-width="0.5"
-          />
-          <text
-            x="340"
-            y="40"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#26215C"
-          >
-            Zahlungsposten
-          </text>
-          <text
-            x="340"
-            y="56"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#534AB7"
-          >
-            geprüft &amp; angereichert
-          </text>
-          <line
-            x1="340"
-            y1="66"
-            x2="340"
-            y2="92"
-            stroke="#5F5E5A"
-            stroke-width="1.5"
-            marker-end="url(#ar3)"
-          />
-          <rect
-            x="270"
-            y="94"
-            width="140"
-            height="46"
-            rx="8"
-            fill="#EEEDFE"
-            stroke="#534AB7"
-            stroke-width="0.5"
-          />
-          <text
-            x="340"
-            y="114"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#26215C"
-          >
-            Leitweg ermitteln
-          </text>
-          <text
-            x="340"
-            y="130"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#534AB7"
-          >
-            intern oder extern?
-          </text>
-          <path
-            d="M270 117 L160 117 L160 160"
-            fill="none"
-            stroke="#5F5E5A"
-            stroke-width="1.5"
-            marker-end="url(#ar3)"
-          />
-          <path
-            d="M410 117 L520 117 L520 160"
-            fill="none"
-            stroke="#5F5E5A"
-            stroke-width="1.5"
-            marker-end="url(#ar3)"
-          />
-          <text
-            x="200"
-            y="110"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#5F5E5A"
-          >
-            intern
-          </text>
-          <text
-            x="490"
-            y="110"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#5F5E5A"
-          >
-            extern
-          </text>
-          <rect
-            x="60"
-            y="162"
-            width="200"
-            height="64"
-            rx="8"
-            fill="#E1F5EE"
-            stroke="#0F6E56"
-            stroke-width="0.5"
-          />
-          <text
-            x="160"
-            y="184"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#04342C"
-          >
-            Welcher Kontoführungskreis?
-          </text>
-          <text
-            x="160"
-            y="202"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#0F6E56"
-          >
-            Begünstigter ist im Haus,
-          </text>
-          <text
-            x="160"
-            y="217"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#0F6E56"
-          >
-            internes Buchungssystem wählen
-          </text>
-          <rect
-            x="420"
-            y="162"
-            width="200"
-            height="64"
-            rx="8"
-            fill="#FAEEDA"
-            stroke="#854F0B"
-            stroke-width="0.5"
-          />
-          <text
-            x="520"
-            y="184"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#412402"
-          >
-            Welches Clearinginstitut?
-          </text>
-          <text
-            x="520"
-            y="202"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#854F0B"
-          >
-            Begünstigter ist auswärts,
-          </text>
-          <text
-            x="520"
-            y="217"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#854F0B"
-          >
-            externen Weg + Hausbank wählen
-          </text>
-          <path
-            d="M160 226 L160 262 L320 262"
-            fill="none"
-            stroke="#5F5E5A"
-            stroke-width="1.5"
-            marker-end="url(#ar3)"
-          />
-          <path
-            d="M520 226 L520 262 L360 262"
-            fill="none"
-            stroke="#5F5E5A"
-            stroke-width="1.5"
-            marker-end="url(#ar3)"
-          />
-          <rect
-            x="230"
-            y="264"
-            width="220"
-            height="50"
-            rx="8"
-            fill="#E6F1FB"
-            stroke="#185FA5"
-            stroke-width="0.5"
-          />
-          <text
-            x="340"
-            y="284"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#0C447C"
-          >
-            Clearingvereinbarung suchen
-          </text>
-          <text
-            x="340"
-            y="301"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#185FA5"
-          >
-            unter dem gewählten Leitweg
-          </text>
-        </svg>
-        <figcaption>
-          Zwei Weichen — intern/extern, dann die Clearingvereinbarung unter dem
-          gewählten Leitweg.
-        </figcaption>
-      </figure>
-      <p>Die zwei zentralen Stammdaten-Objekte:</p>
-      <ul>
-        <li>
-          <strong>Leitweg</strong> — grobe Richtungsentscheidung.
-          <em>Intern</em>: Begünstigter ist Kunde desselben Instituts → der
-          Leitweg bestimmt den <strong>Kontoführungskreis</strong>.
-          <em>Extern</em>: Begünstigter ist auswärts → der Leitweg bestimmt das
-          <strong>Clearinginstitut</strong> und löst einen ausgehenden
-          Zahlungsauftrag an den Output Manager aus.
-        </li>
-        <li>
-          <strong>Clearingvereinbarung</strong> — die feine Entscheidung
-          <em>unter</em> einem Leitweg; die konkrete Abmachung, über die
-          abgewickelt wird.
-        </li>
-      </ul>
-      <p>
-        Das Verhältnis ist ein sauberer Baum:
-        <strong
-          >eine Regel zeigt auf genau einen Leitweg; ein Leitweg gruppiert
-          mehrere Clearingvereinbarungen; eine Clearingvereinbarung gehört zu
-          genau einem Leitweg.</strong
-        >
-        Findet das System keinen passenden Leitweg, wirft es eine Ausnahme —
-        außer man hat einen <strong>Standardleitweg</strong> definiert (eine
-        Regel ganz am Ende ohne Bedingungen, die alles auffängt).
-      </p>
-      <p>Zwei praktische Hebel:</p>
-      <ul>
-        <li>
-          <strong>Ausgangssperre auf Leitwegebene</strong> — einen ganzen
-          Leitweg temporär sperren (z. B. „alle USD-Weiterleitungen anhalten").
-          Zahlungen bleiben dann in einer Queue, bis die Sperre fällt.
-        </li>
-        <li>
-          <strong>Versionierung</strong> — ein neuer Leitweg im Status „In
-          Bearbeitung"/„Zur Freigabe" lässt den alten aktiv, bis er freigegeben
-          wird. Kein Bruch im laufenden Betrieb.
-        </li>
-      </ul>
+  <h2><span class="num">02</span>Anreicherung &amp; Validierung — „Sind die Daten korrekt?"</h2>
+  <p>Der Türsteher. Bevor eine Zahlung einen Weg zugewiesen bekommt, prüft APM sie auf vier Arten von Korrektheit — eine saubere Hierarchie von „oberflächlich" zu „inhaltlich":</p>
+  <figure>
+    <svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vier Prüfkategorien der Anreicherung und Validierung">
+    <rect x="40" y="30" width="600" height="44" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="60" y="52" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C">Formelle Richtigkeit</text>
+    <text x="620" y="56" text-anchor="end" font-family="sans-serif" font-size="11" fill="#185FA5">z. B. Kontoformat gültig für dieses Land?</text>
+    <rect x="40" y="82" width="600" height="44" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="60" y="104" font-family="sans-serif" font-size="13" font-weight="500" fill="#04342C">Referenzielle Richtigkeit</text>
+    <text x="620" y="108" text-anchor="end" font-family="sans-serif" font-size="11" fill="#0F6E56">z. B. IBAN vorhanden und korrekt?</text>
+    <rect x="40" y="134" width="600" height="44" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="60" y="156" font-family="sans-serif" font-size="13" font-weight="500" fill="#412402">Materielle Fehler</text>
+    <text x="620" y="160" text-anchor="end" font-family="sans-serif" font-size="11" fill="#854F0B">z. B. Betrag über dem Limit dieser Auftragsart?</text>
+    <rect x="40" y="186" width="600" height="44" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text x="60" y="208" font-family="sans-serif" font-size="13" font-weight="500" fill="#26215C">Konsistenz</text>
+    <text x="620" y="212" text-anchor="end" font-family="sans-serif" font-size="11" fill="#534AB7">z. B. Soll = Haben über alle Posten?</text>
+    </svg>
+    <figcaption>Vier Korrektheitsebenen, von formaler Oberfläche bis inhaltlicher Konsistenz.</figcaption>
+  </figure>
+  <p>Die Prüfungen sind <strong>Prüfroutinen</strong>, im Customizing zu <strong>Prüfsets</strong> gebündelt und auf Geschäftsobjekte angewendet. Welche laufen, hängt von Verarbeitungsmodus, Kanal und Vorgangsart ab. Manche brauchen Stammdaten aus einer <strong>Service-Level-Vereinbarung (SLA)</strong> — dem Objekt, das festhält, <em>wie</em> eine Zahlung behandelt werden soll.</p>
+  <p>Der für die Accounting-Brücke entscheidende Punkt: <strong>Anreicherung</strong> heißt, dass APM fehlende Felder ergänzt, die später fürs Routing und fürs Bankformat gebraucht werden. Die Zahlung wird also angereichert weitergereicht. Schlägt etwas fehl, geht ein Fehlercode an die Ausnahmesteuerung — und das System kann aus manuellen Korrekturen <em>lernen</em>: einmal genehmigt, wendet es dieselbe Korrektur künftig automatisch an. Nur erfolgreich validierte Aufträge, deren Ausführungstermin nicht in der Zukunft liegt, gehen weiter an die Leitwegsteuerung.</p>
 
-      <h2>
-        <span class="num">04</span>Clearingverarbeitung — „Wie und wann buchen
-        und bündeln?"
-      </h2>
-      <p>
-        Jetzt wird aus der Entscheidung Realität: Buchungen entstehen, Zahlungen
-        werden gebündelt oder einzeln verarbeitet, das Ausgabeformat wird
-        angestoßen. <strong>Hier sitzt die Accounting-Schnittstelle</strong> —
-        der Punkt, an dem der Payment-Flow zur Buchung wird.
-      </p>
-      <figure>
-        <svg
-          viewBox="0 0 680 280"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-          aria-label="Vier Verarbeitungsmodi der Clearingverarbeitung"
-        >
-          <rect
-            x="40"
-            y="30"
-            width="290"
-            height="100"
-            rx="10"
-            fill="#E1F5EE"
-            stroke="#0F6E56"
-            stroke-width="0.5"
-          />
-          <text
-            x="60"
-            y="54"
-            font-family="sans-serif"
-            font-size="13"
-            font-weight="500"
-            fill="#04342C"
-          >
-            Einzelverarbeitung
-          </text>
-          <text
-            x="60"
-            y="76"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#0F6E56"
-          >
-            Intern: direkt ins Kontoführungssystem
-          </text>
-          <text
-            x="60"
-            y="93"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#0F6E56"
-          >
-            buchen.
-          </text>
-          <text
-            x="60"
-            y="112"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#0F6E56"
-          >
-            Extern: einzeln in ausgehenden Auftrag,
-          </text>
-          <text
-            x="60"
-            y="124"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#0F6E56"
-          >
-            Clearingposten aufs Zwischenkonto.
-          </text>
-          <rect
-            x="350"
-            y="30"
-            width="290"
-            height="100"
-            rx="10"
-            fill="#EEEDFE"
-            stroke="#534AB7"
-            stroke-width="0.5"
-          />
-          <text
-            x="370"
-            y="54"
-            font-family="sans-serif"
-            font-size="13"
-            font-weight="500"
-            fill="#26215C"
-          >
-            Queueing
-          </text>
-          <text
-            x="370"
-            y="76"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#534AB7"
-          >
-            Zeitbasierter Verzögerungsmechanismus.
-          </text>
-          <text
-            x="370"
-            y="93"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#534AB7"
-          >
-            Posten werden in einer Queue gehalten
-          </text>
-          <text
-            x="370"
-            y="110"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#534AB7"
-          >
-            und manuell oder automatisch (nach
-          </text>
-          <text
-            x="370"
-            y="124"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#534AB7"
-          >
-            berechneter Zeit) freigegeben.
-          </text>
-          <rect
-            x="40"
-            y="148"
-            width="290"
-            height="100"
-            rx="10"
-            fill="#FAEEDA"
-            stroke="#854F0B"
-            stroke-width="0.5"
-          />
-          <text
-            x="60"
-            y="172"
-            font-family="sans-serif"
-            font-size="13"
-            font-weight="500"
-            fill="#412402"
-          >
-            Sammler
-          </text>
-          <text
-            x="60"
-            y="194"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#854F0B"
-          >
-            Viele Posten in einen logischen Sammler
-          </text>
-          <text
-            x="60"
-            y="211"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#854F0B"
-          >
-            gruppieren → eine Ausgleichsbuchung,
-          </text>
-          <text
-            x="60"
-            y="228"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#854F0B"
-          >
-            ein ausgehender Auftrag. Intern + extern.
-          </text>
-          <rect
-            x="350"
-            y="148"
-            width="290"
-            height="100"
-            rx="10"
-            fill="#E6F1FB"
-            stroke="#185FA5"
-            stroke-width="0.5"
-          />
-          <text
-            x="370"
-            y="172"
-            font-family="sans-serif"
-            font-size="13"
-            font-weight="500"
-            fill="#0C447C"
-          >
-            Gruppierung
-          </text>
-          <text
-            x="370"
-            y="194"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#185FA5"
-          >
-            Unterschiedliche Zahlungen werden
-          </text>
-          <text
-            x="370"
-            y="211"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#185FA5"
-          >
-            in Zahlungsträger gruppiert
-          </text>
-          <text
-            x="370"
-            y="228"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#185FA5"
-          >
-            (z. B. eine Sammelüberweisung).
-          </text>
-        </svg>
-        <figcaption>
-          Vier Verarbeitungsmodi — von Einzelbuchung bis Sammler/Gruppierung.
-        </figcaption>
-      </figure>
-      <p>
-        Das <strong>Clearing-Item (Ausgleichsposten)</strong> ist der
-        Schlüsselbegriff, weil es die Brücke zwischen Hub und Buchhaltung ist.
-        Bei Leitweg- und Zahlung-im-Auftrag-von-Szenarien wird eine
-        Ausgleichsbuchung erzeugt:
-      </p>
-      <ul>
-        <li>
-          bei <strong>externen</strong> Wegen aufs
-          <strong>Hausbankkonto-Zwischenkonto</strong> (Nostro/Zwischenkonto),
-        </li>
-        <li>
-          bei <strong>internen</strong> Wegen aufs <strong>Kundenkonto</strong>.
-        </li>
-      </ul>
-      <p>
-        Wo dieser Posten landet, hängt direkt davon ab, welchen Leitweg die
-        vorige Komponente gewählt hat. Die Anbindung ans Kontoführungssystem
-        läuft über den <strong>AM-Proxy</strong>; die fertige Bankdatei erzeugt
-        der <strong>File Handler</strong> (Output Manager). Detail mit
-        Buchungsrelevanz: Hat ein Sammler Posten mit
-        <strong>mehreren Valutadaten</strong>, werden mehrere Ausgleichsposten
-        erzeugt — Wertstellung bricht den Sammler auf.
-      </p>
-      <blockquote>
-        <p>
-          <strong>Abgrenzung, die oft verwirrt:</strong> Dieses Clearing ist
-          <em>Payment-Hub-Clearing</em> (Wege, Bündel, Ausgleichsbuchung). Es
-          ist <strong>nicht</strong> das AR/AP-Netting aus dem
-          Forderungsmanagement (Forderungen gegen Verbindlichkeiten desselben
-          Partners aufrechnen). Gleicher Begriff, zwei Welten.
-        </p>
-      </blockquote>
+  <h2><span class="num">03</span>Leitwegsteuerung — „Wohin und auf welchem Weg?"</h2>
+  <p>Das Herz des Hubs und der Teil, der kognitiv am meisten Spaß macht, weil er reine Wegfindung in einem Graphen ist. Hier wird <em>nichts gebucht</em> — hier wird nur <em>entschieden</em>.</p>
+  <figure>
+    <svg viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Entscheidungsbaum der Leitwegsteuerung">
+    <defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <rect x="270" y="20" width="140" height="46" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text x="340" y="40" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#26215C">Zahlungsposten</text>
+    <text x="340" y="56" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">geprüft &amp; angereichert</text>
+    <line x1="340" y1="66" x2="340" y2="92" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <rect x="270" y="94" width="140" height="46" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text x="340" y="114" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#26215C">Leitweg ermitteln</text>
+    <text x="340" y="130" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">intern oder extern?</text>
+    <path d="M270 117 L160 117 L160 160" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <path d="M410 117 L520 117 L520 160" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <text x="200" y="110" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">intern</text>
+    <text x="490" y="110" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5F5E5A">extern</text>
+    <rect x="60" y="162" width="200" height="64" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="160" y="184" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#04342C">Welcher Kontoführungskreis?</text>
+    <text x="160" y="202" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">Begünstigter ist im Haus,</text>
+    <text x="160" y="217" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">internes Buchungssystem wählen</text>
+    <rect x="420" y="162" width="200" height="64" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="520" y="184" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#412402">Welches Clearinginstitut?</text>
+    <text x="520" y="202" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">Begünstigter ist auswärts,</text>
+    <text x="520" y="217" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">externen Weg + Hausbank wählen</text>
+    <path d="M160 226 L160 262 L320 262" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <path d="M520 226 L520 262 L360 262" fill="none" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar3)"/>
+    <rect x="230" y="264" width="220" height="50" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="340" y="284" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#0C447C">Clearingvereinbarung suchen</text>
+    <text x="340" y="301" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">unter dem gewählten Leitweg</text>
+    </svg>
+    <figcaption>Zwei Weichen — intern/extern, dann die Clearingvereinbarung unter dem gewählten Leitweg.</figcaption>
+  </figure>
+  <p>Die zwei zentralen Stammdaten-Objekte:</p>
+  <ul>
+    <li><strong>Leitweg</strong> — grobe Richtungsentscheidung. <em>Intern</em>: Begünstigter ist Kunde desselben Instituts → der Leitweg bestimmt den <strong>Kontoführungskreis</strong>. <em>Extern</em>: Begünstigter ist auswärts → der Leitweg bestimmt das <strong>Clearinginstitut</strong> und löst einen ausgehenden Zahlungsauftrag an den Output Manager aus.</li>
+    <li><strong>Clearingvereinbarung</strong> — die feine Entscheidung <em>unter</em> einem Leitweg; die konkrete Abmachung, über die abgewickelt wird.</li>
+  </ul>
+  <p>Das Verhältnis ist ein sauberer Baum: <strong>eine Regel zeigt auf genau einen Leitweg; ein Leitweg gruppiert mehrere Clearingvereinbarungen; eine Clearingvereinbarung gehört zu genau einem Leitweg.</strong> Findet das System keinen passenden Leitweg, wirft es eine Ausnahme — außer man hat einen <strong>Standardleitweg</strong> definiert (eine Regel ganz am Ende ohne Bedingungen, die alles auffängt).</p>
+  <p>Zwei praktische Hebel:</p>
+  <ul>
+    <li><strong>Ausgangssperre auf Leitwegebene</strong> — einen ganzen Leitweg temporär sperren (z. B. „alle USD-Weiterleitungen anhalten"). Zahlungen bleiben dann in einer Queue, bis die Sperre fällt.</li>
+    <li><strong>Versionierung</strong> — ein neuer Leitweg im Status „In Bearbeitung"/„Zur Freigabe" lässt den alten aktiv, bis er freigegeben wird. Kein Bruch im laufenden Betrieb.</li>
+  </ul>
 
-      <h2>
-        <span class="num">05</span>Ausnahmesteuerung — das Fehler-Postfach mit
-        Regeln
-      </h2>
-      <p>
-        Jeder Schritt kann einen Fehler werfen. Statt dass die Zahlung dann
-        „hängt", übergibt die fehlerhafte Komponente einen Fehlercode an die
-        Ausnahmesteuerung — mit vier Koordinaten, die den Fehler exakt verorten:
-      </p>
-      <figure>
-        <svg
-          viewBox="0 0 680 200"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-          aria-label="Vier Fehlerkoordinaten und das Reaktions-Regelwerk"
-        >
-          <rect
-            x="40"
-            y="30"
-            width="145"
-            height="60"
-            rx="8"
-            fill="#FCEBEB"
-            stroke="#A32D2D"
-            stroke-width="0.5"
-          />
-          <text
-            x="112"
-            y="54"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#501313"
-          >
-            Prozess-ID
-          </text>
-          <text
-            x="112"
-            y="72"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#A32D2D"
-          >
-            welcher Prozess?
-          </text>
-          <rect
-            x="195"
-            y="30"
-            width="145"
-            height="60"
-            rx="8"
-            fill="#FCEBEB"
-            stroke="#A32D2D"
-            stroke-width="0.5"
-          />
-          <text
-            x="267"
-            y="54"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#501313"
-          >
-            Objekttyp
-          </text>
-          <text
-            x="267"
-            y="72"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#A32D2D"
-          >
-            was wurde verarbeitet?
-          </text>
-          <rect
-            x="350"
-            y="30"
-            width="145"
-            height="60"
-            rx="8"
-            fill="#FCEBEB"
-            stroke="#A32D2D"
-            stroke-width="0.5"
-          />
-          <text
-            x="422"
-            y="54"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#501313"
-          >
-            Phase
-          </text>
-          <text
-            x="422"
-            y="72"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#A32D2D"
-          >
-            an welcher Stelle?
-          </text>
-          <rect
-            x="505"
-            y="30"
-            width="135"
-            height="60"
-            rx="8"
-            fill="#FCEBEB"
-            stroke="#A32D2D"
-            stroke-width="0.5"
-          />
-          <text
-            x="572"
-            y="54"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#501313"
-          >
-            Fehlerprüfung
-          </text>
-          <text
-            x="572"
-            y="72"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#A32D2D"
-          >
-            welche genau?
-          </text>
-          <rect
-            x="180"
-            y="120"
-            width="320"
-            height="56"
-            rx="8"
-            fill="#EEEDFE"
-            stroke="#534AB7"
-            stroke-width="0.5"
-          />
-          <text
-            x="340"
-            y="142"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="12"
-            font-weight="500"
-            fill="#26215C"
-          >
-            Regelwerk wählt eine Reaktionsart
-          </text>
-          <text
-            x="340"
-            y="160"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="11"
-            fill="#534AB7"
-          >
-            ignorieren · korrigieren · ablehnen · Endreaktion
-          </text>
-        </svg>
-        <figcaption>
-          Vier Fehlerkoordinaten speisen das Regelwerk, das eine Reaktionsart
-          wählt.
-        </figcaption>
-      </figure>
-      <p>
-        Aus diesen vier Koordinaten wählt ein benutzerdefiniertes
-        <strong>Regelwerk</strong> eine <strong>Reaktionsart</strong> — das
-        gewünschte Systemverhalten in genau dieser Situation. Die Logik beim
-        Aufruf:
-      </p>
-      <ol>
-        <li>
-          <strong>Darf der Fehler ignoriert werden?</strong> → wenn ja,
-          Standardprozess läuft weiter.
-        </li>
-        <li>
-          <strong>Kann die bevorzugte Reaktion ausgeführt werden?</strong> →
-          wenn ja, Standardprozess für dieses Objekt endet, die Reaktion greift.
-        </li>
-        <li>
-          <strong>Geht keine Reaktion?</strong> → das System stößt eine
-          <strong>Endreaktionsart</strong> an (die letzte Instanz).
-        </li>
-      </ol>
-      <p>
-        Manuelle Eingriffe laufen über die Fiori-App
-        <em>Zahlungen korrigieren</em> oder die GUI-Transaktion
-        <em>Zahlungsaufträge verwalten</em>. Der lernfähige Teil aus Abschnitt
-        02 greift auch hier: einmal genehmigte Korrekturen wendet das System
-        künftig automatisch an — so wandert über die Zeit immer mehr aus der
-        „Notaufnahme" zurück in den STP-Fluss.
-      </p>
+  <h2><span class="num">04</span>Clearingverarbeitung — „Wie und wann buchen und bündeln?"</h2>
+  <p>Jetzt wird aus der Entscheidung Realität: Buchungen entstehen, Zahlungen werden gebündelt oder einzeln verarbeitet, das Ausgabeformat wird angestoßen. <strong>Hier sitzt die Accounting-Schnittstelle</strong> — der Punkt, an dem der Payment-Flow zur Buchung wird.</p>
+  <figure>
+    <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vier Verarbeitungsmodi der Clearingverarbeitung">
+    <rect x="40" y="30" width="290" height="100" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="60" y="54" font-family="sans-serif" font-size="13" font-weight="500" fill="#04342C">Einzelverarbeitung</text>
+    <text x="60" y="76" font-family="sans-serif" font-size="11" fill="#0F6E56">Intern: direkt ins Kontoführungssystem</text>
+    <text x="60" y="93" font-family="sans-serif" font-size="11" fill="#0F6E56">buchen.</text>
+    <text x="60" y="112" font-family="sans-serif" font-size="11" fill="#0F6E56">Extern: einzeln in ausgehenden Auftrag,</text>
+    <text x="60" y="124" font-family="sans-serif" font-size="11" fill="#0F6E56">Clearingposten aufs Zwischenkonto.</text>
+    <rect x="350" y="30" width="290" height="100" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text x="370" y="54" font-family="sans-serif" font-size="13" font-weight="500" fill="#26215C">Queueing</text>
+    <text x="370" y="76" font-family="sans-serif" font-size="11" fill="#534AB7">Zeitbasierter Verzögerungsmechanismus.</text>
+    <text x="370" y="93" font-family="sans-serif" font-size="11" fill="#534AB7">Posten werden in einer Queue gehalten</text>
+    <text x="370" y="110" font-family="sans-serif" font-size="11" fill="#534AB7">und manuell oder automatisch (nach</text>
+    <text x="370" y="124" font-family="sans-serif" font-size="11" fill="#534AB7">berechneter Zeit) freigegeben.</text>
+    <rect x="40" y="148" width="290" height="100" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="60" y="172" font-family="sans-serif" font-size="13" font-weight="500" fill="#412402">Sammler</text>
+    <text x="60" y="194" font-family="sans-serif" font-size="11" fill="#854F0B">Viele Posten in einen logischen Sammler</text>
+    <text x="60" y="211" font-family="sans-serif" font-size="11" fill="#854F0B">gruppieren → eine Ausgleichsbuchung,</text>
+    <text x="60" y="228" font-family="sans-serif" font-size="11" fill="#854F0B">ein ausgehender Auftrag. Intern + extern.</text>
+    <rect x="350" y="148" width="290" height="100" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="370" y="172" font-family="sans-serif" font-size="13" font-weight="500" fill="#0C447C">Gruppierung</text>
+    <text x="370" y="194" font-family="sans-serif" font-size="11" fill="#185FA5">Unterschiedliche Zahlungen werden</text>
+    <text x="370" y="211" font-family="sans-serif" font-size="11" fill="#185FA5">in Zahlungsträger gruppiert</text>
+    <text x="370" y="228" font-family="sans-serif" font-size="11" fill="#185FA5">(z. B. eine Sammelüberweisung).</text>
+    </svg>
+    <figcaption>Vier Verarbeitungsmodi — von Einzelbuchung bis Sammler/Gruppierung.</figcaption>
+  </figure>
+  <p>Das <strong>Clearing-Item (Ausgleichsposten)</strong> ist der Schlüsselbegriff, weil es die Brücke zwischen Hub und Buchhaltung ist. Bei Leitweg- und Zahlung-im-Auftrag-von-Szenarien wird eine Ausgleichsbuchung erzeugt:</p>
+  <ul>
+    <li>bei <strong>externen</strong> Wegen aufs <strong>Hausbankkonto-Zwischenkonto</strong> (Nostro/Zwischenkonto),</li>
+    <li>bei <strong>internen</strong> Wegen aufs <strong>Kundenkonto</strong>.</li>
+  </ul>
+  <p>Wo dieser Posten landet, hängt direkt davon ab, welchen Leitweg die vorige Komponente gewählt hat. Die Anbindung ans Kontoführungssystem läuft über den <strong>AM-Proxy</strong>; die fertige Bankdatei erzeugt der <strong>File Handler</strong> (Output Manager). Detail mit Buchungsrelevanz: Hat ein Sammler Posten mit <strong>mehreren Valutadaten</strong>, werden mehrere Ausgleichsposten erzeugt — Wertstellung bricht den Sammler auf.</p>
+  <blockquote>
+    <p><strong>Abgrenzung, die oft verwirrt:</strong> Dieses Clearing ist <em>Payment-Hub-Clearing</em> (Wege, Bündel, Ausgleichsbuchung). Es ist <strong>nicht</strong> das AR/AP-Netting aus dem Forderungsmanagement (Forderungen gegen Verbindlichkeiten desselben Partners aufrechnen). Gleicher Begriff, zwei Welten.</p>
+  </blockquote>
 
-      <h2>
-        <span class="num">06</span>Batch-Prozesse — der Motor im Hintergrund
-      </h2>
-      <p>
-        APM reagiert nicht auf jeden Klick sofort — das meiste läuft als
-        geplante Hintergrundverarbeitung. Der zentrale Report ist der
-        <strong>Poller</strong> (Transaktion <code>/PF1/POLLER</code>, „Prozesse
-        ausführen"): Er verarbeitet ein Paket von Zahlungsaufträgen, steuert die
-        Batch-Zuordnung und stößt die Ausgabemedienerstellung an. Daneben:
-        Tagesendverarbeitung, Kommunikations-Poller (warten auf
-        Bankrückmeldungen), asynchrone Antwort-Poller. Diese Jobs sind das, was
-        den Trichter überhaupt fließen lässt.
-      </p>
+  <h2><span class="num">05</span>Ausnahmesteuerung — das Fehler-Postfach mit Regeln</h2>
+  <p>Jeder Schritt kann einen Fehler werfen. Statt dass die Zahlung dann „hängt", übergibt die fehlerhafte Komponente einen Fehlercode an die Ausnahmesteuerung — mit vier Koordinaten, die den Fehler exakt verorten:</p>
+  <figure>
+    <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vier Fehlerkoordinaten und das Reaktions-Regelwerk">
+    <rect x="40" y="30" width="145" height="60" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text x="112" y="54" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#501313">Prozess-ID</text>
+    <text x="112" y="72" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A32D2D">welcher Prozess?</text>
+    <rect x="195" y="30" width="145" height="60" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text x="267" y="54" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#501313">Objekttyp</text>
+    <text x="267" y="72" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A32D2D">was wurde verarbeitet?</text>
+    <rect x="350" y="30" width="145" height="60" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text x="422" y="54" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#501313">Phase</text>
+    <text x="422" y="72" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A32D2D">an welcher Stelle?</text>
+    <rect x="505" y="30" width="135" height="60" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+    <text x="572" y="54" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#501313">Fehlerprüfung</text>
+    <text x="572" y="72" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#A32D2D">welche genau?</text>
+    <rect x="180" y="120" width="320" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text x="340" y="142" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="500" fill="#26215C">Regelwerk wählt eine Reaktionsart</text>
+    <text x="340" y="160" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#534AB7">ignorieren · korrigieren · ablehnen · Endreaktion</text>
+    </svg>
+    <figcaption>Vier Fehlerkoordinaten speisen das Regelwerk, das eine Reaktionsart wählt.</figcaption>
+  </figure>
+  <p>Aus diesen vier Koordinaten wählt ein benutzerdefiniertes <strong>Regelwerk</strong> eine <strong>Reaktionsart</strong> — das gewünschte Systemverhalten in genau dieser Situation. Die Logik beim Aufruf:</p>
+  <ol>
+    <li><strong>Darf der Fehler ignoriert werden?</strong> → wenn ja, Standardprozess läuft weiter.</li>
+    <li><strong>Kann die bevorzugte Reaktion ausgeführt werden?</strong> → wenn ja, Standardprozess für dieses Objekt endet, die Reaktion greift.</li>
+    <li><strong>Geht keine Reaktion?</strong> → das System stößt eine <strong>Endreaktionsart</strong> an (die letzte Instanz).</li>
+  </ol>
+  <p>Manuelle Eingriffe laufen über die Fiori-App <em>Zahlungen korrigieren</em> oder die GUI-Transaktion <em>Zahlungsaufträge verwalten</em>. Der lernfähige Teil aus Abschnitt 02 greift auch hier: einmal genehmigte Korrekturen wendet das System künftig automatisch an — so wandert über die Zeit immer mehr aus der „Notaufnahme" zurück in den STP-Fluss.</p>
 
-      <hr class="soft" />
+  <h2><span class="num">06</span>Batch-Prozesse — der Motor im Hintergrund</h2>
+  <p>APM reagiert nicht auf jeden Klick sofort — das meiste läuft als geplante Hintergrundverarbeitung. Der zentrale Report ist der <strong>Poller</strong> (Transaktion <code>/PF1/POLLER</code>, „Prozesse ausführen"): Er verarbeitet ein Paket von Zahlungsaufträgen, steuert die Batch-Zuordnung und stößt die Ausgabemedienerstellung an. Daneben: Tagesendverarbeitung, Kommunikations-Poller (warten auf Bankrückmeldungen), asynchrone Antwort-Poller. Diese Jobs sind das, was den Trichter überhaupt fließen lässt.</p>
 
-      <h3>Anschlusspunkte (nächste Teile)</h3>
-      <p>
-        Dieser Teil deckt die <strong>Kern-Zahlungsverarbeitung</strong> ab.
-        Offen für weitere Teile:
-      </p>
-      <ul>
-        <li>
-          <strong>In-House-Banking (IHB)</strong> — die Konzernbank-Schicht, die
-          genau an Abschnitt 04 andockt (der „interne Clearingposten" ist die
-          Naht). Eigenes Datenmodell: Bankkreis, IHB-Konto,
-          Tagesendverarbeitung.
-        </li>
-        <li>
-          <strong>Konnektor für SAP Multi-Bank Connectivity (MBC)</strong> — wie
-          die im File Handler erzeugte Bankdatei tatsächlich zur Bank kommt.
-        </li>
-        <li>
-          <strong>Anbindung interner/externer Systeme</strong> — Import-Kanäle
-          (Datei/IDoc/API), Sanktionsprüfung, Formatkonvertierung im Detail.
-        </li>
-        <li>
-          <strong>Stammdaten- und Berechtigungsebene</strong> — die
-          <code>/PF1/…</code>-Objekte als Rollen-/Security-Schicht über dem
-          Datenfluss.
-        </li>
-      </ul>
+  <hr class="soft">
 
-      <p class="meta">
-        Erstellt als Verständnis-Begleiter auf Basis der Struktur des SAP Help
-        Portal (Payments and Bank Communications, 2025 FPS01). Inhalte in
-        eigenen Worten zusammengefasst, keine Wiedergabe der Originaltexte.
-      </p>
-    </div>
-  </body>
+  <h3>Anschlusspunkte (nächste Teile)</h3>
+  <p>Dieser Teil deckt die <strong>Kern-Zahlungsverarbeitung</strong> ab. Offen für weitere Teile:</p>
+  <ul>
+    <li><strong>In-House-Banking (IHB)</strong> — die Konzernbank-Schicht, die genau an Abschnitt 04 andockt (der „interne Clearingposten" ist die Naht). Eigenes Datenmodell: Bankkreis, IHB-Konto, Tagesendverarbeitung.</li>
+    <li><strong>Konnektor für SAP Multi-Bank Connectivity (MBC)</strong> — wie die im File Handler erzeugte Bankdatei tatsächlich zur Bank kommt.</li>
+    <li><strong>Anbindung interner/externer Systeme</strong> — Import-Kanäle (Datei/IDoc/API), Sanktionsprüfung, Formatkonvertierung im Detail.</li>
+    <li><strong>Stammdaten- und Berechtigungsebene</strong> — die <code>/PF1/…</code>-Objekte als Rollen-/Security-Schicht über dem Datenfluss.</li>
+  </ul>
+
+  <p class="meta">Erstellt als Verständnis-Begleiter auf Basis der Struktur des SAP Help Portal (Payments and Bank Communications, 2025 FPS01). Inhalte in eigenen Worten zusammengefasst, keine Wiedergabe der Originaltexte.</p>
+
+</div>
+</body>
 </html>
