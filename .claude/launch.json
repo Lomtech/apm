@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "apm-static",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "5733", "--bind", "127.0.0.1"],
+      "port": 5733
+    }
+  ]
+}

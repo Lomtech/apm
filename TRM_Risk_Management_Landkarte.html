@@ -13,7 +13,8 @@
     --rule: #e6dde0;
     --rule-strong: #cdbfc4;
     --accent: #a83254;
-    --max: 820px;
+    --accent-tint: #fae3ea;
+    --max: 880px;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
@@ -51,6 +52,23 @@
     font-family: "SF Mono", monospace; font-size: 12.5px; color: var(--ink-faint);
     margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--rule);
   }
+  .toc {
+    margin: 40px 0 0; padding: 20px 22px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
+    font-family: "SF Mono", monospace; font-size: 13px;
+    column-count: 2; column-gap: 28px;
+  }
+  .toc ol { margin: 0; padding-left: 0; list-style: none; counter-reset: toc; }
+  .toc li {
+    counter-increment: toc; margin: 4px 0;
+    padding-left: 28px; position: relative; break-inside: avoid;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    position: absolute; left: 0; color: var(--ink-faint);
+  }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .toc a:hover { color: var(--accent); }
   h2 {
     font-size: 26px; font-weight: 600; letter-spacing: -0.005em;
     margin: 64px 0 4px; padding-top: 28px;
@@ -62,6 +80,12 @@
     display: block; margin-bottom: 6px; letter-spacing: 0.04em;
   }
   h3 { font-size: 19px; font-weight: 600; margin: 36px 0 6px; }
+  h4 {
+    font-family: "SF Mono", monospace; font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 500;
+    margin: 28px 0 8px;
+  }
   p { margin: 14px 0; max-width: 68ch; }
   strong { font-weight: 600; }
   ul, ol { max-width: 66ch; padding-left: 22px; }
@@ -87,12 +111,23 @@
     border-radius: 0 8px 8px 0; font-size: 17px;
   }
   blockquote p { margin: 6px 0; max-width: none; }
+  .img-path {
+    font-family: "SF Mono", monospace; font-size: 13px;
+    background: var(--accent-tint); color: #4b1326;
+    padding: 10px 14px; border-radius: 6px;
+    margin: 16px 0; display: block;
+    word-break: break-word;
+  }
+  .img-path::before {
+    content: "IMG · ";
+    color: var(--accent); font-weight: 600;
+  }
   .gloss {
     margin: 24px 0; border: 1px solid var(--rule);
     border-radius: 10px; overflow: hidden;
   }
   .gloss div {
-    display: grid; grid-template-columns: 220px 1fr; gap: 0;
+    display: grid; grid-template-columns: 240px 1fr; gap: 0;
     border-top: 1px solid var(--rule);
   }
   .gloss div:first-child { border-top: 0; }
@@ -105,27 +140,55 @@
   }
   .tx-table {
     margin: 24px 0; border: 1px solid var(--rule); border-radius: 10px;
-    overflow: hidden; font-size: 16px;
+    overflow: hidden; font-size: 15.5px;
   }
   .tx-table div {
-    display: grid; grid-template-columns: 120px 1fr;
+    display: grid; grid-template-columns: 130px 1fr;
     border-top: 1px solid var(--rule);
   }
   .tx-table div:first-child { border-top: 0; }
   .tx-table code.tx {
     background: #f3e6ea; padding: 12px 16px; font-weight: 600;
     color: #4b1326; border-radius: 0;
+    display: flex; align-items: center;
   }
   .tx-table .desc { padding: 12px 16px; color: var(--ink-soft); }
+  .tx-group-head {
+    font-family: "SF Mono", monospace; font-size: 11.5px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 500;
+    padding: 14px 16px; background: #fbf7f9;
+    border-top: 1px solid var(--rule);
+    grid-column: 1 / -1 !important;
+    display: block !important;
+  }
+  .method-card {
+    margin: 14px 0; padding: 18px 20px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
+  }
+  .method-card h4 {
+    margin-top: 0; color: var(--accent);
+  }
   hr.soft { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
-  @media (max-width: 600px) {
+
+  @media (max-width: 760px) {
     body { font-size: 16.5px; }
     h1 { font-size: 30px; }
     h2 { font-size: 22px; }
     .wrap { padding: 48px 18px 80px; }
+    .toc { column-count: 1; padding: 16px 18px; font-size: 12.5px; }
     .gloss div, .tx-table div { grid-template-columns: 1fr; }
     .gloss dd, .tx-table .desc { border-top: 1px solid var(--rule); }
-    .draft-badge { top: 22px; right: 18px; }
+    .draft-badge { top: 22px; right: 18px; font-size: 9px; }
+    figure { padding: 14px 10px 10px;
+             overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    figure svg { min-width: 560px; }
+    blockquote { padding: 14px 16px; font-size: 16px; }
+    p, .lede { max-width: 100%; }
+    ul, ol { max-width: 100%; padding-left: 20px; }
+    .lede { font-size: 17px; }
+    code { word-break: break-word; }
+    .img-path { font-size: 12px; }
   }
 </style>
 </head>
@@ -138,26 +201,47 @@
   <p class="lede">
     Vier Analyzer, ein Risiko-Verständnis. Jeder beleuchtet dieselben
     Treasury-Positionen aus einem anderen Blickwinkel — Markt, Kredit,
-    Portfolio, Buchhaltung. Wer welchen Analyzer für welche Frage einsetzt,
-    ist der Schlüssel.
+    Portfolio, Buchhaltung. Risk Management bucht nicht; es misst, schlägt
+    Alarm und sperrt Trades, die das Limit reißen würden.
   </p>
   <p class="meta">
     Quelle der Struktur: SAP Help Portal — Treasury and Risk Management →
-    Risk Management (S/4HANA on-prem, Version 2025.001).
-    Strukturmodell aus dem lokalen TRM-Knowledge-Graph destilliert,
+    Risk Management (S/4HANA on-prem, Version 2025.001, buildNo 1779).
+    Strukturmodell aus dem lokalen TRM-Knowledge-Graph destilliert
+    (5 Sub-Bereiche, ~20 Risk-Transaktionen, RMV0/RMC0/RAEP*),
     in eigenen Worten skizziert — Stimme noch zu überarbeiten.
   </p>
 
-  <h2><span class="num">00</span>Das Grundbild: vier Linsen auf dieselbe Position</h2>
+  <nav class="toc" aria-label="Inhalt">
+    <ol>
+      <li><a href="#s00">Das Grundbild</a></li>
+      <li><a href="#s01">Vokabular</a></li>
+      <li><a href="#s02">Risk Hierarchy &amp; Risk Factors</a></li>
+      <li><a href="#s03">Market Risk Analyzer</a></li>
+      <li><a href="#s04">Die drei VaR-Methoden</a></li>
+      <li><a href="#s05">Credit Risk Analyzer</a></li>
+      <li><a href="#s06">Limit Management</a></li>
+      <li><a href="#s07">Portfolio Analyzer</a></li>
+      <li><a href="#s08">Accounting Analyzer</a></li>
+      <li><a href="#s09">Basics &amp; Infrastruktur</a></li>
+      <li><a href="#s10">Wichtige Transaktionen</a></li>
+      <li><a href="#s11">Customizing-Pfade</a></li>
+      <li><a href="#s12">Verbindungen</a></li>
+      <li><a href="#s13">Stolperdrähte</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="s00"><span class="num">00</span>Das Grundbild: vier Linsen auf dieselbe Position</h2>
   <p>
     Risk Management ist <strong>keine Buchungslogik</strong>. Es ist eine
-    Analyse-Schicht, die dieselben Daten liest, die der Transaction Manager
-    schreibt — und sie aus vier verschiedenen Blickwinkeln neu interpretiert.
-    Das ist der konzeptuelle Trick: dieselbe Position, vier Fragen.
+    Analyse-Schicht, die dieselben Daten liest, die der Transaction
+    Manager schreibt — und sie aus vier verschiedenen Blickwinkeln neu
+    interpretiert. Das ist der konzeptuelle Trick: dieselbe Position,
+    vier Fragen.
   </p>
   <ul>
     <li>
-      <strong>Was ist sie wert — und konsistent über die Bücher?</strong>
+      <strong>Was ist sie wert, und konsistent über die Bücher?</strong>
       → <em>Accounting Analyzer</em>
     </li>
     <li>
@@ -174,251 +258,752 @@
     </li>
   </ul>
   <p>
-    Wichtige Konsequenz: alle vier Analyzer leben <strong>unter eigenen
-    Bewertungsbereichen</strong>. Sie zwingen die TM-Position nicht in ein
-    einziges Bewertungsschema — sondern berechnen ihre eigenen Sichten
-    parallel, ohne die operativen Bücher anzurühren.
+    Drei Folgen sind tragend:
   </p>
+  <ol>
+    <li>
+      Alle vier Analyzer leben <strong>unter eigenen
+      Bewertungsbereichen</strong>. Sie zwingen die TM-Position nicht in
+      ein einziges Bewertungsschema, sondern berechnen ihre eigenen
+      Sichten parallel — ohne die operativen Bücher anzurühren.
+    </li>
+    <li>
+      Sie teilen <strong>eine gemeinsame Infrastruktur</strong>
+      (Sub-Bereich „Basics"): Risk Hierarchy, Results Database, Financial
+      Objects, Maturity Bands, Price Calculator.
+    </li>
+    <li>
+      Sie speisen <strong>dieselbe Limit-Maschine</strong>. Auch ein
+      Marktpreis-Limit landet im selben Limit-Management wie ein
+      Kontrahentenlimit.
+    </li>
+  </ol>
 
-  <h2><span class="num">01</span>Das Vokabular</h2>
+  <h2 id="s01"><span class="num">01</span>Vokabular</h2>
   <div class="gloss">
     <div>
-      <dt>Bewertungsbereich (Valuation Area)</dt>
+      <dt>NPV (Net Present Value)</dt>
       <dd>
-        Die Klammer, unter der ein Analyzer rechnet. Risk Management nutzt
-        eigene Bewertungsbereiche, getrennt von den FI-relevanten — so
-        bleibt operatives Buchen und Risiko-Analyse sauber getrennt.
-      </dd>
-    </div>
-    <div>
-      <dt>Risikohierarchie</dt>
-      <dd>
-        Die Aggregations-Achse: nach Buchungskreis, Geschäftsart,
-        Geschäftspartner, Portfolio, … Bestimmt, auf welcher Ebene Risiken
-        zusammengezählt werden.
+        Heutiger Barwert einer Position, abgezinst über die Yield Curve.
+        Eingangsdatum für VaR, Sensitivität, Limit-Check.
       </dd>
     </div>
     <div>
       <dt>Sensitivität</dt>
       <dd>
-        Die Änderung des NPV bei einer kleinen Bewegung eines Marktparameters
-        (1 Basispunkt Zinskurve, 1 % FX, 1 % Volatilität). Delta / Gamma /
-        Vega in Optionsterminologie.
+        Änderung des NPV bei einer kleinen Bewegung eines Marktparameters
+        (1 bp Zinskurve, 1 % FX, 1 % Volatilität). Delta / Gamma / Vega in
+        Options-Sprache.
       </dd>
     </div>
     <div>
-      <dt>Value-at-Risk (VaR)</dt>
+      <dt>Value at Risk (VaR)</dt>
       <dd>
-        Der maximale Verlust einer Position über einen definierten Zeitraum
-        bei gegebener Konfidenz (z. B. „mit 99 % Wahrscheinlichkeit verliert
-        die Position über 10 Tage nicht mehr als X").
+        Potenzieller Verlust einer Position über eine definierte
+        Haltedauer bei vorgegebener Konfidenz. „Mit 99 % Wahrscheinlichkeit
+        verliert die Position über 10 Tage nicht mehr als X." Erweiterung
+        der NPV-Analyse um Markt-Unsicherheit.
       </dd>
     </div>
     <div>
-      <dt>Limit (Counterparty / Position)</dt>
+      <dt>Cash Flow at Risk (CFaR)</dt>
       <dd>
-        Die fest hinterlegte Obergrenze: maximaler Kontrahenten-Exposure,
-        maximales Marktrisiko. Wird beim Geschäftsabschluss live geprüft.
+        Analog zu VaR, aber auf Cashflow-Ebene statt Marktwert. Misst die
+        Schwankungsanfälligkeit erwarteter Cashflows.
       </dd>
     </div>
     <div>
-      <dt>CVA — Credit Value Adjustment</dt>
+      <dt>Mean Excess Loss (MEL)</dt>
       <dd>
-        Bewertungs-Korrektur am NPV für das Ausfallrisiko des Kontrahenten:
-        der „faire" Wert eines Derivats ist niedriger, wenn der Partner
-        ausfallgefährdet ist. <code>TPM60CVA</code> rechnet ihn.
+        Erwarteter Verlust im Tail jenseits des VaR-Schwellenwerts.
+        Antwort auf „und wenn doch — wie schlimm im Schnitt?".
       </dd>
     </div>
     <div>
-      <dt>Stress-Szenario</dt>
+      <dt>Default Risk / Settlement Risk</dt>
       <dd>
-        Eine hypothetische Marktverwerfung (Zins +200bp, FX-Sprung +15 %,
-        Vola-Schock). Liefert keine Wahrscheinlichkeit, sondern eine
-        Schadens-Obergrenze unter Annahme.
+        Default Risk besteht über die ganze Laufzeit eines Geschäfts.
+        Settlement Risk nur während des Settlement-Fensters. Beide gehören
+        zum Counterparty/Issuer Risk.
+      </dd>
+    </div>
+    <div>
+      <dt>Attributable Amount</dt>
+      <dd>
+        Pro Einzelgeschäft berechneter Risikobeitrag. Bei klassischen
+        Krediten: Kapitalbindung + aktuelle Inanspruchnahme. Bei
+        Derivaten: potenzielle Wiederbeschaffungskosten bei Default.
+      </dd>
+    </div>
+    <div>
+      <dt>CVA (Credit Value Adjustment)</dt>
+      <dd>
+        Korrektur am risikolosen NPV für die Ausfallwahrscheinlichkeit
+        des Kontrahenten. Positiver Betrag. Wird via
+        <code>TPM60CVA</code> berechnet und im Limit-Management als
+        eigene Key Figure verbucht.
+      </dd>
+    </div>
+    <div>
+      <dt>Limit Type</dt>
+      <dd>
+        Klassifikation eines Limits — z.B. Kontrahentenlimit,
+        Settlement-Limit, Limit pro Geschäftsart. Hängt an
+        Limit-Characteristics, die die Aggregations-Achsen vorgeben.
+      </dd>
+    </div>
+    <div>
+      <dt>Relative Limits</dt>
+      <dd>
+        Limits, die nicht absolut, sondern als Prozent eines anderen
+        Wertes (z.B. Eigenkapital, Hauptlimit) definiert sind. Skalieren
+        automatisch, wenn die Basis sich ändert.
+      </dd>
+    </div>
+    <div>
+      <dt>Risk Hierarchy</dt>
+      <dd>
+        Strukturbaum, der Marktrisiko in Risikofaktoren zerlegt
+        (Zins, FX, Index, Volatilität, Preis). Steuert, auf welcher
+        Ebene VaR aggregiert wird.
+      </dd>
+    </div>
+    <div>
+      <dt>Risk Factor</dt>
+      <dd>
+        Atomares Marktrisiko-Element. Nicht weiter zerlegbar. Z.B.:
+        Zinskurve EUR 5J, FX-Kurs USD/EUR, MSCI World. Liefert
+        gleichzeitig die Preis-Faktoren für Bewertung.
+      </dd>
+    </div>
+    <div>
+      <dt>Maturity Band</dt>
+      <dd>
+        Laufzeitband (0–1M, 1–3M, 3M–1J, 1–5J, &gt;5J). Klammer für
+        Gap-Analyse und Maturity Profile.
+      </dd>
+    </div>
+    <div>
+      <dt>Financial Object</dt>
+      <dd>
+        Risk-Management-spezifisches Schatten-Objekt zu einem
+        TM-Geschäft. Enthält die für Analyse benötigten Stammdaten
+        (Bewertungsregel, Risikohierarchie-Zuordnung). Wird automatisch
+        bei Trade-Anlage erzeugt, falls Customizing es vorsieht.
+      </dd>
+    </div>
+    <div>
+      <dt>Results Database</dt>
+      <dd>
+        Zentraler Speicher für berechnete Risiko-Kennzahlen (NPV, VaR,
+        Sensitivitäten). Erlaubt Wiederverwendung in mehreren Auswertungen
+        ohne Neuberechnung.
+      </dd>
+    </div>
+    <div>
+      <dt>Base Portfolio</dt>
+      <dd>
+        Eine vorkonfigurierte Filter-Sicht auf die Geschäftspopulation.
+        Z.B. „alle FX-Trades Buchungskreis 1000". Eingangsdatum für
+        spezifische Auswertungen.
       </dd>
     </div>
   </div>
 
-  <h2><span class="num">02</span>Die vier Analyzer im Bild</h2>
+  <h2 id="s02"><span class="num">02</span>Risk Hierarchy &amp; Risk Factors</h2>
   <p>
-    Konzeptuell sitzen sie nebeneinander auf derselben Position. Jeder hat
-    seinen eigenen Bewertungsbereich, seine eigenen Stammdaten, seine
-    eigene Auswertungs-Logik:
+    Bevor irgendwelche Zahlen herauspurzeln, muss SAP wissen, <em>worauf
+    überhaupt geguckt wird</em>. Das ist die Aufgabe der Risk Hierarchy:
+    Marktrisiko wird in Komponenten zerlegt, ganz oben das Gesamtmarktrisiko,
+    ganz unten atomare Risk Factors.
   </p>
   <figure>
     <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img"
-         aria-label="Vier Analyzer im Risk Management, gemeinsame Positionsquelle">
+         aria-label="Risk-Hierarchy-Baum mit Top-down-Zerlegung">
       <defs>
-        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5"
+        <marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5"
                 markerWidth="6" markerHeight="6" orient="auto-start-reverse">
           <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A"
                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </marker>
       </defs>
+      <!-- Top: Market Risk -->
+      <rect x="280" y="20" width="160" height="42" rx="9"
+            fill="#fae3ea" stroke="#a83254" stroke-width="0.6"/>
+      <text x="360" y="46" text-anchor="middle" font-family="sans-serif"
+            font-size="13.5" font-weight="600" fill="#4b1326">Market Risk</text>
 
-      <!-- Position source on top -->
-      <rect x="240" y="20" width="240" height="46" rx="9"
-            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
-      <text x="360" y="42" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="500" fill="#251f4d">Transaction Manager — Positionen</text>
-      <text x="360" y="58" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#3f3b8a">Geschäfte · NPV · Konditionen</text>
+      <!-- Lines to category level -->
+      <line x1="320" y1="62" x2="120" y2="100" stroke="#a83254" stroke-width="1"/>
+      <line x1="345" y1="62" x2="260" y2="100" stroke="#a83254" stroke-width="1"/>
+      <line x1="375" y1="62" x2="400" y2="100" stroke="#a83254" stroke-width="1"/>
+      <line x1="400" y1="62" x2="540" y2="100" stroke="#a83254" stroke-width="1"/>
+      <line x1="425" y1="62" x2="680" y2="100" stroke="#a83254" stroke-width="1"/>
 
-      <!-- Fan out to four analyzers -->
-      <line x1="290" y1="66" x2="120" y2="125" stroke="#5F5E5A" stroke-width="1.3" marker-end="url(#ar)"/>
-      <line x1="330" y1="66" x2="270" y2="125" stroke="#5F5E5A" stroke-width="1.3" marker-end="url(#ar)"/>
-      <line x1="390" y1="66" x2="450" y2="125" stroke="#5F5E5A" stroke-width="1.3" marker-end="url(#ar)"/>
-      <line x1="430" y1="66" x2="600" y2="125" stroke="#5F5E5A" stroke-width="1.3" marker-end="url(#ar)"/>
-
-      <!-- Four analyzer boxes -->
-      <rect x="20" y="125" width="200" height="76" rx="9"
+      <!-- Categories -->
+      <rect x="40" y="100" width="160" height="44" rx="8"
             fill="#fae3ea" stroke="#a83254" stroke-width="0.5"/>
-      <text x="120" y="148" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="600" fill="#4b1326">Market Risk Analyzer</text>
-      <text x="120" y="166" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#a83254">Sensitivitäten, VaR,</text>
-      <text x="120" y="180" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#a83254">Stress-Szenarien</text>
-      <text x="120" y="195" text-anchor="middle" font-family="SF Mono, monospace"
-            font-size="10" fill="#88867e">RMV0 · TPM60</text>
+      <text x="120" y="120" text-anchor="middle" font-family="sans-serif"
+            font-size="12" font-weight="500" fill="#4b1326">Interest Rate Risk</text>
+      <text x="120" y="135" text-anchor="middle" font-family="sans-serif"
+            font-size="10.5" fill="#a83254">Zinsänderung</text>
 
-      <rect x="240" y="125" width="200" height="76" rx="9"
+      <rect x="216" y="100" width="118" height="44" rx="8"
             fill="#fae3ea" stroke="#a83254" stroke-width="0.5"/>
-      <text x="340" y="148" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="600" fill="#4b1326">Credit Risk Analyzer</text>
-      <text x="340" y="166" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#a83254">Kontrahenten-Limits,</text>
-      <text x="340" y="180" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#a83254">Exposure, CVA</text>
-      <text x="340" y="195" text-anchor="middle" font-family="SF Mono, monospace"
-            font-size="10" fill="#88867e">RMC0 · TPM60CVA</text>
+      <text x="275" y="120" text-anchor="middle" font-family="sans-serif"
+            font-size="12" font-weight="500" fill="#4b1326">Currency</text>
+      <text x="275" y="135" text-anchor="middle" font-family="sans-serif"
+            font-size="10.5" fill="#a83254">FX-Risiko</text>
 
-      <rect x="20" y="225" width="200" height="76" rx="9"
+      <rect x="346" y="100" width="98" height="44" rx="8"
             fill="#fae3ea" stroke="#a83254" stroke-width="0.5"/>
-      <text x="120" y="248" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="600" fill="#4b1326">Portfolio Analyzer</text>
-      <text x="120" y="266" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#a83254">Performance, Benchmark,</text>
-      <text x="120" y="280" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#a83254">Asset Allocation</text>
-      <text x="120" y="295" text-anchor="middle" font-family="SF Mono, monospace"
-            font-size="10" fill="#88867e">JBO1 · JBR4E · JBRP0</text>
+      <text x="395" y="120" text-anchor="middle" font-family="sans-serif"
+            font-size="12" font-weight="500" fill="#4b1326">Index</text>
+      <text x="395" y="135" text-anchor="middle" font-family="sans-serif"
+            font-size="10.5" fill="#a83254">Aktien-Index</text>
 
-      <rect x="240" y="225" width="200" height="76" rx="9"
+      <rect x="456" y="100" width="120" height="44" rx="8"
             fill="#fae3ea" stroke="#a83254" stroke-width="0.5"/>
-      <text x="340" y="248" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="600" fill="#4b1326">Accounting Analyzer</text>
-      <text x="340" y="266" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#a83254">Parallele Sichten:</text>
-      <text x="340" y="280" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#a83254">IFRS / lokal / Konzern</text>
-      <text x="340" y="295" text-anchor="middle" font-family="SF Mono, monospace"
-            font-size="10" fill="#88867e">RCC20</text>
+      <text x="516" y="120" text-anchor="middle" font-family="sans-serif"
+            font-size="12" font-weight="500" fill="#4b1326">Volatility</text>
+      <text x="516" y="135" text-anchor="middle" font-family="sans-serif"
+            font-size="10.5" fill="#a83254">Optionswelt</text>
 
-      <!-- Right side: shared outputs -->
-      <rect x="500" y="160" width="200" height="110" rx="9"
-            fill="#fbfaf6" stroke="#c5c2b6" stroke-width="0.5"
+      <rect x="586" y="100" width="120" height="44" rx="8"
+            fill="#fae3ea" stroke="#a83254" stroke-width="0.5"/>
+      <text x="646" y="120" text-anchor="middle" font-family="sans-serif"
+            font-size="12" font-weight="500" fill="#4b1326">Price</text>
+      <text x="646" y="135" text-anchor="middle" font-family="sans-serif"
+            font-size="10.5" fill="#a83254">Rohstoff, Eq.</text>
+
+      <!-- Below: examples of risk factors -->
+      <line x1="120" y1="144" x2="120" y2="180" stroke="#a83254" stroke-width="1"/>
+      <rect x="20" y="180" width="220" height="80" rx="8"
+            fill="#fff" stroke="#cdbfc4" stroke-width="0.5"/>
+      <text x="130" y="200" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" font-weight="500" fill="#55544f">Risk Factors</text>
+      <text x="130" y="218" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">Key Rate EUR 1J</text>
+      <text x="130" y="234" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">Key Rate EUR 5J</text>
+      <text x="130" y="250" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">Key Rate USD 5J · …</text>
+
+      <line x1="275" y1="144" x2="275" y2="180" stroke="#a83254" stroke-width="1"/>
+      <rect x="245" y="180" width="180" height="80" rx="8"
+            fill="#fff" stroke="#cdbfc4" stroke-width="0.5"/>
+      <text x="335" y="200" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" font-weight="500" fill="#55544f">Risk Factors</text>
+      <text x="335" y="218" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">EUR/USD Spot</text>
+      <text x="335" y="234" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">EUR/GBP Spot</text>
+      <text x="335" y="250" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">USD/JPY · …</text>
+
+      <line x1="516" y1="144" x2="516" y2="180" stroke="#a83254" stroke-width="1"/>
+      <rect x="430" y="180" width="180" height="80" rx="8"
+            fill="#fff" stroke="#cdbfc4" stroke-width="0.5"/>
+      <text x="520" y="200" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" font-weight="500" fill="#55544f">Risk Factors</text>
+      <text x="520" y="218" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">FX-Vol EUR/USD 3M</text>
+      <text x="520" y="234" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">Rate-Vol EUR 5J</text>
+      <text x="520" y="250" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#88867e">Equity-Vol · …</text>
+
+      <!-- Bottom: aggregation note -->
+      <rect x="20" y="280" width="686" height="44" rx="9"
+            fill="#fbfaf6" stroke="#cdbfc4" stroke-width="0.5"
             stroke-dasharray="3 3"/>
-      <text x="600" y="184" text-anchor="middle" font-family="sans-serif"
-            font-size="12.5" font-weight="500" fill="#55544f">Gemeinsame Outputs</text>
-      <text x="600" y="208" text-anchor="middle" font-family="sans-serif"
-            font-size="11.5" fill="#55544f">Limit-Prüfung</text>
-      <text x="600" y="225" text-anchor="middle" font-family="sans-serif"
-            font-size="11.5" fill="#55544f">Reporting (Risikobericht)</text>
-      <text x="600" y="242" text-anchor="middle" font-family="sans-serif"
-            font-size="11.5" fill="#55544f">Treasury Alerts</text>
-      <text x="600" y="259" text-anchor="middle" font-family="sans-serif"
-            font-size="11.5" fill="#55544f">Hedge-Effektivität</text>
+      <text x="360" y="302" text-anchor="middle" font-family="sans-serif"
+            font-size="12" fill="#55544f">Aggregations-Kategorien steuern, wie Risk Factors zum Marktrisiko zusammengeführt werden.</text>
+      <text x="360" y="318" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="11" fill="#88867e">
+        keine reine Addition — Korrelationen werden berücksichtigt
+      </text>
     </svg>
     <figcaption>
-      Vier Analyzer lesen dieselben Positionen — jeder schreibt seine
-      eigenen Risiko-Zahlen, alle füttern dieselbe Limit-/Reporting-Schicht.
+      Top-down-Zerlegung: Marktrisiko → fünf Kategorien → atomare Risk
+      Factors. Aggregation läuft via Korrelationen, nicht Summation.
     </figcaption>
   </figure>
 
-  <h2><span class="num">03</span>Was die einzelnen Analyzer tun</h2>
-  <h3>Market Risk Analyzer</h3>
   <p>
-    Bewertet die <strong>Sensitivität der Position gegen Marktparameter</strong>:
-    Zinskurven, FX-Kurse, Aktienkurse, Volatilitäten. Liefert NPV-Deltas,
-    Value-at-Risk, Stress-Szenarien. Antwort auf: „Wie viel verliere ich,
-    wenn der Markt 1 % anders aussieht?"
-  </p>
-  <h3>Credit Risk Analyzer</h3>
-  <p>
-    Bewertet das <strong>Ausfallrisiko des Geschäftspartners</strong>: aktueller
-    und potenzieller Exposure, Limit-Konsumierung, CVA. Verbindet sich mit
-    Stammdaten der Geschäftspartner (Rating, Limit-Hierarchie). Antwort auf:
-    „Wie viel verliere ich, wenn dieser Partner morgen ausfällt?"
-  </p>
-  <h3>Portfolio Analyzer</h3>
-  <p>
-    Bewertet die <strong>Performance gegen Erwartung</strong>: Erträge, Renditen,
-    Asset-Allocation-Drift, Benchmark-Vergleich. Stark für Fonds und
-    Asset-Management-Funktion innerhalb der Treasury. Antwort auf:
-    „Hat sich die Allokation gelohnt?"
-  </p>
-  <h3>Accounting Analyzer</h3>
-  <p>
-    Bewertet die <strong>Konsistenz über parallele Rechnungslegungen</strong>:
-    IFRS vs. lokales HGB vs. Konzernabschluss. Identifiziert Buchungs-Diffs,
-    Bewertungs-Abweichungen, Migration zwischen Standards. Antwort auf:
-    „Stimmen meine vier Bücher noch zueinander?"
+    Key Rates für Zinskurven werden im Allgemeinen <em>implizit</em>
+    aus der gewählten Yield-Curve-Struktur abgeleitet — du musst sie
+    nur explizit in der Risk Hierarchy hinterlegen, wenn du
+    Auswertungen für genau diese Key Rates willst.
   </p>
 
-  <h2><span class="num">04</span>Die wichtigsten Transaktionen</h2>
-  <div class="tx-table">
-    <div><code class="tx">RMV0</code><span class="desc">Market Risk: Sensitivität / VaR ausführen</span></div>
-    <div><code class="tx">RMC0</code><span class="desc">Credit Risk: Exposure-Berechnung und Limit-Auswertung</span></div>
-    <div><code class="tx">RAEP1 / RAEP2</code><span class="desc">Risiko-Cockpits — Aggregationsläufe und Auswertung</span></div>
-    <div><code class="tx">TPM60 / TPM60CVA</code><span class="desc">NPV mit/ohne CVA-Anpassung</span></div>
-    <div><code class="tx">JBO1 / JBDO1</code><span class="desc">Portfolio Analyzer: Portfolio-Stammdaten / Drilldown</span></div>
-    <div><code class="tx">JBR4E / JBRP0</code><span class="desc">Portfolio Analyzer: Reporting-Selektion / Berichtsbaum</span></div>
-    <div><code class="tx">RCC20</code><span class="desc">Accounting Analyzer: paralleler Buchungs-Vergleich</span></div>
-    <div><code class="tx">TVS1</code><span class="desc">Risk-Hierarchie pflegen</span></div>
-    <div><code class="tx">TBL4</code><span class="desc">Limit-Verwaltung</span></div>
+  <h2 id="s03"><span class="num">03</span>Market Risk Analyzer</h2>
+  <p>
+    Bewertet die <strong>Sensitivität der Position gegen
+    Marktparameter</strong>. Liefert NPV-Deltas, Value-at-Risk, Cash Flow
+    at Risk, Stress-Szenarien. Antwort auf: „Wie viel verliere ich, wenn
+    der Markt 1 % anders aussieht?"
+  </p>
+
+  <h4>Sub-Bereiche im KG</h4>
+  <ul>
+    <li>
+      <strong>Asset/Liability Management (ALM)</strong> — die Bilanz-Seite
+      des Marktrisikos: Aktiv-Passiv-Strukturen, Gap-Analyse zwischen
+      Refinanzierung und Anlage.
+    </li>
+    <li>
+      <strong>NPV Analysis</strong> — Barwert-Berechnung als Eingang für
+      alle weiteren Auswertungen.
+    </li>
+    <li>
+      <strong>Cash Flow at Risk (CFaR)</strong> — VaR auf Cashflow-Ebene
+      statt auf Marktwert.
+    </li>
+    <li>
+      <strong>Gap Analysis</strong> — Laufzeit-Gap zwischen Aktiv- und
+      Passiv-Seite, je Maturity Band aggregiert. Treibt Zins-Sensitivität.
+    </li>
+    <li>
+      <strong>Gap Analysis and Simulation</strong> — wie oben, plus
+      Szenarien.
+    </li>
+  </ul>
+
+  <h2 id="s04"><span class="num">04</span>Die drei VaR-Methoden</h2>
+  <p>
+    SAP liefert drei orthogonale Wege zur VaR-Berechnung. Jede hat ihre
+    Stärken — Variance/Covariance ist schnell, Historical Simulation
+    realistischer, Monte Carlo flexibler:
+  </p>
+
+  <div class="method-card">
+    <h4>Variance / Covariance Approach</h4>
+    <p>
+      Analytisches Verfahren. Basiert auf einem mathematischen Modell für
+      die Verteilung der Risk Factors (typisch: lognormal). Eingangsdaten
+      sind <strong>Volatilitäten und Korrelationen</strong>, geschätzt
+      aus historischen Preisreihen. Schnell, gut für Sensitivitätsanalysen,
+      aber blind für nichtlineare Effekte (Options-Convexity).
+    </p>
   </div>
 
-  <h2><span class="num">05</span>Verbindungen zu den Nachbar-Modulen</h2>
+  <div class="method-card">
+    <h4>Historical Simulation</h4>
+    <p>
+      Empirisch. Nimmt die <em>tatsächlich beobachteten</em>
+      Marktbewegungen der vergangenen N Tage und legt sie auf die heutige
+      Position. Kann komplexe Preisänderungen abbilden, die das
+      Var/Covar-Modell nicht erwischt. Schwäche: Annahme „die Vergangenheit
+      ist representativ".
+    </p>
+  </div>
+
+  <div class="method-card">
+    <h4>Monte Carlo Simulation</h4>
+    <p>
+      Probabilistisch. Erzeugt synthetische Marktszenarien aus der
+      angenommenen Verteilung der Risk Factors. Flexibelste Methode,
+      auch für exotische Instrumente, aber rechenintensiv. Brauchst du,
+      wenn deine Position viele Optionen oder Korrelations-abhängige
+      Strukturen hat.
+    </p>
+  </div>
+
+  <p>
+    Für eine Risiko-Population jenseits des VaR-Quantils liefert SAP
+    zusätzlich den <strong>Mean Excess Loss (MEL)</strong>: den
+    erwarteten Verlust <em>im Tail</em>, jenseits der
+    VaR-Konfidenz-Schwelle. Antwortet auf die Folgefrage: „Und wenn doch
+    — wie schlimm im Schnitt?".
+  </p>
+
+  <h2 id="s05"><span class="num">05</span>Credit Risk Analyzer</h2>
+  <p>
+    Bewertet das <strong>Ausfallrisiko des Geschäftspartners</strong>:
+    aktueller und potenzieller Exposure, Limit-Konsumierung, CVA. Antwort
+    auf: „Wie viel verliere ich, wenn dieser Partner morgen ausfällt?"
+  </p>
+
+  <h4>Default Risk vs Settlement Risk</h4>
+  <p>
+    SAP trennt diese zwei sauber. <strong>Default Risk</strong> besteht
+    über die ganze Laufzeit des Geschäfts — der Partner könnte jederzeit
+    insolvent werden. <strong>Settlement Risk</strong> besteht nur während
+    des Settlement-Fensters (zwischen Zahlungs-Versand und -Empfang) — die
+    klassische Herstatt-Risiko-Variante.
+  </p>
+
+  <h4>Attributable Amount Determination</h4>
+  <p>
+    Das zentrale Stück Mechanik. Pro Einzelgeschäft wird ein Beitrag zum
+    Counterparty-Exposure berechnet:
+  </p>
+  <ul>
+    <li>
+      Bei <strong>klassischen Krediten</strong>: Kapitalbindung des
+      Vertrags + aktuelle Inanspruchnahme.
+    </li>
+    <li>
+      Bei <strong>Trading-Transaktionen</strong> (OTC-Derivate):
+      potenzielle Wiederbeschaffungskosten bei Default — also
+      Replacement Cost. Lässt sich um geschäftsspezifische
+      Markup-Raten für zukünftige positive Marktbewegungen
+      ergänzen.
+    </li>
+    <li>
+      Bei <strong>CVA-basierter Bewertung</strong>: der NPV-Aufschlag
+      für Ausfallwahrscheinlichkeit ersetzt die einfache Replacement-Cost-
+      Sicht. <code>TPM60CVA</code> liefert die Zahl.
+    </li>
+  </ul>
+  <p>
+    Die Risiken werden den Portfolio-Segmenten zugeordnet — Kontrahent,
+    Branche, Produkt, Kombinationen. Das ist die Grundlage für aggregierte
+    Limit-Auswertungen.
+  </p>
+
+  <h4>Integrated Default Risk Limit Check</h4>
+  <p>
+    Der wichtigste operative Mechanismus: <strong>jeder Trade wird im
+    Moment seiner Anlage geprüft</strong>. Im Transaction Manager wird
+    der Limit-Check synchron aufgerufen, das Geschäft wird gegen die
+    relevanten Limits geprüft und die Limit-Konsumierung aktualisiert.
+    Bei Limit-Verstoß: Block oder Warnung — je nach Customizing.
+  </p>
+
+  <h4>Sub-Bereiche im KG</h4>
+  <ul>
+    <li>
+      <strong>Limit Management</strong> — der Hauptbereich (eigene
+      Sektion 06).
+    </li>
+    <li>
+      <strong>Relative Limits</strong> — prozentual definierte Limits,
+      skalieren mit der Basis.
+    </li>
+    <li>
+      <strong>SAP Query</strong> — Standard-Query-Schicht für
+      Sonder-Reports.
+    </li>
+  </ul>
+
+  <h2 id="s06"><span class="num">06</span>Limit Management</h2>
+  <p>
+    Limits sind <strong>Obergrenzen</strong>, gegen die jede Transaktion
+    läuft. Drei Klassen vereinfachen das Bild:
+  </p>
+  <ul>
+    <li>
+      <strong>Counterparty Limits</strong> — pro Geschäftspartner.
+    </li>
+    <li>
+      <strong>Settlement Limits</strong> — Tagesgrenze für
+      Settlement-Volumen pro Partner.
+    </li>
+    <li>
+      <strong>Product / Industry Limits</strong> — Konzentration auf
+      Asset-Klasse, Branche, Land.
+    </li>
+  </ul>
+  <p>
+    Limit Characteristics sind die <em>Achsen</em>, auf denen ein Limit
+    definiert wird: Kontrahent, Buchungskreis, Produktart, Branche,
+    Laufzeit. Du kannst sie kombinieren — z.B. „Counterparty X, Product
+    OTC-Option, Laufzeit &gt; 1 Jahr" → ein Limit.
+  </p>
+
+  <p>
+    Limit-Updates laufen zweigleisig:
+  </p>
+  <ol>
+    <li>
+      <strong>Online</strong>: jeder Trade im TM triggert eine
+      Limit-Aktualisierung.
+    </li>
+    <li>
+      <strong>End-of-Day</strong>: über Revaluierung aller Bestände
+      werden Limits neu berechnet (Marktbewegung kann die Konsumierung
+      verändern, ohne dass ein neuer Trade entstand).
+    </li>
+  </ol>
+
+  <h2 id="s07"><span class="num">07</span>Portfolio Analyzer</h2>
+  <p>
+    Misst die <strong>Performance gegen Erwartung</strong>: Erträge,
+    Renditen, Asset-Allocation-Drift, Benchmark-Vergleich. Stark für
+    Fonds-Funktion und Asset Management innerhalb der Treasury.
+  </p>
+
+  <h4>Sub-Bereiche im KG</h4>
+  <ul>
+    <li>
+      <strong>Calculation of Rates of Return</strong> — Renditen pro
+      Position, Portfolio, Zeitraum (TWR, MWR).
+    </li>
+    <li>
+      <strong>Using Book Values</strong> — Bewertung auf Buchwerten
+      statt Marktwerten (für interne Performance-Sicht).
+    </li>
+    <li>
+      <strong>Benchmarking</strong> — Vergleich gegen Index oder
+      Custom-Benchmark.
+    </li>
+    <li>
+      <strong>Determination of Risk-Adjusted Measures</strong> —
+      Sharpe-Ratio &amp; Co. — Rendite ins Verhältnis zum Risiko gesetzt.
+    </li>
+    <li>
+      <strong>Use of the Results Database in Portfolio Analyzer</strong>
+      — Wiederverwendung berechneter NPV/VaR statt Re-Calculation.
+    </li>
+    <li>
+      <strong>Transactions in Portfolio Analyzer</strong> — die
+      operativen Cockpits.
+    </li>
+  </ul>
+
+  <h2 id="s08"><span class="num">08</span>Accounting Analyzer</h2>
+  <p>
+    Bewertet die <strong>Konsistenz über parallele Rechnungslegungen</strong>:
+    IFRS vs. lokales HGB vs. Konzernabschluss. Identifiziert
+    Bewertungs-Diffs, Buchungs-Mismatches, Migrations-Lücken zwischen
+    Standards.
+  </p>
+
+  <h4>Sub-Bereiche im KG</h4>
+  <ul>
+    <li>
+      <strong>Analyzer Information System</strong> — die Reporting-Schicht
+      des AA.
+    </li>
+    <li>
+      <strong>Define Key Figures and Evaluation Procedure (AA)</strong> —
+      Customizing: welche Kennzahlen pro Bewertungsbereich verglichen
+      werden.
+    </li>
+  </ul>
+
+  <h2 id="s09"><span class="num">09</span>Basics &amp; gemeinsame Infrastruktur</h2>
+  <p>
+    Der Sub-Bereich „Basics" sammelt alles, was die vier Analyzer teilen.
+    Das ist die <em>Tiefe</em> des Moduls — wer Basics versteht, versteht
+    auch warum die Analyzer plötzlich Zahlen liefern, die er nicht
+    erklären kann.
+  </p>
+  <ul>
+    <li>
+      <strong>Financial Objects</strong> — Schatten-Objekte zu jedem
+      TM-Geschäft. Tragen die für Analyzer benötigten Metadaten
+      (Bewertungsregel, Hierarchie-Zuordnung).
+    </li>
+    <li>
+      <strong>Results Database</strong> — zentraler Cache für berechnete
+      Kennzahlen (NPV, VaR, Sensitivitäten). Vermeidet
+      Mehrfach-Berechnungen.
+    </li>
+    <li>
+      <strong>Price Calculator for Financial Instruments</strong> — die
+      eigentliche Bewertungs-Engine. Spricht mit dem Market Data Modul
+      und liefert Preise an die Analyzer.
+    </li>
+    <li>
+      <strong>Risk Hierarchy</strong> &amp; <strong>Analysis Structure</strong>
+      — die Risiko-Zerlegung als Auswertungs-Gerüst.
+    </li>
+    <li>
+      <strong>Portfolio Hierarchies</strong> — Aggregations-Achsen für
+      Portfolio-Sichten.
+    </li>
+    <li>
+      <strong>Maturity Band</strong> — Laufzeit-Klammern für Gap-Analyse.
+    </li>
+    <li>
+      <strong>Base Portfolios</strong> — vorkonfigurierte Filter auf
+      die Geschäftspopulation.
+    </li>
+    <li>
+      <strong>Parallel Processing Control</strong> — Steuerung der
+      parallelen Bewertungs-Läufe.
+    </li>
+    <li>
+      <strong>Reorganization Tools</strong> — Aufräumarbeit in der
+      Results Database.
+    </li>
+    <li>
+      <strong>Value at Risk</strong>, <strong>Editing Generic Transactions</strong>
+      — generische Analyzer-Bausteine.
+    </li>
+  </ul>
+
+  <h2 id="s10"><span class="num">10</span>Wichtige Transaktionen</h2>
+  <div class="tx-table">
+    <div class="tx-group-head">Market Risk Analyzer</div>
+    <div><code class="tx">RMV0</code><span class="desc">Sensitivität / VaR ausführen — Hauptcockpit des Market Risk Analyzers</span></div>
+    <div><code class="tx">RAEP1 / RAEP2</code><span class="desc">Risiko-Auswertungs-Cockpits (Aggregations- und Detail-Läufe)</span></div>
+    <div><code class="tx">TPM60</code><span class="desc">NPV pro Geschäft — Eingang für alle Auswertungen</span></div>
+
+    <div class="tx-group-head">Credit Risk Analyzer</div>
+    <div><code class="tx">RMC0</code><span class="desc">Credit Risk Cockpit — Exposure-Berechnung &amp; Limit-Auswertung</span></div>
+    <div><code class="tx">TPM60CVA</code><span class="desc">NPV mit CVA-Anpassung (Credit-Risk-bereinigt)</span></div>
+    <div><code class="tx">TBL4</code><span class="desc">Limit-Verwaltung — Limits anlegen, ändern, deaktivieren</span></div>
+
+    <div class="tx-group-head">Portfolio Analyzer</div>
+    <div><code class="tx">JBO1</code><span class="desc">Portfolio-Stammdaten</span></div>
+    <div><code class="tx">JBR0</code><span class="desc">Portfolio-Auswertungslauf</span></div>
+    <div><code class="tx">JBR4E / JBRP0</code><span class="desc">Reporting-Selektion / Berichtsbaum</span></div>
+
+    <div class="tx-group-head">Accounting Analyzer</div>
+    <div><code class="tx">RCC20</code><span class="desc">Paralleler Buchungs-Konsistenz-Vergleich über Bewertungsbereiche</span></div>
+
+    <div class="tx-group-head">Basics &amp; Stammdaten</div>
+    <div><code class="tx">TVS1</code><span class="desc">Risk Hierarchy pflegen</span></div>
+    <div><code class="tx">SM36</code><span class="desc">Jobs für Massen-Bewertungsläufe einplanen</span></div>
+    <div><code class="tx">SE11</code><span class="desc">Tabellen-Anzeige (für die Results Database Inspections)</span></div>
+  </div>
+
+  <h2 id="s11"><span class="num">11</span>Customizing-Pfade (IMG)</h2>
+  <p>
+    Die wichtigsten Einstiegspunkte unter <em>Financial Supply Chain
+    Management → Treasury and Risk Management</em>:
+  </p>
+  <span class="img-path">
+    Basic Analyzer Settings → Define General Settings (für Financial
+    Objects, Results Database)
+  </span>
+  <span class="img-path">
+    Basic Analyzer Settings → Risk Hierarchies → Maintain Risk Hierarchy
+  </span>
+  <span class="img-path">
+    Basic Analyzer Settings → Yield Curves &amp; Volatilities → für die
+    Preis-Schicht
+  </span>
+  <span class="img-path">
+    Market Risk Analyzer → Value at Risk → Define Procedure for
+    Variance/Covariance / Historical Simulation / Monte Carlo
+  </span>
+  <span class="img-path">
+    Credit Risk Analyzer → Limit Management → Define Limit Types
+  </span>
+  <span class="img-path">
+    Credit Risk Analyzer → Limit Management → Define Limit Characteristics
+  </span>
+  <span class="img-path">
+    Credit Risk Analyzer → Attributable Amount → Determination Procedure
+    (CVA-basiert oder Replacement-Cost)
+  </span>
+  <span class="img-path">
+    Portfolio Analyzer → Reporting → Define Key Figures
+  </span>
+  <span class="img-path">
+    Accounting Analyzer → Define Key Figures and Evaluation Procedure (AA)
+  </span>
+
+  <h2 id="s12"><span class="num">12</span>Verbindungen zu den Nachbar-Modulen</h2>
   <ul>
     <li>
       <strong>← Transaction Manager</strong>: liefert die Positionen, die
       jeder Analyzer auswertet. Ohne TM-Geschäfte ist Risk Mgmt blind.
+      Financial Objects sind die Brücke — sie werden bei Trade-Anlage
+      mit-erzeugt.
     </li>
     <li>
-      <strong>← Market Data Management</strong>: füttert Zins- und FX-Kurven,
+      <strong>← Market Data Management</strong>: füttert Zins-/FX-Kurven,
       Volatilitätsoberflächen, Aktienkurse — der Eingangsstrom für alle
-      Sensitivitäts- und VaR-Rechnungen.
+      Sensitivitäts- und VaR-Rechnungen. Ein fehlender Stützpunkt in der
+      Yield Curve bedeutet falscher NPV bedeutet falscher VaR.
     </li>
     <li>
-      <strong>↔ Hedge Management of FX Risks</strong>: Hedge-Effektivitätstests
-      laufen technisch durch Market Risk Analyzer; Hedge-Designations
-      reduzieren das berichtspflichtige Marktrisiko.
+      <strong>↔ Hedge Management of FX Risks</strong>:
+      Hedge-Effektivitätstests laufen technisch über die VaR-/Sensitivitäts-
+      Engine des Market Risk Analyzers. Eine Designation reduziert das
+      berichtspflichtige Marktrisiko in den Reports.
     </li>
     <li>
-      <strong>→ Treasury Analytics</strong>: liest die Risk-Ergebnisse für
+      <strong>↔ Exposure Management 2.0</strong>: operative Exposures
+      werden in die Marktrisiko-Analyse integriert (Sub-Bereich
+      „Integration of Operating Exposures in Market Risk Analysis").
+      Auch ungesicherte Exposures tragen zum VaR bei.
+    </li>
+    <li>
+      <strong>→ Treasury Analytics</strong>: liest Risk-Ergebnisse für
       Dashboards (FX-Risiko, Maturity Profile, Credit Line Analysis).
+      Treasury Alerts greifen u.a. auf Limit-Verstöße zu.
+    </li>
+    <li>
+      <strong>↔ Limit-Check in TM</strong>: <em>Single Transaction
+      Check</em> ist die operative Bremse. Im Moment der Trade-Anlage
+      ruft der TM den Credit-Risk-Limit-Check synchron auf.
     </li>
   </ul>
 
+  <h2 id="s13"><span class="num">13</span>Stolperdrähte</h2>
   <blockquote>
     <p>
-      <strong>Konzeptueller Unterschied zu Hedge Management:</strong> Hedge
-      Mgmt ist <em>normativ</em> — es bucht und steuert eine spezifische
-      Sicherungs-Beziehung. Risk Mgmt ist <em>analytisch</em> — es misst,
-      ohne zu buchen. Beide nutzen die gleichen TM-Positionen und beide
-      sprechen über Marktrisiko, aber Hedge erklärt der GuV warum was
-      verbucht ist, Risk erklärt dem Management was passieren könnte.
+      <strong>Hedge Mgmt ist normativ, Risk Mgmt ist analytisch.</strong>
+      Beide sprechen über Marktrisiko und nutzen dieselben TM-Positionen,
+      aber Hedge erklärt der GuV warum was verbucht ist, Risk erklärt dem
+      Management was passieren <em>könnte</em>. Wer die zwei verwechselt,
+      gerät bei Bilanzgesprächen schnell ins Schwimmen.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>VaR ist eine Warnzahl, kein Steuerungssignal.</strong> SAP
+      sagt das explizit: VaR hat nur eine <em>Warnfunktion</em>. Die
+      endgültige Entscheidung über operative Maßnahmen muss die
+      Risiko-Abteilung treffen. Mechanische Reaktion auf
+      VaR-Schwellen-Überschreitungen führt zu Pro-Zyklik und
+      Trading-Schäden.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Risk-Aggregation ist keine Addition.</strong> Wer
+      Sensitivitäten einfach summiert, ignoriert Korrelationen. Die
+      Aggregation Categories in der Risk Hierarchy sind die SAP-Antwort —
+      und werden nur vom Variance/Covariance-Approach interpretiert.
+      Historical Simulation aggregiert anders.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Financial Objects sind die unsichtbare Voraussetzung.</strong>
+      Wenn ein neuer Trade „nicht im Risk Reporting auftaucht", ist
+      meistens das Financial Object nicht erzeugt worden — entweder
+      weil das Customizing die Auto-Generierung nicht aktiviert hat,
+      oder weil die Bewertungsregel-Zuordnung fehlt. SLG1 mit Objekt
+      <code>JBA</code>.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Results Database braucht Reorganisation.</strong> Die
+      Ergebnis-Datenbank wächst stetig. Ohne regelmäßige Reorg (siehe
+      Sub-Bereich „Reorganization Tools") wird sie langsam und
+      verbraucht Plattenplatz. Ein paar Datensätze pro Trade, mal hunderte
+      pro Bewertungslauf — das summiert sich.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Integrated Limit Check ist ein
+      Single-Transaction-Check.</strong> Die Doku ist hier
+      missverständlich: alle Funktionen, die für den
+      Single-Transaction-Check beschrieben sind (auch Limit-Update),
+      gelten auch für den integrierten Default-Risk-Limit-Check im TM.
+      Wer das nicht weiß, liest doppelte Doku-Stellen für ein und
+      dieselbe Sache.
     </p>
   </blockquote>
 
   <hr class="soft">
   <p class="meta">
-    Stand: Knowledge-Graph-Snapshot vom 2026-06-14 (5 Sub-Bereiche + Glossar,
-    14 Risk-spezifische Transaktionen indexiert). Diese Landkarte ist ein
-    Entwurfsgerüst — die Klärung der Limit-Hierarchie und der genaue
-    Eingriff der Analyzer in TM-Bewertungen verdient noch einen eigenen
-    Durchgang.
+    Stand: Knowledge-Graph-Snapshot vom 2026-06-14 (buildNo 1779, 5
+    Sub-Bereiche + Basics mit 12 Untertopics, drei VaR-Verfahren
+    indexiert, ~15 Risk-Transaktionen). Diese Landkarte ist ein
+    Entwurfsgerüst — Struktur und Vokabular validiert gegen SAP Help,
+    Stimme noch zu überarbeiten.
   </p>
 </div>
 </body>

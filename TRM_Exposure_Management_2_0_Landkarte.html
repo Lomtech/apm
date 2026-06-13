@@ -9,17 +9,17 @@
     --ink: #1c1c1a;
     --ink-soft: #55544f;
     --ink-faint: #88867e;
-    --paper: #f4faec;
-    --paper-cool: #f3fbfd;
+    --paper: #f3fbfd;
     --rule: #d6e3e6;
     --rule-strong: #bcccd0;
     --accent: #0e7ea0;
-    --max: 820px;
+    --accent-tint: #def2f7;
+    --max: 880px;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
-    margin: 0; background: var(--paper-cool); color: var(--ink);
+    margin: 0; background: var(--paper); color: var(--ink);
     font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
     font-size: 18px; line-height: 1.65;
   }
@@ -52,6 +52,23 @@
     font-family: "SF Mono", monospace; font-size: 12.5px; color: var(--ink-faint);
     margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--rule);
   }
+  .toc {
+    margin: 40px 0 0; padding: 20px 22px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
+    font-family: "SF Mono", monospace; font-size: 13px;
+    column-count: 2; column-gap: 28px;
+  }
+  .toc ol { margin: 0; padding-left: 0; list-style: none; counter-reset: toc; }
+  .toc li {
+    counter-increment: toc; margin: 4px 0;
+    padding-left: 28px; position: relative; break-inside: avoid;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    position: absolute; left: 0; color: var(--ink-faint);
+  }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .toc a:hover { color: var(--accent); }
   h2 {
     font-size: 26px; font-weight: 600; letter-spacing: -0.005em;
     margin: 64px 0 4px; padding-top: 28px;
@@ -63,6 +80,12 @@
     display: block; margin-bottom: 6px; letter-spacing: 0.04em;
   }
   h3 { font-size: 19px; font-weight: 600; margin: 36px 0 6px; }
+  h4 {
+    font-family: "SF Mono", monospace; font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 500;
+    margin: 28px 0 8px;
+  }
   p { margin: 14px 0; max-width: 68ch; }
   strong { font-weight: 600; }
   ul, ol { max-width: 66ch; padding-left: 22px; }
@@ -88,12 +111,23 @@
     border-radius: 0 8px 8px 0; font-size: 17px;
   }
   blockquote p { margin: 6px 0; max-width: none; }
+  .img-path {
+    font-family: "SF Mono", monospace; font-size: 13px;
+    background: var(--accent-tint); color: #04394b;
+    padding: 10px 14px; border-radius: 6px;
+    margin: 16px 0; display: block;
+    word-break: break-word;
+  }
+  .img-path::before {
+    content: "IMG · ";
+    color: var(--accent); font-weight: 600;
+  }
   .gloss {
     margin: 24px 0; border: 1px solid var(--rule);
     border-radius: 10px; overflow: hidden;
   }
   .gloss div {
-    display: grid; grid-template-columns: 220px 1fr; gap: 0;
+    display: grid; grid-template-columns: 240px 1fr; gap: 0;
     border-top: 1px solid var(--rule);
   }
   .gloss div:first-child { border-top: 0; }
@@ -104,15 +138,55 @@
   .gloss dd {
     padding: 12px 16px; margin: 0; font-size: 16px; color: var(--ink-soft);
   }
+  .tx-table {
+    margin: 24px 0; border: 1px solid var(--rule); border-radius: 10px;
+    overflow: hidden; font-size: 15.5px;
+  }
+  .tx-table div {
+    display: grid; grid-template-columns: 130px 1fr;
+    border-top: 1px solid var(--rule);
+  }
+  .tx-table div:first-child { border-top: 0; }
+  .tx-table code.tx {
+    background: #e5f4f7; padding: 12px 16px; font-weight: 600;
+    color: #04394b; border-radius: 0;
+    display: flex; align-items: center;
+  }
+  .tx-table .desc { padding: 12px 16px; color: var(--ink-soft); }
+  .tx-group-head {
+    font-family: "SF Mono", monospace; font-size: 11.5px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 500;
+    padding: 14px 16px; background: #f5fafc;
+    border-top: 1px solid var(--rule);
+    grid-column: 1 / -1 !important;
+    display: block !important;
+  }
+  .mode-card {
+    margin: 14px 0; padding: 18px 20px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
+  }
+  .mode-card h4 { margin-top: 0; color: var(--accent); }
   hr.soft { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
-  @media (max-width: 600px) {
+
+  @media (max-width: 760px) {
     body { font-size: 16.5px; }
     h1 { font-size: 30px; }
     h2 { font-size: 22px; }
     .wrap { padding: 48px 18px 80px; }
-    .gloss div { grid-template-columns: 1fr; }
-    .gloss dd { border-top: 1px solid var(--rule); }
-    .draft-badge { top: 22px; right: 18px; }
+    .toc { column-count: 1; padding: 16px 18px; font-size: 12.5px; }
+    .gloss div, .tx-table div { grid-template-columns: 1fr; }
+    .gloss dd, .tx-table .desc { border-top: 1px solid var(--rule); }
+    .draft-badge { top: 22px; right: 18px; font-size: 9px; }
+    figure { padding: 14px 10px 10px;
+             overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    figure svg { min-width: 560px; }
+    blockquote { padding: 14px 16px; font-size: 16px; }
+    p, .lede { max-width: 100%; }
+    ul, ol { max-width: 100%; padding-left: 20px; }
+    .lede { font-size: 17px; }
+    code { word-break: break-word; }
+    .img-path { font-size: 12px; }
   }
 </style>
 </head>
@@ -124,264 +198,824 @@
   <h1>Exposure Management 2.0</h1>
   <p class="lede">
     Was du nicht messen kannst, kannst du nicht sichern. Exposure 2.0 ist
-    die Klammer, die vor Hedge Management kommt: ein eigenes Stammdaten-Modell
-    für Risiken, die noch nicht designiert sind. Es trennt das
-    <em>Modellieren</em> von Exposure sauber vom <em>Buchen</em> einer
-    Sicherung.
+    die Klammer, die vor Hedge Management kommt: eigene Stammdaten für
+    Risiken, die noch nicht designiert sind. Eine zweistufige Mechanik
+    aus <em>Raw Exposure</em> (was wir wissen) und <em>Exposure Position</em>
+    (worauf wir reagieren) — getrennt durch die Split- und Release-Engine.
   </p>
   <p class="meta">
     Quelle der Struktur: SAP Help Portal — Treasury and Risk Management →
-    Exposure Management 2.0 (S/4HANA on-prem, Version 2025.001).
-    Strukturmodell aus dem lokalen TRM-Knowledge-Graph destilliert,
-    in eigenen Worten skizziert — Stimme noch zu überarbeiten.
+    Exposure Management 2.0 (S/4HANA on-prem, Version 2025.001, buildNo
+    1779). Strukturmodell und Mechanik aus dem lokalen
+    TRM-Knowledge-Graph destilliert (7 Sub-Bereiche, BAPI_TEX_*-Familie,
+    FTREX1/12/15), in eigenen Worten skizziert — Stimme noch zu
+    überarbeiten.
   </p>
 
-  <h2><span class="num">00</span>Das Grundbild: Risiko als eigener Stammdatentyp</h2>
+  <nav class="toc" aria-label="Inhalt">
+    <ol>
+      <li><a href="#s00">Das Grundbild</a></li>
+      <li><a href="#s01">Vokabular</a></li>
+      <li><a href="#s02">Der Datenfluss</a></li>
+      <li><a href="#s03">Quellen: woher Raw Exposures kommen</a></li>
+      <li><a href="#s04">Split Engine: Raw → Sub Raw</a></li>
+      <li><a href="#s05">Release: Sub Raw → Position</a></li>
+      <li><a href="#s06">Position-Updates &amp; Flows</a></li>
+      <li><a href="#s07">Exposure Lifecycle &amp; Automatching</a></li>
+      <li><a href="#s08">Transfer zu E-HA (drei Modi)</a></li>
+      <li><a href="#s09">Integration im Market Risk Analyzer</a></li>
+      <li><a href="#s10">BAPIs &amp; Authorization Objects</a></li>
+      <li><a href="#s11">Wichtige Transaktionen</a></li>
+      <li><a href="#s12">Customizing-Pfade</a></li>
+      <li><a href="#s13">Verbindungen</a></li>
+      <li><a href="#s14">Stolperdrähte</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="s00"><span class="num">00</span>Das Grundbild: zwei Stufen, getrennt durch Release</h2>
   <p>
-    Der konzeptuelle Sprung in „2.0" ist klein, aber tragend: Risiko bekommt
-    eine <strong>eigene Identität, unabhängig vom operativen Geschäft</strong>.
-    Vorher waren Exposures Nebenprodukte von Bestellungen, Aufträgen oder
-    Planpositionen. In 2.0 ist eine <em>Exposure-Position</em> ein selbständiges
-    Objekt — mit Lifecycle, Status und Verbindung zum operativen Beleg.
+    Der konzeptuelle Sprung in „2.0" ist, dass Risiko <strong>eine eigene
+    Identität bekommt</strong>, unabhängig vom operativen Beleg. Vorher
+    waren Exposures Nebenprodukte. In 2.0 ist eine <em>Exposure Position</em>
+    ein selbstständiges Stammdaten-Objekt.
   </p>
   <p>
-    Drei Folgen sind wichtig:
+    Aber die zweite, oft übersehene Idee ist die <strong>Zweistufigkeit</strong>:
   </p>
   <ul>
     <li>
-      Eine Exposure-Position kann existieren, <strong>bevor</strong> ein
-      operativer Beleg vorliegt (Forecast, Sales Plan). Du kannst Risiko
-      planen, statt nur zu reagieren.
+      <strong>Raw Exposure</strong> = das, was wir <em>wissen</em> aus dem
+      Beleg (z.B. eine Bestellung über 10.000 USD in 90 Tagen). Eine
+      direkte Abbildung der Quelle.
     </li>
     <li>
-      Eine Exposure-Position hat einen Lifecycle: sie reift, sie verändert
-      sich, sie wird realisiert — und schlägt sich in jeder Phase im
-      Hedging-Bedarf nieder.
-    </li>
-    <li>
-      Exposure und Hedge sind <strong>entkoppelt</strong>: Hedge-Designation
-      ist ein eigener Schritt, der Exposure-Positionen aufnimmt und in
-      Hedge Accounting übersetzt (Transfer to E-HA).
+      <strong>Exposure Position</strong> = das, worauf wir
+      <em>reagieren</em>. Aggregiert nach Differentiation Criteria,
+      mit Flows beschickt, an die Hedge-Mechanik anschließbar.
     </li>
   </ul>
+  <p>
+    Zwischen den beiden Stufen steht die <strong>Split Engine</strong>
+    (zerlegt Raw in Sub Raw nach Risiken) und das explizite
+    <strong>Release</strong> (übersetzt Sub Raw in Position-Flows). Das ist
+    der zentrale Knackpunkt — und der Grund, warum „Exposure ist
+    angelegt" nicht heißt „Position ist da".
+  </p>
 
-  <h2><span class="num">01</span>Das Vokabular</h2>
+  <h2 id="s01"><span class="num">01</span>Vokabular</h2>
   <div class="gloss">
     <div>
-      <dt>Exposure-Position</dt>
+      <dt>Raw Exposure</dt>
       <dd>
-        Die Stammdaten-Klammer: eine geplante oder reale Cashflow-Reihe in
-        Risiko-Währung. Ein- oder ausgehend, mit Buchungskreis, Belegquelle,
-        Risikomerkmalen. Die Einheit, auf der das Hedging-Modell rechnet.
+        Risiko-Position aus einer Quelle (Logistics-Beleg, BAPI-Import,
+        manueller Eintrag). Header + Line Items. Hat einen Status,
+        kann <em>released</em>, geändert oder gelöscht werden — letzteres
+        nur, solange nicht released.
       </dd>
     </div>
     <div>
-      <dt>Operative vs. strategische Exposure</dt>
+      <dt>Sub Raw Exposure</dt>
       <dd>
-        <em>Operativ</em>: aus tatsächlich existierenden Belegen (Aufträge,
-        Rechnungen, geplante Cashflows aus Verträgen). <em>Strategisch</em>:
-        aus Planung oder Forecast (Sales Plan, FX-Budget). Beide leben unter
-        derselben Position, sind aber in der Aggregation unterscheidbar.
+        Auto-erzeugte Risiko-Komponente eines Raw Exposure Line-Items.
+        Beispiel: ein Line-Item mit USD-Betrag in einem
+        EUR-Buchungskreis → ein Sub Raw Exposure für das Currency Risk.
+        Bei variablen Preisen: ein Sub Raw pro Preis-Tabellen-Eintrag.
       </dd>
     </div>
     <div>
-      <dt>Raw / Adjusted Exposure</dt>
+      <dt>Exposure Position</dt>
       <dd>
-        <em>Raw</em>: das ursprünglich erfasste Risiko. <em>Adjusted</em>:
-        nach Korrekturen, Stornierungen, Realisierungen. Das Adjusted-Volumen
-        ist die Basis für Hedging-Quoten.
+        Aggregat-Sicht: das eigentliche Hedge-relevante Risiko-Objekt.
+        Entsteht beim Release aus den Sub Raw Exposures, aggregiert nach
+        Differentiation Criteria. Trägt Flows, NPV, Lifecycle-Status.
       </dd>
     </div>
     <div>
-      <dt>Hedge Quota</dt>
+      <dt>Exposure Position Type</dt>
       <dd>
-        Der Anteil des Adjusted Exposure, der gesichert werden soll oder ist.
-        Wird durch die Sicherungsrichtlinie vorgegeben (z. B. 80 % aller
-        12-Monats-Exposures sichern).
+        Customer-spezifisch (Customizing). Legt fest, welche
+        <em>Differentiation Criteria</em> für die Aggregation gelten —
+        also auf welcher Granularität Sub Raws zu Positions
+        zusammengeführt werden.
       </dd>
     </div>
     <div>
-      <dt>Exposure Lifecycle Status</dt>
+      <dt>Differentiation Criteria</dt>
       <dd>
-        Phase im Leben einer Exposure-Position: erfasst → genehmigt →
-        gesichert (designiert) → realisiert → archiviert. Steuert,
-        welche Aktionen erlaubt sind.
+        Die Felder, die bestimmen, ob ein neues Sub Raw Exposure in eine
+        bestehende Position einzahlt oder eine neue erzeugt. Typisch:
+        Buchungskreis, Risikowährung, Fälligkeitsperiode, Geschäftspartner.
       </dd>
     </div>
     <div>
-      <dt>Transfer to E-HA</dt>
+      <dt>Exposure Category</dt>
       <dd>
-        Der formale Übergang einer Exposure-Position in eine Hedge-Designation
-        (Hedge Accounting for Exposures). Verbindet die Modellierungsschicht
-        (Exposure) mit der buchhalterischen Schicht (Hedge Accounting).
+        Lifecycle-Phase: <em>Planned Transaction</em>, <em>Firm
+        Commitment</em>, <em>Asset/Liability</em>, <em>Cash/Stock</em>.
+        Bestimmt, wie der Risiko-Prozess fortschreitet — und nur
+        <em>Planned Transaction</em> ist für den Transfer in
+        E-Hedge-Accounting relevant.
       </dd>
     </div>
     <div>
-      <dt>Reportable Period</dt>
+      <dt>Exposure Activity Type</dt>
       <dd>
-        Das Zeitfenster, über das eine Exposure aggregiert wird (Monat,
-        Quartal, Jahr). Liefert das Raster für das Hedge-Management-Cockpit.
+        Operativer Vorgangstyp, der ein Sub Raw Exposure beschreibt
+        (z.B. Neuanlage, Preis-Fixierung, Stornierung). Steuert
+        zusammen mit der Category das Verhalten beim Lifecycle-Übergang
+        und beim Transfer zu E-HA.
+      </dd>
+    </div>
+    <div>
+      <dt>Exposure Lifecycle (Sequence)</dt>
+      <dd>
+        Vom User definierte Reihenfolge von Exposure Categories pro
+        Risiko-Typ — z.B. <em>Planned Transaction → Firm Commitment →
+        Asset/Liability</em>. Steuert Automatching: eine neue Position
+        in einer späteren Phase reduziert die Vorgänger-Position
+        proportional.
+      </dd>
+    </div>
+    <div>
+      <dt>Release</dt>
+      <dd>
+        Der explizite Akt, mit dem aus Sub Raw Exposures echte
+        Position-Flows werden. Vor dem Release: Raw existiert, Position
+        nicht. Nach dem Release: Position existiert, ist im NPV/VaR/Hedge
+        sichtbar.
+      </dd>
+    </div>
+    <div>
+      <dt>Derivation Strategy</dt>
+      <dd>
+        Customizing-Regelwerk: wie Felder einer Exposure Position aus
+        den Daten der Sub Raw Exposure abgeleitet werden. Mehrere
+        Derivation Steps pro Strategie. Per BAdI erweiterbar.
+      </dd>
+    </div>
+    <div>
+      <dt>Financial Object (für Exposures)</dt>
+      <dd>
+        Das Schatten-Objekt im Market Risk Analyzer pro Raw Exposure
+        und Exposure Position. Trägt die Bewertungs-Stammdaten, die für
+        NPV-Berechnung nötig sind. Wird über Customizing automatisch
+        oder manuell erzeugt.
+      </dd>
+    </div>
+    <div>
+      <dt>Automatching</dt>
+      <dd>
+        Optionale Funktion: das System sucht beim Anlegen einer neuen
+        Exposure Position automatisch nach einer Predecessor-Position
+        in der Lifecycle-Sequenz und reduziert sie um den entsprechenden
+        Betrag. Nur für FX-Exposures verfügbar.
       </dd>
     </div>
   </div>
 
-  <h2><span class="num">02</span>Der Exposure-Lifecycle</h2>
-  <p>
-    Die zentrale Mechanik. Eine Exposure-Position wandert durch vier
-    Phasen — jede Phase verändert das Hedging-relevante Volumen:
-  </p>
+  <h2 id="s02"><span class="num">02</span>Der Datenfluss</h2>
   <figure>
-    <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img"
-         aria-label="Exposure-Lifecycle: vier Phasen">
+    <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Datenfluss Exposure Management 2.0 — Quelle bis E-HA">
       <defs>
-        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5"
+        <marker id="ar4" viewBox="0 0 10 10" refX="8" refY="5"
                 markerWidth="6" markerHeight="6" orient="auto-start-reverse">
           <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A"
                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </marker>
       </defs>
+      <!-- Sources -->
+      <rect x="14" y="20" width="160" height="84" rx="9"
+            fill="#fbfaf6" stroke="#bcccd0" stroke-width="0.5"
+            stroke-dasharray="3 3"/>
+      <text x="94" y="42" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#55544f">Quellen</text>
+      <text x="94" y="62" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" fill="#55544f">Logistics (PO/SO)</text>
+      <text x="94" y="78" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" fill="#55544f">BAPI aus Quellsystem</text>
+      <text x="94" y="94" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" fill="#55544f">Manuell (FTREX1)</text>
 
-      <rect x="14" y="50" width="150" height="60" rx="8"
-            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
-      <text x="89" y="74" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="600" fill="#04394b">1 · Raw</text>
-      <text x="89" y="92" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#0e7ea0">erfasst aus Belegen</text>
-      <text x="89" y="106" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#0e7ea0">oder Forecast</text>
-      <line x1="164" y1="80" x2="192" y2="80" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+      <line x1="174" y1="62" x2="206" y2="62" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar4)"/>
 
-      <rect x="194" y="50" width="150" height="60" rx="8"
-            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
-      <text x="269" y="74" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="600" fill="#04394b">2 · Adjusted</text>
-      <text x="269" y="92" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#0e7ea0">netto nach Korrektur,</text>
-      <text x="269" y="106" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#0e7ea0">Storno, Realisierung</text>
-      <line x1="344" y1="80" x2="372" y2="80" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+      <!-- Raw -->
+      <rect x="208" y="30" width="146" height="64" rx="9"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.6"/>
+      <text x="281" y="54" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#04394b">Raw Exposure</text>
+      <text x="281" y="72" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">Header + Line Items</text>
+      <text x="281" y="86" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#0e7ea0">T_TEX_REXP · FTREX1</text>
 
-      <rect x="374" y="50" width="150" height="60" rx="8"
-            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
-      <text x="449" y="74" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="600" fill="#04394b">3 · Hedged</text>
-      <text x="449" y="92" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#0e7ea0">designiert in</text>
-      <text x="449" y="106" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#0e7ea0">Sicherungs-Beziehung</text>
-      <line x1="524" y1="80" x2="552" y2="80" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+      <!-- Split engine -->
+      <text x="281" y="120" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="11" fill="#88867e">↓ Split Engine (on save)</text>
 
-      <rect x="554" y="50" width="150" height="60" rx="8"
-            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
-      <text x="629" y="74" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="600" fill="#04394b">4 · Released</text>
-      <text x="629" y="92" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#0e7ea0">realisiert oder</text>
-      <text x="629" y="106" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#0e7ea0">dedesigniert</text>
+      <!-- Sub Raw -->
+      <rect x="208" y="134" width="146" height="64" rx="9"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.6"/>
+      <text x="281" y="158" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#04394b">Sub Raw Exposure</text>
+      <text x="281" y="176" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">pro Risiko-Komponente</text>
+      <text x="281" y="190" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">(z.B. Currency Risk)</text>
 
-      <!-- Transfer label -->
-      <rect x="395" y="138" width="110" height="22" rx="6"
+      <!-- Release -->
+      <text x="281" y="224" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="11" fill="#88867e">↓ Release (Authorization 43)</text>
+
+      <!-- Exposure Position -->
+      <rect x="208" y="238" width="146" height="64" rx="9"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.6"/>
+      <text x="281" y="262" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#04394b">Exposure Position</text>
+      <text x="281" y="280" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">aggregiert nach</text>
+      <text x="281" y="294" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">Differentiation Criteria</text>
+
+      <!-- Right side: consumers -->
+      <line x1="354" y1="270" x2="394" y2="270" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar4)"/>
+      <line x1="354" y1="166" x2="394" y2="166" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar4)"/>
+
+      <rect x="396" y="140" width="200" height="60" rx="9"
+            fill="#fae3ea" stroke="#a83254" stroke-width="0.5"/>
+      <text x="496" y="164" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#4b1326">Market Risk Analyzer</text>
+      <text x="496" y="182" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#a83254">NPV, Sensitivität via</text>
+      <text x="496" y="195" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#a83254">Financial Object</text>
+
+      <rect x="396" y="240" width="200" height="60" rx="9"
             fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.5"/>
-      <text x="450" y="153" text-anchor="middle" font-family="SF Mono, monospace"
-            font-size="10.5" fill="#04342c">Transfer → E-HA</text>
-      <line x1="449" y1="110" x2="449" y2="138" stroke="#0f6e56" stroke-width="1.2"/>
+      <text x="496" y="264" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#04342c">Hedge Accounting (E-HA)</text>
+      <text x="496" y="282" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0f6e56">Transfer FTREX12/15</text>
+      <text x="496" y="295" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0f6e56">nur Planned Transaction</text>
 
-      <!-- Bottom line: feedback -->
-      <text x="360" y="200" text-anchor="middle" font-family="sans-serif" font-size="13"
-            fill="#55544f">
-        Jede Korrektur in Phase 2 verändert das hedgebare Volumen,
-      </text>
-      <text x="360" y="218" text-anchor="middle" font-family="sans-serif" font-size="13"
-            fill="#55544f">
-        also die Hedge-Quota und potenziell die Effektivität in Phase 3.
-      </text>
+      <!-- Authorization box -->
+      <rect x="618" y="20" width="124" height="100" rx="8"
+            fill="#fbfaf6" stroke="#bcccd0" stroke-width="0.5"/>
+      <text x="680" y="40" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" font-weight="600" fill="#55544f">Auth Objects</text>
+      <text x="680" y="58" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#55544f">T_TEX_REXP</text>
+      <text x="680" y="72" text-anchor="middle" font-family="sans-serif"
+            font-size="10.5" fill="#88867e">01·02·03·06·43</text>
+      <text x="680" y="92" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10.5" fill="#55544f">T_TEX_POS</text>
+      <text x="680" y="106" text-anchor="middle" font-family="sans-serif"
+            font-size="10.5" fill="#88867e">02·03·59·61</text>
     </svg>
     <figcaption>
-      Raw → Adjusted → Hedged → Released. Der Übergang Phase 2→3 ist
-      das, was im Hedge Management als „Designation" gebucht wird.
+      Zwei Mechanik-Schritte (Split, Release) zwischen Quelle und
+      Konsumenten. Hedge Accounting konsumiert nur Planned Transactions.
     </figcaption>
   </figure>
 
-  <h2><span class="num">03</span>Die Sub-Bereiche im Help-Portal</h2>
+  <h2 id="s03"><span class="num">03</span>Quellen: woher Raw Exposures kommen</h2>
+  <p>
+    Drei Wege ins System:
+  </p>
   <ul>
     <li>
-      <strong>Exposure Management 2.0: Process</strong> — der End-to-End-Ablauf
-      von Erfassung bis Reporting. Der Einstieg, wenn du wissen willst,
-      welche Schritte ein User durchläuft.
+      <strong>Automatisch aus Logistics</strong> — Bestellungen,
+      Aufträge, Lieferpläne mit Fremdwährung erzeugen automatisch Raw
+      Exposures. Voraussetzung: die jeweilige
+      Customizing-Aktivierungsstelle ist auf „aktiv".
     </li>
     <li>
-      <strong>Exposure Positions</strong> — die Stammdaten-Mechanik:
-      Anlage, Pflege, Statusübergänge. Das Herzstück des Moduls.
+      <strong>BAPI aus Quellsystem</strong> —
+      <code>BAPI_TEX_EXPOSURE_CREATE</code>. Brauchst du, wenn
+      Risiko-Quellen außerhalb von S/4HANA leben (z.B. ein Planungs-Tool,
+      Excel-Pipelines, Treasury Workstation).
     </li>
     <li>
-      <strong>Exposure Lifecycle</strong> — die formale Sicht auf die
-      Status-Maschine (Raw / Adjusted / …).
-    </li>
-    <li>
-      <strong>Setting Up Exposure Management 2.0</strong> — Customizing:
-      Risikoklassen, Status-Schema, Berechnungsregeln.
-    </li>
-    <li>
-      <strong>Transferring Exposures to E-HA</strong> — die Brücke ins
-      Hedge Accounting for Exposures.
-    </li>
-    <li>
-      <strong>Integration of Operating Exposures in Market Risk Analysis</strong>
-      — Übergabe in den Market Risk Analyzer für Sensitivitäten und VaR.
-    </li>
-    <li>
-      <strong>Terms in Exposure Management 2.0</strong> — das offizielle
-      Glossar (deckt sich teilweise mit Hedge-Glossar, aber mit eigener
-      Perspektive).
+      <strong>Manuell</strong> — <code>FTREX1</code> direkt erfassen.
+      Pragmatisch für Forecast-Positionen, die nicht aus einem System
+      kommen.
     </li>
   </ul>
+  <p>
+    Beim Erfassen gibst du erst die <strong>Header-Daten</strong>
+    (Buchungskreis, Exposure Position Type, Risikoart) ein, dann die
+    <strong>Line Items</strong> mit Betrag, Währung, Fälligkeitsdatum.
+    Variable Preise sind über eine eigene Preis-Tabelle möglich — eine
+    Zeile pro Preis-Komponente.
+  </p>
 
-  <h2><span class="num">04</span>Verbindungen zu den Nachbar-Modulen</h2>
+  <h2 id="s04"><span class="num">04</span>Split Engine: Raw → Sub Raw</h2>
+  <p>
+    Beim <strong>Speichern</strong> des Raw Exposures startet die Split
+    Engine. Sie geht jedes Line-Item durch und prüft, welche Risiken
+    daran hängen. Pro Risiko entsteht ein <em>Sub Raw Exposure</em>:
+  </p>
   <ul>
     <li>
-      <strong>← Operative Belege</strong> (Sales Orders, Purchase Orders,
-      Forecasts): die Quellen, aus denen Exposure-Positionen entstehen.
-      Strategische Exposures kommen aus Planungs-Welten (CO, IBP).
+      Fremdwährungs-Betrag → ein Sub Raw für Currency Risk.
     </li>
     <li>
-      <strong>→ Hedge Management of FX Risks (E-HA)</strong>: der Transfer
-      einer Exposure-Position erzeugt einen Exposure-Posten in der
-      Hedge-Welt, der für Designation bereit ist. Das ist die Naht,
-      an der „Exposure 2.0" und „Hedge Accounting" sich treffen.
+      Variable Preise → ein Sub Raw pro Preis-Tabellen-Eintrag (jeweils
+      mit dem Pricing-Datum als Fälligkeit).
     </li>
     <li>
-      <strong>→ Market Risk Analyzer</strong>: operative Exposures werden
-      in die Marktrisiko-Analyse integriert — sie tragen zur
-      Sensitivitäts- und VaR-Rechnung bei, auch wenn sie noch nicht
-      gesichert sind.
-    </li>
-    <li>
-      <strong>→ Transaction Manager</strong>: technische
-      Sicherungs-Instrumente (FX-Termin, -Swap, -Option), die für die
-      Designation gebraucht werden, leben im Transaction Manager — nicht
-      hier in Exposure 2.0.
+      Mehrere Risiken im selben Line-Item → mehrere Sub Raws.
     </li>
   </ul>
-
+  <p>
+    Sub Raws sind <strong>nicht sichtbar für Hedge oder Risk</strong> —
+    sie sind interne Zwischenstationen. Erst das Release macht sie real.
+  </p>
   <blockquote>
     <p>
-      <strong>Begriffsfalle:</strong> „Exposure-Position" (Exposure 2.0) ist
-      <em>nicht</em> dasselbe wie der „Exposure-Posten" aus Hedge Management.
-      Erste ist die Modellierungs-Klammer (eigenes Stammdaten-Objekt), zweite
-      ist die aggregierte Hedge-Sicht, die für die Designation aufbereitet
-      wird. Der Transfer übersetzt eine Exposure-Position in einen
-      Exposure-Posten (bzw. dessen Teilposten) — das ist die einzige Stelle,
-      wo die beiden Welten direkt aneinanderrühren.
+      <strong>Spezialfall variable Preise:</strong> bei nicht-fixierten
+      Preisen hat das Raw zunächst noch keinen Betrag — und damit auch
+      noch nicht das volle Currency Risk. Du kannst einen
+      <em>temporären Preis</em> mit Status „Not Fixed" eingeben, der bis
+      zur endgültigen Fixierung modifizierbar bleibt.
+    </p>
+  </blockquote>
+
+  <h2 id="s05"><span class="num">05</span>Release: Sub Raw → Position</h2>
+  <p>
+    Das <strong>Release</strong> ist die zweite mechanische Stufe — und
+    die wichtigste. Sie übersetzt Sub Raws in echte Exposure-Position-Flows.
+    Vier Schritte intern:
+  </p>
+  <ol>
+    <li>
+      <strong>Transaktion pro Sub Raw bauen</strong>. Aus den Sub-Raw-Daten
+      plus Position-Typ plus über Derivation Strategy abgeleiteten
+      Zusatzfeldern entsteht eine Transaktion.
+    </li>
+    <li>
+      <strong>Differentiation Criteria bestimmen</strong>. Aus dem
+      Position Type holt das System die Differentiation Criteria — die
+      Felder, die festlegen, ob diese Transaktion in eine bestehende
+      Position einzahlt oder eine neue erzeugt.
+    </li>
+    <li>
+      <strong>Match oder Create</strong>. Suche nach Position mit
+      passenden Differentiation-Kriterien. Gefunden → mit Flow updaten;
+      nicht gefunden → neue Position anlegen.
+    </li>
+    <li>
+      <strong>Authorization-Check</strong>. Release benötigt Activity 43
+      auf <code>T_TEX_REXP</code>. Ohne diese Berechtigung bleibt der Raw
+      ewig im Status „nicht released".
+    </li>
+  </ol>
+
+  <h2 id="s06"><span class="num">06</span>Position-Updates &amp; Flows</h2>
+  <p>
+    Wenn sich der zugrundeliegende Beleg ändert (Menge, Preis-Fixierung,
+    Stornierung), änderst du <strong>den Raw Exposure</strong> — und
+    machst ein neues Release. Drei Verhalten je nach Änderung:
+  </p>
+  <ul>
+    <li>
+      <strong>Neuer Sub Raw</strong> → System schreibt einen neuen Flow,
+      der die Position aufbaut.
+    </li>
+    <li>
+      <strong>Sub Raw obsolet</strong> → System schreibt einen
+      <em>Clearing-Flow</em>, der ihn neutralisiert.
+    </li>
+    <li>
+      <strong>Differentiation-Kriterium hat sich geändert</strong> (z.B.
+      eine neue Transaction Category) → alte Position wird durch neue
+      Position ersetzt.
+    </li>
+    <li>
+      <strong>Nicht-Differentiation-Änderung</strong> (z.B. Mengenänderung)
+      → Delta-Flow auf der bestehenden Position.
+    </li>
+  </ul>
+  <blockquote>
+    <p>
+      <strong>Sonderregel:</strong> Wenn sich die Transaction Category für
+      einen <em>Teil</em> des Raw Exposures ändert, musst du den
+      bestehenden Raw um diesen Teil reduzieren und für den Teil einen
+      neuen Raw mit der neuen Category anlegen. Eine partielle
+      Auto-Migration gibt es nicht.
+    </p>
+  </blockquote>
+
+  <h2 id="s07"><span class="num">07</span>Exposure Lifecycle &amp; Automatching</h2>
+  <p>
+    Der Lifecycle ist <strong>keine Statusmaschine pro Position</strong> —
+    sondern eine vom User definierte <strong>Sequenz von Exposure
+    Categories</strong> innerhalb einer Risiko-Art. Beispiel-Sequenz für
+    FX-Risiko aus Logistics:
+  </p>
+  <figure>
+    <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Exposure-Lifecycle als Sequenz von Exposure Categories">
+      <defs>
+        <marker id="ar5" viewBox="0 0 10 10" refX="8" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <rect x="14" y="40" width="160" height="60" rx="9"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
+      <text x="94" y="62" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" font-weight="600" fill="#04394b">Planned</text>
+      <text x="94" y="78" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">Forecast / Sales Plan</text>
+      <text x="94" y="92" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10" fill="#0e7ea0">→ E-HA-fähig</text>
+      <line x1="174" y1="70" x2="200" y2="70" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar5)"/>
+
+      <rect x="202" y="40" width="160" height="60" rx="9"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
+      <text x="282" y="62" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" font-weight="600" fill="#04394b">Firm Commitment</text>
+      <text x="282" y="78" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">bestätigte Bestellung</text>
+      <text x="282" y="92" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10" fill="#0e7ea0">→ Cash Mgmt</text>
+      <line x1="362" y1="70" x2="388" y2="70" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar5)"/>
+
+      <rect x="390" y="40" width="160" height="60" rx="9"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
+      <text x="470" y="62" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" font-weight="600" fill="#04394b">Asset / Liability</text>
+      <text x="470" y="78" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">Rechnung gebucht</text>
+      <text x="470" y="92" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10" fill="#0e7ea0">→ Cash Mgmt</text>
+      <line x1="550" y1="70" x2="576" y2="70" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar5)"/>
+
+      <rect x="578" y="40" width="170" height="60" rx="9"
+            fill="#def2f7" stroke="#0e7ea0" stroke-width="0.5"/>
+      <text x="663" y="62" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" font-weight="600" fill="#04394b">Cash / Stock</text>
+      <text x="663" y="78" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#0e7ea0">tatsächlich geflossen</text>
+      <text x="663" y="92" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="10" fill="#0e7ea0">→ realisiert</text>
+
+      <!-- Automatching note -->
+      <rect x="14" y="130" width="734" height="50" rx="9"
+            fill="#fbfaf6" stroke="#bcccd0" stroke-width="0.5"
+            stroke-dasharray="3 3"/>
+      <text x="381" y="152" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" fill="#55544f">
+        Automatching (nur FX): neue Position in späterer Phase reduziert die Vorgänger-Position
+      </text>
+      <text x="381" y="170" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="11" fill="#88867e">
+        z.B. Firm-Commitment-Pos für 10k USD → Planned-Pos um 10k reduziert
+      </text>
+    </svg>
+    <figcaption>
+      Pro Risiko-Art definierst du eine eigene Sequenz. Nur Planned
+      Transaction ist E-HA-fähig — alle anderen Kategorien wandern in
+      Cash Management.
+    </figcaption>
+  </figure>
+
+  <h4>Wofür welche Category gut ist</h4>
+  <ul>
+    <li>
+      <strong>Planned Transaction</strong> — die einzige Kategorie, die
+      in <strong>Hedge Accounting for Exposures</strong> überführt
+      werden kann. Wer in E-HA sichern will, braucht hier seine Quelle.
+    </li>
+    <li>
+      <strong>Firm Commitment / Asset / Liability / Cash / Stock</strong>
+      — fließen ins <strong>Cash Management</strong> als planbare /
+      reale Cashflows. Hedge-Mechanik greift hier nicht mehr.
+    </li>
+  </ul>
+
+  <h4>Automatching</h4>
+  <p>
+    Wenn aktiviert: beim Anlegen einer neuen Position sucht das System
+    in der Sequenz nach einer <em>Predecessor-Position</em> mit
+    matchenden Differentiation-Eigenschaften. Gefunden →
+    Vorgänger-Position wird um den Betrag der neuen reduziert. Auch der
+    umgekehrte Fall: wird die neue Position später wieder reduziert,
+    erhöht sich der Vorgänger proportional zurück.
+  </p>
+  <p>
+    Wichtige Einschränkung: <strong>Automatching greift nur, wenn die
+    Vorgänger-Position nicht aus einem Logistics-Beleg stammt</strong>.
+    Logistics-getriebene Positionen sind „Source of Truth" und werden
+    nicht heruntergerechnet.
+  </p>
+
+  <h2 id="s08"><span class="num">08</span>Transfer zu E-HA (drei Modi)</h2>
+  <p>
+    Die Brücke ins Hedge Accounting for Exposures. Drei
+    Customizing-Einstellungen pro Exposure Category:
+  </p>
+
+  <div class="mode-card">
+    <h4>1 · Kein Transfer</h4>
+    <p>
+      Indikator <code>Transfer Not Permitted</code> gesetzt. Die
+      Exposure ist nur für Reporting-Zwecke da, nicht für E-HA. Sinnvoll
+      für Asset/Liability/Cash/Stock — sie haben in der Hedge-Welt
+      ohnehin nichts zu suchen.
+    </p>
+  </div>
+  <div class="mode-card">
+    <h4>2 · Transfer ohne Aggregation</h4>
+    <p>
+      Indikator <code>Aggregate Exposure</code> nicht gesetzt. Pro
+      neuer/geänderter Exposure Position wird in Hedge Accounting eine
+      neue Exposure erzeugt. Folge: bei Änderung der zugrundeliegenden
+      Position muss die bestehende Sicherungsbeziehung
+      <em>dedesigniert</em> und neu aufgesetzt werden.
+    </p>
+  </div>
+  <div class="mode-card">
+    <h4>3 · Transfer mit Aggregation</h4>
+    <p>
+      Indikator <code>Aggregate Exposure</code> gesetzt. Exposure
+      Positions werden zu einer bestehenden Exposure in E-HA addiert
+      (oder bei Reduktion subtrahiert). Vorteil: die bestehende
+      Sicherungsbeziehung bleibt erhalten — kein Dedesignate nötig.
+      Beispiel: aus einer Planned Purchase Order wird eine Firm Purchase
+      Order mit fixiertem Preis → die betroffene Transaktion verlässt
+      die Exposure, die Sicherungsbeziehung bleibt designiert.
+    </p>
+  </div>
+
+  <p>
+    Operativ läuft der Transfer entweder einzeln über
+    <code>FTREX12</code> (Overview of Exposure Positions) oder gebündelt
+    über <code>FTREX15</code> (Mass Transfer of Exposure Positions to
+    E-HA). Bei Customizing-Aktivität <em>Define Exposure Categories</em>
+    werden die drei Modi gesetzt.
+  </p>
+
+  <h2 id="s09"><span class="num">09</span>Integration im Market Risk Analyzer</h2>
+  <p>
+    Sowohl <strong>Raw Exposures</strong> als auch <strong>Exposure
+    Positions</strong> bekommen jeweils ein <em>Financial Object</em> im
+    Market Risk Analyzer. Damit wird NPV/Mark-to-Market für operative
+    Exposures berechenbar — auch wenn sie noch nicht in der
+    Hedge-Welt sind.
+  </p>
+
+  <h4>Aktivierung</h4>
+  <p>
+    Im IMG-Pfad <em>Basic Analyzer Settings → Automatic Integration of
+    Financial Objects in Transaction Master Data → Operating Exposures
+    → Activate/Deactivate Financial Object Integration</em> wird die
+    Component-Active-Markierung pro Buchungskreis und Risk Category (FX
+    Risk) gesetzt. Ist sie aktiv, blendet das System bei Trade-Anlage
+    die Eingabe-Felder für Financial Object mit ein.
+  </p>
+
+  <h4>Derivation Strategies</h4>
+  <p>
+    Die Financial-Object-Felder müssen aus den Exposure-Daten abgeleitet
+    werden. Zwei separate Strategien:
+  </p>
+  <ul>
+    <li>
+      <em>Define Derivation Strategy for Exposures</em> — für Exposure
+      Positions.
+    </li>
+    <li>
+      <em>Define Derivation Strategy for Raw Exposures</em> — für Raw
+      Exposures. Pro Analysis Structure separat definierbar.
+    </li>
+  </ul>
+  <p>
+    Beide bestehen aus mehreren <em>Derivation Steps</em>: jeder Step
+    füllt eine Menge von Target-Feldern aus einer Menge von Source-Feldern.
+    Erweiterbar über BAdIs:
+  </p>
+  <ul>
+    <li><code>BAdI: Exposure</code> — Custom-Logik für Position-Derivations</li>
+    <li><code>BAdI: Raw Exposures</code> — Custom-Logik für Raw-Derivations</li>
+    <li><code>BAdI: Relevance for Raw Exposures</code> — selektives Ausschließen vom Financial Object</li>
+  </ul>
+
+  <h4>NPV-Berechnung</h4>
+  <p>
+    Damit der NPV überhaupt berechnet werden kann, brauchst du im Raw
+    (FTREX1) die <strong>Zahlungs- und Lieferdaten</strong>. Plus eine
+    Approach Category mit <em>Floating Prices</em>, hinterlegt im
+    Exposure Activity Type. Plus die Derivation Rules aus
+    <code>AFO_FOI_RULE_EXP</code> für die Analyse-Parameter.
+  </p>
+
+  <h2 id="s10"><span class="num">10</span>BAPIs &amp; Authorization Objects</h2>
+  <h4>BAPI-Familie (BAPI_TEX_*)</h4>
+  <ul>
+    <li><code>BAPI_TEX_EXPOSURE_CREATE</code> — Raw Exposure anlegen</li>
+    <li><code>BAPI_TEX_EXPOSURE_CHANGE</code> — Raw Exposure ändern</li>
+    <li><code>BAPI_TEX_EXPOSURE_DELETE</code> — Raw Exposure löschen (nur vor Release)</li>
+    <li><code>BAPI_TEX_EXPOSURE_GETDETAIL</code> — Raw Exposure auslesen</li>
+    <li><code>BAPI_TEX_EXPOSURE_STARTRELEASE</code> — Release auslösen</li>
+  </ul>
+
+  <h4>Authorization Objects</h4>
+  <p>
+    Zwei Objekte steuern, wer was darf:
+  </p>
+  <ul>
+    <li>
+      <strong>T_TEX_REXP — Raw Exposure</strong>:
+      <code>01</code> Create / <code>02</code> Change /
+      <code>03</code> Display / <code>06</code> Delete (nur vor Release) /
+      <code>43</code> Release.
+    </li>
+    <li>
+      <strong>T_TEX_POS — Exposure Position</strong>:
+      <code>02</code> Change / <code>03</code> Display /
+      <code>59</code> Distribute (Update in Hedge Mgmt) /
+      <code>61</code> Export (via BAPI / Marketplace).
+    </li>
+  </ul>
+
+  <h2 id="s11"><span class="num">11</span>Wichtige Transaktionen</h2>
+  <div class="tx-table">
+    <div class="tx-group-head">Raw Exposure pflegen</div>
+    <div><code class="tx">FTREX1</code><span class="desc">Raw Exposures anlegen / ändern / anzeigen — der zentrale Eintrittspunkt</span></div>
+
+    <div class="tx-group-head">Position-Sicht</div>
+    <div><code class="tx">FTREX12</code><span class="desc">Overview of Exposure Positions — Einzel-Transfer zu E-HA</span></div>
+
+    <div class="tx-group-head">Massenverarbeitung</div>
+    <div><code class="tx">FTREX15</code><span class="desc">Mass Transfer of Exposure Positions to E-HA</span></div>
+    <div><code class="tx">FTREX1 (Mass)</code><span class="desc">Process Raw Exposures - Collective Processing</span></div>
+
+    <div class="tx-group-head">Market Risk Integration</div>
+    <div><code class="tx">AFO_FOI_RULE_EXP</code><span class="desc">Derive Rule Values - Operating Exposures (Analyse-Parameter)</span></div>
+
+    <div class="tx-group-head">Bewertung</div>
+    <div><code class="tx">TPM60</code><span class="desc">NPV-Berechnung — gilt für Exposure Positions mit Financial Object</span></div>
+  </div>
+
+  <h2 id="s12"><span class="num">12</span>Customizing-Pfade (IMG)</h2>
+  <p>
+    Pfade unterhalb von <em>Financial Supply Chain Management → Treasury
+    and Risk Management</em>:
+  </p>
+
+  <h4>Stammdaten / Definitionen</h4>
+  <span class="img-path">
+    Transaction Manager → General Settings → Exposure Management 2.0 →
+    Define Exposure Activity Types
+  </span>
+  <span class="img-path">
+    Transaction Manager → General Settings → Exposure Management 2.0 →
+    Define Exposure Position Types (Differentiation Criteria)
+  </span>
+  <span class="img-path">
+    Transaction Manager → General Settings → Exposure Management 2.0 →
+    Define Derivation Strategies for Exposure Fields
+  </span>
+
+  <h4>Lifecycle</h4>
+  <span class="img-path">
+    Exposure Management 2.0 → Exposure Lifecycle → Define Exposure
+    Categories
+  </span>
+  <span class="img-path">
+    Exposure Management 2.0 → Exposure Lifecycle → Determine Exposure
+    Categories and Exposure Activity Types
+  </span>
+  <span class="img-path">
+    Exposure Management 2.0 → Exposure Lifecycle → Define Exposure
+    Category Sequences (Automatching aktivieren)
+  </span>
+
+  <h4>Financial Object Integration</h4>
+  <span class="img-path">
+    Basic Analyzer Settings → Automatic Integration of Financial Objects
+    in Transaction Master Data → Operating Exposures →
+    Activate/Deactivate Financial Object Integration
+  </span>
+  <span class="img-path">
+    Basic Analyzer Settings → Automatic Integration of Financial Objects
+    in Transaction Master Data → Operating Exposures → Define Derivation
+    Strategy for Exposures
+  </span>
+  <span class="img-path">
+    Basic Analyzer Settings → Automatic Integration of Financial Objects
+    in Transaction Master Data → Operating Exposures → Define Derivation
+    Strategy for Raw Exposures
+  </span>
+
+  <h2 id="s13"><span class="num">13</span>Verbindungen zu den Nachbar-Modulen</h2>
+  <ul>
+    <li>
+      <strong>← Logistics (MM/SD)</strong>: Quelle für automatisch
+      erzeugte Raw Exposures aus Bestellungen, Aufträgen, Lieferplänen
+      mit Fremdwährungs-Komponente.
+    </li>
+    <li>
+      <strong>↔ Hedge Management of FX Risks (E-HA)</strong>: nur
+      Planned-Transaction-Exposures wandern via FTREX12/15 in die
+      Hedge-Welt. Drei Aggregations-Modi steuern, was dort daraus wird.
+    </li>
+    <li>
+      <strong>↔ Market Risk Analyzer</strong>: Exposure Positions und
+      Raw Exposures bekommen Financial Objects → NPV, VaR,
+      Sensitivität werden berechenbar. Operative Exposures tragen so
+      zum gesamten FX-Marktrisiko bei, auch ungesichert.
+    </li>
+    <li>
+      <strong>→ Cash Management</strong>: alle anderen Categories
+      (Firm Commitment, Asset/Liability, Cash/Stock) fließen in
+      Cash Management als planbare oder reale Cashflows.
+    </li>
+    <li>
+      <strong>↔ Transaction Manager</strong>: technische
+      Sicherungs-Instrumente (FX-Termin, -Swap, -Option) leben weiter
+      im TM — nicht hier. Exposure 2.0 modelliert nur das zu sichernde
+      Risiko, nicht das Sicherungs-Geschäft selbst.
+    </li>
+  </ul>
+
+  <h2 id="s14"><span class="num">14</span>Stolperdrähte</h2>
+  <blockquote>
+    <p>
+      <strong>Raw ≠ Position.</strong> „Ich habe einen Raw Exposure
+      angelegt" heißt nicht „die Position ist im Hedge-Cockpit". Erst das
+      Release übersetzt Sub Raw in Position-Flows. Ohne Activity 43 auf
+      <code>T_TEX_REXP</code> bleibt der Raw ewig pending.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Position ≠ Exposure-Posten (Hedge).</strong> Die
+      „Exposure Position" aus Exposure 2.0 ist <em>nicht</em> dasselbe
+      wie der „Exposure-Posten" aus Hedge Management of FX Risks. Erstere
+      ist das Modellierungs-Objekt; zweiterer ist das aggregierte
+      Hedge-Objekt nach Transfer. Der Transfer mit Aggregation übersetzt
+      Exposure Positions in Hedge-Exposure-Teilposten.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Nur Planned Transaction ist E-HA-fähig.</strong> Firm
+      Commitment, Asset/Liability und Cash/Stock fließen in Cash
+      Management, nicht in Hedge Accounting. Wer eine Firm-Commitment-
+      Sequenz für Hedging vorsieht, verfehlt das System.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Partielle Category-Änderung braucht Split.</strong>
+      Wenn nur ein Teil eines Raw Exposures die Transaction Category
+      wechselt (z.B. Teil-Lieferung wird fixiert), musst du den Raw
+      manuell um diesen Teil reduzieren und für den Teil einen neuen
+      Raw mit der neuen Category anlegen. Keine Auto-Migration.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Automatching nicht für Logistics-Vorgänger.</strong> Die
+      automatische Reduktion der Vorgänger-Position greift <em>nicht</em>,
+      wenn der Vorgänger aus einem Logistics-Beleg stammt. Logistics-
+      Quellen sind „Source of Truth" und werden nicht heruntergerechnet.
+      Häufige Fehlerquelle bei manuellen Forecast-Positionen, die mit
+      Logistics-Positionen kollidieren.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Financial Object braucht Aktivierung pro BUK/Risk
+      Category.</strong> Auch wenn das System für FX-Risk korrekt
+      konfiguriert ist, kann ein Buchungskreis ohne aktive Integration
+      keine NPVs liefern. Erster Reflex bei „warum kein VaR für meine
+      Exposure-Positionen": Component-Active-Indikator prüfen.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Variable Preise brauchen Sorgfalt.</strong> Bevor ein
+      Preis fixiert ist, hat der Raw ggf. keinen Betrag — und damit
+      kein Currency Risk Sub Raw. Mit temporären Preisen („Not Fixed")
+      kannst du das Risiko trotzdem schon abbilden, musst aber daran
+      denken, sie bei Fixierung umzustellen.
     </p>
   </blockquote>
 
   <hr class="soft">
   <p class="meta">
-    Stand: Knowledge-Graph-Snapshot vom 2026-06-14 (7 Sub-Bereiche).
-    Diese Landkarte ist ein Entwurfsgerüst — sie beschreibt die Mechanik;
-    den Praxisanteil (welche Belegtypen wirklich genutzt werden, wie der
-    Status-Übergang im Cockpit aussieht) schreibst du aus eigener Erfahrung.
+    Stand: Knowledge-Graph-Snapshot vom 2026-06-14 (buildNo 1779, 7
+    Sub-Bereiche mit Process / Positions / Lifecycle / Setup / Transfer
+    / MR-Integration / Terms, BAPI_TEX_*-Familie, FTREX-Transaktionen
+    aus body_text identifiziert). Diese Landkarte ist ein
+    Entwurfsgerüst — Mechanik validiert gegen SAP Help, Stimme noch zu
+    überarbeiten.
   </p>
 </div>
 </body>

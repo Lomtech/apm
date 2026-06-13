@@ -13,20 +13,19 @@
     --rule: #dde0e6;
     --rule-strong: #c2c6cf;
     --accent: #3f3b8a;
-    --max: 820px;
+    --accent-tint: #ecebf7;
+    --max: 880px;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
+    margin: 0; background: var(--paper); color: var(--ink);
     font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
     font-size: 18px; line-height: 1.65;
   }
   .wrap { max-width: var(--max); margin: 0 auto; padding: 72px 28px 120px; position: relative; }
   .eyebrow {
-    font-family: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
     font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--accent); margin: 0 0 18px;
   }
@@ -53,6 +52,23 @@
     font-family: "SF Mono", monospace; font-size: 12.5px; color: var(--ink-faint);
     margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--rule);
   }
+  .toc {
+    margin: 40px 0 0; padding: 20px 22px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 10px;
+    font-family: "SF Mono", monospace; font-size: 13px;
+    column-count: 2; column-gap: 28px;
+  }
+  .toc ol { margin: 0; padding-left: 0; list-style: none; counter-reset: toc; }
+  .toc li {
+    counter-increment: toc; margin: 4px 0;
+    padding-left: 28px; position: relative; break-inside: avoid;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    position: absolute; left: 0; color: var(--ink-faint);
+  }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .toc a:hover { color: var(--accent); }
   h2 {
     font-size: 26px; font-weight: 600; letter-spacing: -0.005em;
     margin: 64px 0 4px; padding-top: 28px;
@@ -64,6 +80,12 @@
     display: block; margin-bottom: 6px; letter-spacing: 0.04em;
   }
   h3 { font-size: 19px; font-weight: 600; margin: 36px 0 6px; }
+  h4 {
+    font-family: "SF Mono", monospace; font-size: 13px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 500;
+    margin: 28px 0 8px;
+  }
   p { margin: 14px 0; max-width: 68ch; }
   strong { font-weight: 600; }
   ul, ol { max-width: 66ch; padding-left: 22px; }
@@ -89,12 +111,24 @@
     border-radius: 0 8px 8px 0; font-size: 17px;
   }
   blockquote p { margin: 6px 0; max-width: none; }
+  .img-path {
+    font-family: "SF Mono", monospace; font-size: 13px;
+    background: var(--accent-tint); color: #251f4d;
+    padding: 10px 14px; border-radius: 6px;
+    margin: 16px 0; display: block;
+    word-break: break-word;
+  }
+  .img-path::before {
+    content: "IMG · ";
+    color: var(--accent); font-weight: 600;
+  }
+  /* Glossary */
   .gloss {
     margin: 24px 0; border: 1px solid var(--rule);
     border-radius: 10px; overflow: hidden;
   }
   .gloss div {
-    display: grid; grid-template-columns: 220px 1fr; gap: 0;
+    display: grid; grid-template-columns: 240px 1fr; gap: 0;
     border-top: 1px solid var(--rule);
   }
   .gloss div:first-child { border-top: 0; }
@@ -105,29 +139,89 @@
   .gloss dd {
     padding: 12px 16px; margin: 0; font-size: 16px; color: var(--ink-soft);
   }
+  /* TX-table */
   .tx-table {
     margin: 24px 0; border: 1px solid var(--rule); border-radius: 10px;
-    overflow: hidden; font-size: 16px;
+    overflow: hidden; font-size: 15.5px;
   }
   .tx-table div {
-    display: grid; grid-template-columns: 120px 1fr;
+    display: grid; grid-template-columns: 130px 1fr;
     border-top: 1px solid var(--rule);
   }
   .tx-table div:first-child { border-top: 0; }
   .tx-table code.tx {
     background: #ecebf3; padding: 12px 16px; font-weight: 600;
     color: #251f4d; border-radius: 0;
+    display: flex; align-items: center;
   }
   .tx-table .desc { padding: 12px 16px; color: var(--ink-soft); }
+  .tx-group-head {
+    font-family: "SF Mono", monospace; font-size: 11.5px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 500;
+    padding: 14px 16px; background: #fafafd;
+    border-top: 1px solid var(--rule);
+    grid-column: 1 / -1 !important;
+    display: block !important;
+  }
+  /* Product category table */
+  .prod-table {
+    margin: 24px 0; border: 1px solid var(--rule); border-radius: 10px;
+    overflow: hidden; font-size: 15px;
+  }
+  .prod-table > .row {
+    display: grid; grid-template-columns: 110px 90px 1fr;
+    border-top: 1px solid var(--rule);
+  }
+  .prod-table > .row:first-of-type { border-top: 0; }
+  .prod-table .cat {
+    background: #ecebf3; padding: 10px 14px; font-weight: 600;
+    color: #251f4d; font-family: "SF Mono", monospace; font-size: 14px;
+  }
+  .prod-table .code {
+    padding: 10px 14px; color: var(--ink-soft); font-family: "SF Mono", monospace;
+    font-size: 13.5px;
+  }
+  .prod-table .desc {
+    padding: 10px 14px; color: var(--ink-soft);
+  }
+  .prod-table > .head {
+    display: grid; grid-template-columns: 110px 90px 1fr;
+    font-family: "SF Mono", monospace; font-size: 11.5px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-faint); background: #f5f5fa;
+    border-bottom: 1px solid var(--rule);
+  }
+  .prod-table > .head > div { padding: 10px 14px; }
+  /* Data-model boxes */
+  .data-box {
+    margin: 18px 0; padding: 16px 20px;
+    background: #fff; border: 1px solid var(--rule); border-radius: 8px;
+    font-size: 16px;
+  }
+  .data-box code { background: #ecebf3; }
   hr.soft { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
-  @media (max-width: 600px) {
+
+  @media (max-width: 760px) {
     body { font-size: 16.5px; }
     h1 { font-size: 30px; }
     h2 { font-size: 22px; }
     .wrap { padding: 48px 18px 80px; }
+    .toc { column-count: 1; padding: 16px 18px; font-size: 12.5px; }
     .gloss div, .tx-table div { grid-template-columns: 1fr; }
     .gloss dd, .tx-table .desc { border-top: 1px solid var(--rule); }
-    .draft-badge { top: 22px; right: 18px; }
+    .prod-table > .row, .prod-table > .head { grid-template-columns: 1fr; }
+    .prod-table .code, .prod-table .desc { border-top: 1px solid var(--rule); }
+    .draft-badge { top: 22px; right: 18px; font-size: 9px; }
+    figure { padding: 14px 10px 10px;
+             overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    figure svg { min-width: 560px; }
+    blockquote { padding: 14px 16px; font-size: 16px; }
+    p, .lede { max-width: 100%; }
+    ul, ol { max-width: 100%; padding-left: 20px; }
+    .lede { font-size: 17px; }
+    code { word-break: break-word; }
+    .img-path { font-size: 12px; }
   }
 </style>
 </head>
@@ -144,112 +238,62 @@
   </p>
   <p class="meta">
     Quelle der Struktur: SAP Help Portal — Treasury and Risk Management →
-    Transaction Manager (S/4HANA on-prem, Version 2025.001).
-    Strukturmodell aus dem lokalen TRM-Knowledge-Graph destilliert,
+    Transaction Manager (S/4HANA on-prem, Version 2025.001, buildNo 1779).
+    Strukturmodell aus dem lokalen TRM-Knowledge-Graph destilliert
+    (14 Sub-Bereiche, ~40 TPM*-Transaktionen, VTBFHA-Familie),
     in eigenen Worten skizziert — Stimme noch zu überarbeiten.
   </p>
 
-  <h2><span class="num">00</span>Das Grundbild: drei Ebenen, eine Identität</h2>
+  <nav class="toc" aria-label="Inhalt">
+    <ol>
+      <li><a href="#s00">Das Grundbild</a></li>
+      <li><a href="#s01">Vokabular: die acht Schichten eines Geschäfts</a></li>
+      <li><a href="#s02">Die Welt der Produkte (Categories &amp; Types)</a></li>
+      <li><a href="#s03">Der Lebenszyklus &amp; die Activity-Maschine</a></li>
+      <li><a href="#s04">Financial Transaction Management</a></li>
+      <li><a href="#s05">Securities Account Management</a></li>
+      <li><a href="#s06">Treasury Correspondence</a></li>
+      <li><a href="#s07">Accounting &amp; Position Management</a></li>
+      <li><a href="#s08">Hedge Accounting im TM (P-HA / E-HA / HA-EI)</a></li>
+      <li><a href="#s09">Wichtige Transaktionen, thematisch geordnet</a></li>
+      <li><a href="#s10">BAPIs und Funktionsbausteine</a></li>
+      <li><a href="#s11">Tabellen-Skelett (Daten-Modell)</a></li>
+      <li><a href="#s12">Customizing-Pfade (IMG)</a></li>
+      <li><a href="#s13">Verbindungen zu den Nachbar-Modulen</a></li>
+      <li><a href="#s14">Stolperdrähte</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="s00"><span class="num">00</span>Das Grundbild: drei Ebenen, eine Identität</h2>
   <p>
     Der einfachste Satz über den Transaction Manager: <strong>er verwaltet
-    Geschäfte</strong>. Aber „Geschäft" bedeutet drei verschiedene Dinge,
-    je nachdem aus welcher Höhe man draufschaut:
+    Geschäfte</strong>. Aber „Geschäft" ist nicht ein Ding — es ist drei
+    Dinge gleichzeitig, je nachdem aus welcher Höhe man draufschaut:
   </p>
   <ul>
     <li>
       Aus der <strong>Vertrags-Perspektive</strong> ist ein Geschäft ein
-      <em>Trade</em>: Wer mit wem, was, zu welchen Konditionen, bis wann.
+      <em>Trade</em>: wer mit wem, was, zu welchen Konditionen, bis wann.
+      Lebt in <code>VTBFHA</code> (Kopf) und <code>VTBFHAPO</code>
+      (Aktivitäten).
     </li>
     <li>
       Aus der <strong>Bestands-Perspektive</strong> ist ein Geschäft eine
       <em>Position</em>: ein laufender Bestand, der bewertet, gebucht und
-      irgendwann geschlossen wird.
+      irgendwann geschlossen wird. Wird über die <em>Position Management
+      Procedure</em> bewertet.
     </li>
     <li>
       Aus der <strong>Bewertungs-Perspektive</strong> ist ein Geschäft ein
-      <em>NPV</em>: ein heutiger Wert, der sich täglich ändert.
+      <em>NPV</em>: ein heutiger Wert, abgezinst über die Zinskurve,
+      eventuell um CVA korrigiert. Treibt Bilanzansatz, Hedge-Effektivität
+      und Marktrisiko-Sensitivitäten.
     </li>
   </ul>
-  <p>
-    Anders als Hedge Management (Lebenszyklus über Zeit) oder APM (Hub mit
-    Verteiler) ist der Transaction Manager eine <strong>Schichtenarchitektur</strong>:
-    dasselbe Geschäft, drei Blickwinkel. Wer den Übergang zwischen den
-    Schichten versteht — wo aus einem Vertrag eine Position wird, wo aus
-    einer Position eine NPV-Bewertung — versteht 70 % vom Transaction Manager.
-  </p>
 
-  <h2><span class="num">01</span>Das Vokabular</h2>
-  <p>
-    SAP unterscheidet hier sauberer als die Umgangssprache. Die Hierarchie
-    von oben nach unten:
-  </p>
-  <div class="gloss">
-    <div>
-      <dt>Geschäftsart (Product Type)</dt>
-      <dd>
-        Die Klasse des Instruments. Money Market, FX, Derivat, Wertpapier,
-        Darlehen — jede Geschäftsart hat ihre eigenen Eingabefelder und
-        ihren eigenen Buchungsschema.
-      </dd>
-    </div>
-    <div>
-      <dt>Geschäft (Trade)</dt>
-      <dd>
-        Der konkrete Abschluss. Hat eine Geschäftsnummer, Geschäftspartner,
-        Konditionen, Fälligkeiten. Wird in einer <em>Geschäftsart</em>
-        innerhalb eines <em>Buchungskreises</em> angelegt.
-      </dd>
-    </div>
-    <div>
-      <dt>Geschäftsvorfall (Activity Type)</dt>
-      <dd>
-        Ein Vorgang innerhalb des Geschäfts-Lebenszyklus: Anlage, Bestätigung,
-        Korrektur, Stornierung, Settlement, Vertragsabschluss. Steuert,
-        welche Buchungen entstehen.
-      </dd>
-    </div>
-    <div>
-      <dt>Position</dt>
-      <dd>
-        Die Bestands-Sicht: alle Geschäfte derselben Klasse (Wertpapier,
-        Darlehen, …) im selben Bewertungsbereich werden zu einer Position
-        aggregiert. Die Einheit, auf der bewertet und gebucht wird.
-      </dd>
-    </div>
-    <div>
-      <dt>Bewertungsbereich (Valuation Area)</dt>
-      <dd>
-        Die Klammer für parallele Rechnungslegung: lokales HGB, IFRS,
-        Konzernabschluss — jeder bekommt seinen eigenen Bewertungsbereich,
-        mit eigenen Verfahren und eigenen Konten.
-      </dd>
-    </div>
-    <div>
-      <dt>Position Management Procedure</dt>
-      <dd>
-        Das Rezept, wie eine Position in einem Bewertungsbereich bewertet
-        und gebucht wird (Bewertungsmethode, Bewertungsklasse,
-        Kontenfindung). Hier wandelt sich „Vertrag" in „Buchungssatz".
-      </dd>
-    </div>
-    <div>
-      <dt>Net Present Value (NPV)</dt>
-      <dd>
-        Der heutige Barwert eines Geschäfts, abgezinst über die Zinskurve.
-        Treibt die Bewertung der Position und ist die Grundlage für
-        Effektivitätstests im Hedge Management.
-      </dd>
-    </div>
-  </div>
-
-  <h2><span class="num">02</span>Der Lebenszyklus eines Geschäfts</h2>
-  <p>
-    Ein Geschäft ist nicht statisch. Es durchläuft Stationen, und an jeder
-    Station entstehen Buchungen, Korrespondenz oder Bewertungen:
-  </p>
   <figure>
-    <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" role="img"
-         aria-label="Lebenszyklus eines Geschäfts im Transaction Manager">
+    <svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Drei Ebenen eines Geschäfts: Vertrag, Position, Bewertung">
       <defs>
         <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5"
                 markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -257,153 +301,736 @@
                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </marker>
       </defs>
+      <!-- Center identity -->
+      <circle cx="360" cy="135" r="36" fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.8"/>
+      <text x="360" y="132" text-anchor="middle" font-family="sans-serif"
+            font-size="12" font-weight="600" fill="#251f4d">Eine</text>
+      <text x="360" y="148" text-anchor="middle" font-family="sans-serif"
+            font-size="12" font-weight="600" fill="#251f4d">Geschäfts-ID</text>
 
-      <rect x="14" y="40" width="130" height="58" rx="8"
+      <!-- Three perspective boxes -->
+      <rect x="40" y="30" width="200" height="68" rx="9"
             fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
-      <text x="79" y="64" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="500" fill="#251f4d">1 · Anlage</text>
-      <text x="79" y="82" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#3f3b8a">Abschluss erfassen</text>
-      <line x1="144" y1="69" x2="170" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+      <text x="140" y="54" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#251f4d">1 · Vertrag</text>
+      <text x="140" y="72" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" fill="#3f3b8a">VTBFHA · Kopf, Kondit.,</text>
+      <text x="140" y="88" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" fill="#3f3b8a">Geschäftspartner, BUK</text>
 
-      <rect x="172" y="40" width="130" height="58" rx="8"
+      <rect x="480" y="30" width="200" height="68" rx="9"
             fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
-      <text x="237" y="64" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="500" fill="#251f4d">2 · Bestätigung</text>
-      <text x="237" y="82" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#3f3b8a">Korrespondenz, Settlement</text>
-      <line x1="302" y1="69" x2="328" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+      <text x="580" y="54" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#251f4d">2 · Position</text>
+      <text x="580" y="72" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" fill="#3f3b8a">Bestände pro Bewertungs-</text>
+      <text x="580" y="88" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" fill="#3f3b8a">bereich · PMP-getrieben</text>
 
-      <rect x="330" y="40" width="130" height="58" rx="8"
+      <rect x="260" y="200" width="200" height="50" rx="9"
             fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
-      <text x="395" y="64" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="500" fill="#251f4d">3 · Bewertung</text>
-      <text x="395" y="82" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#3f3b8a">Periodenabschluss</text>
-      <line x1="460" y1="69" x2="486" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar)"/>
+      <text x="360" y="222" text-anchor="middle" font-family="sans-serif"
+            font-size="13" font-weight="600" fill="#251f4d">3 · Bewertung (NPV)</text>
+      <text x="360" y="240" text-anchor="middle" font-family="sans-serif"
+            font-size="11.5" fill="#3f3b8a">Zinskurve · ggf. CVA</text>
 
-      <rect x="488" y="40" width="130" height="58" rx="8"
-            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
-      <text x="553" y="64" text-anchor="middle" font-family="sans-serif"
-            font-size="13" font-weight="500" fill="#251f4d">4 · Abschluss</text>
-      <text x="553" y="82" text-anchor="middle" font-family="sans-serif"
-            font-size="11" fill="#3f3b8a">Verfall, Stornierung</text>
-
-      <!-- Caption row underneath -->
-      <text x="79"  y="148" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM1 · FTR_CREATE</text>
-      <text x="237" y="148" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM18 · TBB1</text>
-      <text x="395" y="148" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM1 · TPM60</text>
-      <text x="553" y="148" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM13 · TPM40</text>
-
-      <!-- Bottom layer: three perspectives -->
-      <rect x="14" y="180" width="604" height="44" rx="9"
-            fill="#fbfaff" stroke="#c2c6cf" stroke-width="0.5"
-            stroke-dasharray="3 3"/>
-      <text x="316" y="204" text-anchor="middle" font-family="sans-serif"
-            font-size="12" fill="#55544f">
-        durchgängig: Vertrag · Position · Bewertung
-      </text>
-      <text x="316" y="220" text-anchor="middle" font-family="SF Mono, monospace"
-            font-size="10.5" fill="#88867e">
-        TBB1 (Buchung) · TPM10/12/13 (Position) · TPM60 (NPV)
-      </text>
+      <line x1="240" y1="68" x2="328" y2="120" stroke="#5F5E5A" stroke-width="1.5"/>
+      <line x1="480" y1="68" x2="392" y2="120" stroke="#5F5E5A" stroke-width="1.5"/>
+      <line x1="360" y1="172" x2="360" y2="200" stroke="#5F5E5A" stroke-width="1.5"/>
     </svg>
     <figcaption>
-      Vier Stationen oben, drei Perspektiven darunter — jede Station
-      schreibt in alle drei Sichten gleichzeitig.
+      Drei Sichten, eine Identität — das ist der Trick des Transaction
+      Managers. Wer den Übergang zwischen den Sichten versteht, versteht
+      den Rest fast von allein.
     </figcaption>
   </figure>
 
-  <h2><span class="num">03</span>Die Sub-Bereiche</h2>
+  <h2 id="s01"><span class="num">01</span>Vokabular: die acht Schichten eines Geschäfts</h2>
   <p>
-    Im Help-Portal hängen unter dem Transaction Manager 14 Sub-Bereiche.
-    Konzeptuell zerfallen sie in drei Gruppen:
+    SAP unterscheidet die Begriffe hier deutlich präziser als die
+    Umgangssprache. Die Hierarchie geht von der inhaltlichen Klassifikation
+    nach unten zum konkreten Geldfluss:
   </p>
-  <h3>Kern — Geschäfte verwalten</h3>
-  <ul>
-    <li><strong>Financial Transaction Management</strong> — der eigentliche Trade-Lifecycle. Anlage, Bestätigung, Settlement, Stornierung. Hier wohnt das Geschäft.</li>
-    <li><strong>Securities Account Management</strong> — Verwaltung von Wertpapierbeständen über Depotkonten.</li>
-    <li><strong>Treasury Correspondence</strong> — Bestätigungen, SWIFT-Nachrichten, Format-Mapping. Der „Außenkanal" zum Geschäftspartner.</li>
-    <li><strong>Corporate Action</strong> — Kapitalmaßnahmen (Dividenden, Splits, Bezugsrechte).</li>
-  </ul>
-
-  <h3>Bewertung &amp; Buchung — Position wird Buchungssatz</h3>
-  <ul>
-    <li><strong>Accounting</strong> — Position Management, Bewertungsbereiche, Kontenfindung. Hier passiert die parallele Rechnungslegung.</li>
-    <li><strong>Hedge Accounting</strong> — der Hedge-Mechanismus auf TM-Ebene (P-HA, „Hedge Accounting for Positions"). Vorgänger / Alternative zu E-HA aus Exposure Management 2.0.</li>
-  </ul>
-
-  <h3>Querschnitt — was alle teilen</h3>
-  <ul>
-    <li><strong>Information System</strong> — die Reports über alle Geschäfte hinweg.</li>
-    <li><strong>BAPIs for the Transaction Manager</strong> — die Programmier-Schnittstelle, hauptsächlich <code>BAPI_FTR_*</code> für Trades, <code>BAPI_TPM_*</code> für Positionen.</li>
-    <li><strong>Terms in FTM</strong> — das offizielle Glossar.</li>
-    <li><strong>Country/Region-Specific Functions</strong> — Sonderlogik pro Land.</li>
-    <li><strong>Currency Changeover</strong> — Migrations-Werkzeuge bei Währungsumstellungen.</li>
-  </ul>
-
-  <h2><span class="num">04</span>Die wichtigsten Transaktionen</h2>
-  <p>
-    Eine schmale Auswahl, geordnet nach Lebenszyklus-Phase. Vollständiger
-    in den Sub-Bereichen.
-  </p>
-  <div class="tx-table">
-    <div><code class="tx">TPM1</code><span class="desc">Treasury-Position-Cockpit — die Eintrittstür für Bewertung &amp; Buchung</span></div>
-    <div><code class="tx">FTR_CREATE</code><span class="desc">Geschäft anlegen (generisch, alle Produktarten)</span></div>
-    <div><code class="tx">FTR_EDIT</code><span class="desc">Bestehendes Geschäft bearbeiten / Geschäftsvorfälle ausführen</span></div>
-    <div><code class="tx">TPM18</code><span class="desc">Settlement der fälligen Geschäftsvorfälle</span></div>
-    <div><code class="tx">TBB1</code><span class="desc">Buchungslauf — Geschäftsvorfälle als FI-Beleg auf die Konten bringen</span></div>
-    <div><code class="tx">TPM10 / TPM12 / TPM13</code><span class="desc">Positions-Listen / -Belege / -Anzeige</span></div>
-    <div><code class="tx">TPM60</code><span class="desc">NPV-Berechnung pro Geschäft (auch CVA-Variante als <code>TPM60CVA</code>)</span></div>
-    <div><code class="tx">TPM100 / TPM101 / TPM120</code><span class="desc">Stammdaten der Bewertungsbereiche, Position Management Procedures, Bewertungsklassen</span></div>
-    <div><code class="tx">TPM40</code><span class="desc">Vertragsabschluss / Endbuchung einer Position</span></div>
+  <div class="gloss">
+    <div>
+      <dt>Contract Type</dt>
+      <dd>
+        Der oberste Anwendungs-Diskriminator innerhalb der Treasury.
+        Sechs feste Werte, fest verdrahtet: <code>2</code> Securities,
+        <code>4</code> Foreign Exchange, <code>5</code> Money Market,
+        <code>6</code> Derivatives, <code>E</code> Exposure Positions,
+        <code>T</code> Trade Finance, <code>X</code> External Accounts.
+        Bestimmt, welche Flow Types überhaupt existieren.
+      </dd>
+    </div>
+    <div>
+      <dt>Product Category</dt>
+      <dd>
+        Vorgegebene Klassifikation pro Asset-Klasse (s. Sektion 02).
+        Drei Stellen, z.B. <code>600</code> FX-Kassa/Termin,
+        <code>620</code> Swap, <code>040</code> Bond. Nicht änderbar;
+        steuert welche Transaction Categories ein Geschäft annehmen darf.
+      </dd>
+    </div>
+    <div>
+      <dt>Product Type</dt>
+      <dd>
+        Customer-spezifisch (Customizing). Hängt an genau einer Product
+        Category und segmentiert sie weiter — z.B. <em>Domestic Stock</em>
+        vs. <em>Foreign Stock</em> beide unter Category 010.
+      </dd>
+    </div>
+    <div>
+      <dt>Transaction Category</dt>
+      <dd>
+        Pro Product Category vordefiniert. Beispiel Money Market:
+        <em>Fixed-Term Deposit Investment</em> vs. <em>Borrowing</em>.
+        Steuert den Transaktionsfluss.
+      </dd>
+    </div>
+    <div>
+      <dt>Transaction Type</dt>
+      <dd>
+        Customizing. Gruppiert Transaction Categories nach
+        unternehmens-spezifischen Anforderungen. An den Transaction Type
+        ist die <em>Processing Category</em> gebunden, die die
+        Activity-Kette des Geschäfts definiert.
+      </dd>
+    </div>
+    <div>
+      <dt>Transaction Activity</dt>
+      <dd>
+        Eindeutiger Key für den aktuellen Vorgangstyp eines Geschäfts:
+        Anlage, Bestätigung, Settlement, Stornierung, Vertragsabschluss.
+        Die Activity-Kette wird über die Processing Category des
+        Transaction Type vorgegeben.
+      </dd>
+    </div>
+    <div>
+      <dt>Condition</dt>
+      <dd>
+        Vertraglich vereinbarter Strukturbaustein: Zinsstaffel,
+        Tilgungsplan, Zahlungsrhythmus. Beschreibt Periode und Betrag.
+      </dd>
+    </div>
+    <div>
+      <dt>Flow</dt>
+      <dd>
+        Eintrag im Cashflow eines Geschäfts oder einer Position. Hat
+        Datum, Betrag, Kalkulationsinfo. Beispiele: Kauf-Flow,
+        Rückzahlungs-Flow, Bewertungs-Flow. Aus Flows entstehen
+        Buchungen (TBB1).
+      </dd>
+    </div>
+    <div>
+      <dt>Flow Type</dt>
+      <dd>
+        Klassifiziert einen Flow. <strong>Pro Contract Type
+        eindeutig</strong> — Flow Type 1000 in Contract Type 2
+        (Securities) ist <em>nicht</em> derselbe wie in Contract Type 4
+        (FX). Steuert Buchungs-Relevanz und Cash-Forecast-Einbezug.
+      </dd>
+    </div>
+    <div>
+      <dt>Update Type</dt>
+      <dd>
+        Wie Flow Type, aber für die <strong>parallele Positionsführung</strong>
+        in Bewertungsbereichen — und nicht auf Contract Type beschränkt.
+        Beispiel <code>V152</code>: Zuschreibung Fremdwährungs-Bewertung.
+      </dd>
+    </div>
+    <div>
+      <dt>Cash Flow</dt>
+      <dd>
+        Chronologische Sammlung aller Flows einer Klasse, eines
+        Geschäfts oder einer Position — geplante und Ist-Bewegungen.
+        Eingangsdatum für Position Mgmt, NPV und Cash Management.
+      </dd>
+    </div>
+    <div>
+      <dt>Position</dt>
+      <dd>
+        Aggregierte Bestands-Sicht: alle Geschäfte derselben Klasse
+        (Wertpapier, Darlehen, …) im selben Bewertungsbereich werden zu
+        einer Position zusammengefasst. Die Einheit, auf der bewertet
+        und gebucht wird.
+      </dd>
+    </div>
+    <div>
+      <dt>Bewertungsbereich (Valuation Area)</dt>
+      <dd>
+        Klammer für parallele Rechnungslegung: lokal, IFRS,
+        Konzernabschluss — jeder bekommt seinen eigenen Bewertungsbereich
+        mit eigenen Position Management Procedures und eigener
+        Kontenfindung.
+      </dd>
+    </div>
+    <div>
+      <dt>Position Management Procedure (PMP)</dt>
+      <dd>
+        Das Rezept: welche Bewertungs-Schritte in welcher Reihenfolge
+        ausgeführt werden, plus Transfer Category (Verhalten beim
+        Positionsumbuchung). Hier wird festgelegt, ob/wie
+        Foreign-Currency-Valuation, Amortisation, Impairment und
+        Price-Valuation greifen.
+      </dd>
+    </div>
+    <div>
+      <dt>Net Present Value (NPV)</dt>
+      <dd>
+        Der heutige Barwert aller zukünftigen Cashflows. Treibt
+        FV-through-OCI und FV-through-P&amp;L, ist die Grundlage für
+        Effektivitätstests im Hedge Mgmt und für VaR-Rechnungen im
+        Market Risk Analyzer.
+      </dd>
+    </div>
   </div>
 
-  <h2><span class="num">05</span>Verbindungen zu den Nachbar-Modulen</h2>
+  <h2 id="s02"><span class="num">02</span>Die Welt der Produkte: Categories &amp; Types</h2>
   <p>
-    Der Transaction Manager steht nicht für sich allein. Vier Berührungen
-    sind tragend:
+    Product Categories sind <strong>fest in SAP verdrahtet</strong> — du
+    legst sie nicht an. Du definierst nur Product Types darauf. Hier die
+    wichtigsten Categories pro Asset-Klasse:
+  </p>
+
+  <div class="prod-table">
+    <div class="head"><div>Asset-Klasse</div><div>Code</div><div>Was es ist</div></div>
+    <div class="row"><div class="cat">FX</div><div class="code">600</div><div class="desc">FX Transactions (Kassa, Termin)</div></div>
+    <div class="row"><div class="cat">FX</div><div class="code">760</div><div class="desc">OTC Options</div></div>
+    <div class="row"><div class="cat">Money Market</div><div class="code">530</div><div class="desc">Commercial Papers</div></div>
+    <div class="row"><div class="cat">Money Market</div><div class="code">540</div><div class="desc">Cash Flow Transactions</div></div>
+    <div class="row"><div class="cat">Money Market</div><div class="code">550</div><div class="desc">Interest Rate Instruments (Festgeld, Termingeld)</div></div>
+    <div class="row"><div class="cat">Money Market</div><div class="code">560</div><div class="desc">Facilities (Kreditrahmen)</div></div>
+    <div class="row"><div class="cat">Money Market</div><div class="code">580</div><div class="desc">Current Account-Style Instruments</div></div>
+    <div class="row"><div class="cat">Securities</div><div class="code">010</div><div class="desc">Stock</div></div>
+    <div class="row"><div class="cat">Securities</div><div class="code">020</div><div class="desc">Fund</div></div>
+    <div class="row"><div class="cat">Securities</div><div class="code">030</div><div class="desc">Subscription Right</div></div>
+    <div class="row"><div class="cat">Securities</div><div class="code">040</div><div class="desc">Bond</div></div>
+    <div class="row"><div class="cat">Securities</div><div class="code">042</div><div class="desc">Installment Bond</div></div>
+    <div class="row"><div class="cat">Securities</div><div class="code">060</div><div class="desc">Bond with Warrant</div></div>
+    <div class="row"><div class="cat">Securities</div><div class="code">070</div><div class="desc">Convertible Bond</div></div>
+    <div class="row"><div class="cat">Securities</div><div class="code">160</div><div class="desc">Shareholding</div></div>
+    <div class="row"><div class="cat">Derivatives</div><div class="code">610</div><div class="desc">Cap and Floor</div></div>
+    <div class="row"><div class="cat">Derivatives</div><div class="code">620</div><div class="desc">Swap</div></div>
+    <div class="row"><div class="cat">Derivatives</div><div class="code">630</div><div class="desc">Forward Rate Agreement (FRA)</div></div>
+    <div class="row"><div class="cat">Derivatives</div><div class="code">640</div><div class="desc">Total Return Swap</div></div>
+    <div class="row"><div class="cat">Derivatives</div><div class="code">740</div><div class="desc">Forward Securities Transaction</div></div>
+    <div class="row"><div class="cat">Derivatives</div><div class="code">770</div><div class="desc">Securities Lending</div></div>
+    <div class="row"><div class="cat">Derivatives</div><div class="code">780</div><div class="desc">Forward</div></div>
+    <div class="row"><div class="cat">Derivatives</div><div class="code">790</div><div class="desc">Forward Loan</div></div>
+    <div class="row"><div class="cat">Listed Deriv.</div><div class="code">700</div><div class="desc">Future</div></div>
+    <div class="row"><div class="cat">Listed Deriv.</div><div class="code">750</div><div class="desc">Listed Options</div></div>
+    <div class="row"><div class="cat">External</div><div class="code">690</div><div class="desc">External Account</div></div>
+    <div class="row"><div class="cat">Trade Finance</div><div class="code">850</div><div class="desc">Letter of Credit</div></div>
+    <div class="row"><div class="cat">Trade Finance</div><div class="code">860</div><div class="desc">Bank Guarantee</div></div>
+    <div class="row"><div class="cat">Exposure</div><div class="code">990</div><div class="desc">Exposure relevant for Exposure Management 2.0</div></div>
+    <div class="row"><div class="cat">Exposure</div><div class="code">991</div><div class="desc">Exposure Item relevant for HA-EI</div></div>
+  </div>
+
+  <h2 id="s03"><span class="num">03</span>Der Lebenszyklus &amp; die Activity-Maschine</h2>
+  <p>
+    Ein Geschäft durchläuft <strong>Aktivitäten</strong> — keine freien
+    Zustände, sondern eine Kette, die durch die Processing Category des
+    Transaction Type vorgegeben ist. Die wichtigsten Activity-Kategorien:
+  </p>
+  <figure>
+    <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img"
+         aria-label="Activity-Kette eines Geschäfts mit Statusmaschine">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A"
+                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <!-- Phase boxes -->
+      <rect x="14" y="40" width="130" height="58" rx="8"
+            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
+      <text x="79" y="62" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" font-weight="600" fill="#251f4d">Order</text>
+      <text x="79" y="80" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">Geschäft im Entwurf,</text>
+      <text x="79" y="94" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">noch nicht buchbar</text>
+      <line x1="144" y1="69" x2="170" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar2)"/>
+
+      <rect x="172" y="40" width="130" height="58" rx="8"
+            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
+      <text x="237" y="62" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" font-weight="600" fill="#251f4d">Contract</text>
+      <text x="237" y="80" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">verbindlich · Flows</text>
+      <text x="237" y="94" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">buchungsrelevant</text>
+      <line x1="302" y1="69" x2="328" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar2)"/>
+
+      <rect x="330" y="40" width="130" height="58" rx="8"
+            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
+      <text x="395" y="62" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" font-weight="600" fill="#251f4d">Settlement</text>
+      <text x="395" y="80" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">Auszahlung / Verrech-</text>
+      <text x="395" y="94" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">nung erfolgt</text>
+      <line x1="460" y1="69" x2="486" y2="69" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#ar2)"/>
+
+      <rect x="488" y="40" width="170" height="58" rx="8"
+            fill="#ecebf7" stroke="#3f3b8a" stroke-width="0.5"/>
+      <text x="573" y="62" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" font-weight="600" fill="#251f4d">Fix / Rollover / Term.</text>
+      <text x="573" y="80" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">NDFs / Verlängerung /</text>
+      <text x="573" y="94" text-anchor="middle" font-family="sans-serif"
+            font-size="11" fill="#3f3b8a">Vorzeitige Beendigung</text>
+
+      <!-- Reverse arrow (Reversal) -->
+      <path d="M395 110 Q 240 150 79 110" fill="none" stroke="#888780"
+            stroke-width="1.2" stroke-dasharray="4 3"
+            marker-end="url(#ar2)"/>
+      <text x="237" y="148" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="11" fill="#888780">Reversal (Storno)</text>
+
+      <!-- Underline label: TXs -->
+      <text x="79"  y="180" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">FTR_CREATE</text>
+      <text x="237" y="180" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">FTR_EDIT</text>
+      <text x="395" y="180" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM18</text>
+      <text x="573" y="180" text-anchor="middle" font-family="SF Mono, monospace" font-size="11" fill="#5F5E5A">TPM13 / TPM40</text>
+
+      <!-- Bottom area: parallel layers -->
+      <rect x="14" y="210" width="644" height="110" rx="10"
+            fill="#fbfaff" stroke="#c2c6cf" stroke-width="0.6"
+            stroke-dasharray="3 3"/>
+      <text x="336" y="234" text-anchor="middle" font-family="sans-serif"
+            font-size="12.5" font-weight="500" fill="#55544f">
+        Parallel zu jeder Activity: drei Schichten</text>
+      <text x="336" y="256" text-anchor="middle" font-family="sans-serif"
+            font-size="12" fill="#55544f">
+        Flow-Erzeugung → Position-Update → Bewertung &amp; FI-Beleg
+      </text>
+      <text x="336" y="278" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="11" fill="#88867e">
+        VTBFHA/VTBFHAPO → Position Mgmt Procedure → TBB1
+      </text>
+      <text x="336" y="298" text-anchor="middle" font-family="SF Mono, monospace"
+            font-size="11" fill="#88867e">
+        Jede Activity schreibt simultan in alle drei Ebenen.
+      </text>
+    </svg>
+    <figcaption>
+      Vier Activity-Stationen plus Reversal. Jede Station löst die drei
+      Ebenen aus — Flow, Position, FI-Beleg in einem Zug.
+    </figcaption>
+  </figure>
+
+  <p>
+    Activity Categories sind nicht erfunden — sie heißen tatsächlich so im
+    System: <em>Order</em>, <em>Contract</em>, <em>Settlement</em>,
+    <em>Fix Settlement</em>, <em>Rollover Settlement</em>,
+    <em>Give Notice Settlement</em>, <em>Terminate Settlement</em>,
+    <em>Reversal</em>. Welche genau vorkommen, hängt am Transaction Type
+    (Processing Category). NDF z.B. hat eine Fix-Settlement-Activity vor
+    der Contract-Settlement, ein FX-Termin nicht.
+  </p>
+
+  <h2 id="s04"><span class="num">04</span>Sub-Bereich: Financial Transaction Management</h2>
+  <p>
+    Der Hauptkanal. Hier wird ein Geschäft angelegt, geändert, bestätigt,
+    abgewickelt, storniert. Die Sub-Themen im KG zeigen, was alles unter
+    dem Begriff hängt:
   </p>
   <ul>
     <li>
-      <strong>→ Hedge Management of FX Risks (E-HA)</strong>: Sicherungs-Instrumente
-      werden hier als Geschäfte angelegt, Hedge Mgmt verknüpft sie mit
-      Exposure-Posten und buchut die Effektivitätsergebnisse zurück
-      auf TM-Positionen.
+      <strong>Apps for Processing Financial Transactions</strong> — die
+      Fiori-Apps für Trade-Erfassung und kollektive Bearbeitung. Hier
+      lebt die moderne S/4-Oberfläche von <code>FTR_*</code>.
     </li>
     <li>
-      <strong>→ Exposure Management 2.0</strong>: Exposure-Positionen können
-      automatisch zu Hedge-Designations werden — die operativen
-      Sicherungs-Geschäfte daraus leben aber wieder im Transaction Manager.
+      <strong>Intercompany Trading Process</strong> — die spezielle
+      Logik für konzerninterne Geschäfte (Mirror Transactions
+      zwischen Buchungskreisen).
     </li>
     <li>
-      <strong>→ Risk Management</strong>: NPV-Berechnung,
-      Sensitivitäts-Analysen, Limits — die Analyzer (Market, Credit,
-      Portfolio) lesen TM-Positionen und liefern Risikometriken zurück.
+      <strong>Regulatory Reporting</strong> — Meldewesen (EMIR, MiFID,
+      Bundesbank-Statistik). Berührt FTM, weil die Geschäfts-Metadaten
+      die Meldebasis sind.
+    </li>
+    <li>
+      <strong>Situation Templates</strong> — Smart-Situations für die
+      Trade-Verarbeitung (S/4-spezifisch). Auslöser für proaktive
+      Hinweise an die Treasury.
+    </li>
+    <li>
+      <strong>Feature Comparison for Collective Processing Apps</strong>
+      — der „welche App kann was?"-Übersicht. Brauchst du, wenn du
+      die Apps konsolidieren willst.
+    </li>
+    <li>
+      <strong>Manual Maintenance of Payment Reason</strong> —
+      Pflege-App für Verwendungszweck an Flows (für Zahlungsdateien).
+    </li>
+  </ul>
+
+  <h2 id="s05"><span class="num">05</span>Sub-Bereich: Securities Account Management</h2>
+  <p>
+    Eigener Sub-Bereich für die Wertpapier-Welt — Depots,
+    Klassenpositionen, Corporate Actions. Hier sitzt was, was im
+    Money-Market-/FX-Welt nicht greift:
+  </p>
+  <ul>
+    <li><strong>Class Position</strong> — die Position pro Wertpapier-Klasse.</li>
+    <li><strong>Cash Flow for a Class</strong> — Cashflow der Wertpapier-Klasse.</li>
+    <li><strong>Securities Account Position List</strong> — Bestandsverzeichnis.</li>
+    <li><strong>External Securities Account Statements</strong> — externer Depotauszug-Abgleich.</li>
+    <li><strong>Execute Securities Account Transfer</strong> — Depotübertrag, der eine PMP-Transfer-Category triggert.</li>
+    <li><strong>Exercise Rights / Reverse Rights / Restraints on Disposal</strong> — Sperren und Rechtsausübung.</li>
+    <li><strong>Issue / Execute Capital Increase / Payments</strong> — Wertpapier-Events.</li>
+    <li><strong>Position Overview / Planned Record Update</strong> — Auswertung und Planungs-Update.</li>
+  </ul>
+
+  <h2 id="s06"><span class="num">06</span>Sub-Bereich: Treasury Correspondence</h2>
+  <p>
+    Der „Außenkanal" zum Geschäftspartner. Hier wird die formale
+    Bestätigung erzeugt, in unterschiedlichen Formaten — SWIFT MT300,
+    Confirmation-Letter, Custodian-Statement. Wichtig: Format-Mapping
+    läuft konfigurierbar, sodass exotische Brücken (z.B. Bank-spezifische
+    Formate) ohne Code-Änderung gehen.
+  </p>
+  <p>
+    Im KG liegt eine ausführliche Subsektion „Exchange Treasury
+    Correspondence via SWIFT" mit eigener Format-Mapping-Logik.
+  </p>
+
+  <h2 id="s07"><span class="num">07</span>Sub-Bereich: Accounting &amp; Position Management</h2>
+  <p>
+    Das Herzstück für die Bilanzwirkung. Hier wird aus dem Geschäft ein
+    Buchungssatz. Die zentrale Mechanik: <strong>Position Management
+    Procedure (PMP)</strong>.
+  </p>
+
+  <h4>Position Management Procedure — was sie macht</h4>
+  <p>
+    Die PMP ist ein <em>Rezept aus Bewertungs-Schritten</em>. Sie sagt
+    der Maschinerie:
+  </p>
+  <ol>
+    <li>
+      Welche <strong>Bewertungs-Sequenz</strong> (Amortisation,
+      Price Valuation, Foreign Currency Valuation, Impairment) für
+      diese Position gilt — und in welcher Reihenfolge.
+    </li>
+    <li>
+      Welche <strong>Transfer Category</strong> beim Positionsübertrag
+      angewendet wird, wenn Quell- und Ziel-Komponenten nicht übereinstimmen.
+    </li>
+    <li>
+      Wie <strong>Derived Business Transactions</strong> aus dem
+      Geschäft abgeleitet werden (Zins-Abgrenzungen,
+      Bewertungs-Buchungen).
+    </li>
+    <li>
+      Ob die Position als <strong>Aktiv- oder Passivposition</strong>
+      gemanagt wird (Vorzeichen-Konvention).
+    </li>
+  </ol>
+
+  <h4>Bewertungs-Schritte als modulare Bausteine</h4>
+  <p>
+    Jeder Schritt ist eine eigene IMG-Aktivität:
+  </p>
+  <ul>
+    <li><em>Define Amortization Procedure</em> — Amortisation (Effektivzins-Methode etc.)</li>
+    <li><em>Define One-Step Price Valuation Procedure</em> — direkte Marktpreis-Bewertung</li>
+    <li><em>Define Security Valuation Procedure</em> — Wertpapier-Bewertung (mehrstufig)</li>
+    <li><em>Define Foreign Currency Valuation Procedure</em> — FX-Stichtagsbewertung</li>
+    <li><em>Define Price Valuation Procedure for Forward Exchange Transactions</em> — FX-Termin-Bewertung</li>
+  </ul>
+  <p>
+    Diese Bausteine werden zur PMP <em>komponiert</em> und ihr im IMG
+    <em>zugeordnet</em>. Die Zuordnung (Position ↔ PMP) erfolgt über
+    Buchungskreis × Bewertungsbereich × Position-Schlüssel.
+  </p>
+
+  <span class="img-path">
+    Transaction Manager → General Settings → Accounting → Settings for
+    Position Management → Define Position Management Procedure
+  </span>
+  <span class="img-path">
+    Transaction Manager → General Settings → Accounting → Parallel
+    Valuation Areas → Settings for Position → Assign Position Management
+    Procedure
+  </span>
+
+  <h4>Two-Step Valuation</h4>
+  <p>
+    Sonderfall: <strong>zweistufige Bewertung</strong>. Beispiel
+    Wertpapier mit Fremdwährung — Stufe 1 ist Securities Valuation (mit
+    z.B. strengem Niederstwertprinzip), Stufe 2 ist Foreign Currency
+    Valuation. Die zwei PMPs werden hintereinander angewendet, jede mit
+    ihrer eigenen Konfiguration.
+  </p>
+
+  <h2 id="s08"><span class="num">08</span>Hedge Accounting im TM (P-HA / E-HA / HA-EI)</h2>
+  <p>
+    Im Transaction Manager liegt nicht <em>ein</em> Hedge-Accounting,
+    sondern <strong>drei Spielarten</strong>. Sie unterscheiden sich
+    nach Sicherungsobjekt:
+  </p>
+  <ul>
+    <li>
+      <strong>P-HA (Hedge Accounting for Positions)</strong> —
+      klassisch: bestehende Wertpapier- oder Darlehens-Position
+      wird gegen Risiko gesichert. Hedged Item ist eine TM-Position.
+    </li>
+    <li>
+      <strong>E-HA (Hedge Accounting for Exposures)</strong> —
+      moderner Standard für FX-Risiken: Exposure-Positionen aus
+      Exposure Management 2.0 sind das Hedged Item. Eigener
+      Sub-Bereich (Hedge Management of FX Risks).
+    </li>
+    <li>
+      <strong>HA-EI (Hedge Accounting for Exposure Items)</strong> —
+      auf Trade-Ebene: Exposure Items als Hedged Items (Product
+      Category 991). Trade-spezifisch, näher an Trade Finance als
+      an Exposure 2.0.
+    </li>
+  </ul>
+  <p>
+    Welche Spielart greift, hängt am Hedged Item — nicht am
+    Sicherungsinstrument. Dasselbe FX-Termin kann je nach Designation
+    in P-HA, E-HA oder HA-EI laufen.
+  </p>
+
+  <h2 id="s09"><span class="num">09</span>Wichtige Transaktionen, thematisch geordnet</h2>
+  <p>
+    Eine kuratierte Auswahl aus ~40 TPM*-Codes im KG. Vollständige Listen
+    in den IMG-Knoten.
+  </p>
+  <div class="tx-table">
+    <div class="tx-group-head">Trade anlegen &amp; bearbeiten</div>
+    <div><code class="tx">FTR_CREATE</code><span class="desc">Geschäft anlegen (generisch, alle Product Categories)</span></div>
+    <div><code class="tx">FTR_EDIT</code><span class="desc">Geschäft bearbeiten / Activity ausführen (Bestätigen, Fix, Rollover, Terminate)</span></div>
+    <div><code class="tx">FTR_00</code><span class="desc">Trade-Eingangsmenü</span></div>
+    <div><code class="tx">TPM2</code><span class="desc">Trade-Stammdaten anzeigen</span></div>
+
+    <div class="tx-group-head">Settlement &amp; Buchung</div>
+    <div><code class="tx">TPM18</code><span class="desc">Auto-Settlement fälliger Aktivitäten</span></div>
+    <div><code class="tx">TBB1</code><span class="desc">Buchungslauf — Flows als FI-Belege materialisieren</span></div>
+    <div><code class="tx">TPM44 / TPM45</code><span class="desc">Manuelle Buchungs-Beleg-Anzeige / Storno</span></div>
+
+    <div class="tx-group-head">Position-Auswertung</div>
+    <div><code class="tx">TPM10 / TPM10A</code><span class="desc">Positions-Listen (Standard / Asset)</span></div>
+    <div><code class="tx">TPM12</code><span class="desc">Positions-Belegliste (alle Flows einer Position)</span></div>
+    <div><code class="tx">TPM13</code><span class="desc">Belegliste mit Drilldown — der erste Reflex bei „warum diese Buchung?"</span></div>
+    <div><code class="tx">TPM20 / TPM20A</code><span class="desc">Positions-Cockpit (klassisch / Asset)</span></div>
+
+    <div class="tx-group-head">Bewertung &amp; NPV</div>
+    <div><code class="tx">TPM1</code><span class="desc">Treasury-Position-Cockpit — Eintrittstür für Periodenabschluss</span></div>
+    <div><code class="tx">TPM60</code><span class="desc">NPV-Berechnung pro Geschäft</span></div>
+    <div><code class="tx">TPM60CVA</code><span class="desc">NPV mit CVA-Anpassung (Credit Risk-bereinigt)</span></div>
+    <div><code class="tx">TPM85 – TPM90</code><span class="desc">Familie der Bewertungsläufe (Amortisation, Price, FX, Impairment)</span></div>
+
+    <div class="tx-group-head">Vertragsabschluss</div>
+    <div><code class="tx">TPM27</code><span class="desc">Vertragsabschluss / Aktivierung einer Tilgungs-Position</span></div>
+    <div><code class="tx">TPM40 / TPM40A</code><span class="desc">Endbuchung / Aktivierung</span></div>
+    <div><code class="tx">TPM55 / TPM57A</code><span class="desc">Storno-Aktionen</span></div>
+
+    <div class="tx-group-head">Customizing-Cockpits</div>
+    <div><code class="tx">TPM100</code><span class="desc">Position Management Procedures verwalten</span></div>
+    <div><code class="tx">TPM101</code><span class="desc">Bewertungsbereiche-Stammdaten</span></div>
+    <div><code class="tx">TPM102 / TPM103 / TPM104</code><span class="desc">Bewertungsklassen, Zuordnungen, Update-Type-Mapping</span></div>
+    <div><code class="tx">TPM110 / TPM112</code><span class="desc">Account-Determination &amp; Kontenfindung</span></div>
+    <div><code class="tx">TPM120 / TPM121 / TPM122</code><span class="desc">Migration der Stammdaten (Bewertungsklasse, Trade-Migration)</span></div>
+
+    <div class="tx-group-head">Spezial</div>
+    <div><code class="tx">TPM15M / TPM16M</code><span class="desc">Massenverarbeitung Sonderbuchungen / Korrekturen</span></div>
+    <div><code class="tx">TPM29</code><span class="desc">Hedge-Effektivität / Hedge-Relations-Bearbeitung</span></div>
+    <div><code class="tx">TPM73</code><span class="desc">Spezielle Reklassifikation</span></div>
+    <div><code class="tx">SLG1</code><span class="desc">Anwendungslog — der erste Blick bei „warum ist nichts gebucht?"</span></div>
+  </div>
+
+  <h2 id="s10"><span class="num">10</span>BAPIs und Funktionsbausteine</h2>
+  <p>
+    Die Programmier-Schnittstelle. Pro Aufgabenklasse ein paar Vertreter:
+  </p>
+  <h4>Trade anlegen / ändern</h4>
+  <ul>
+    <li><code>BAPI_FTR_CREATE_FXCOLLAR</code> — FX-Collar (Bandbreiten-Option) anlegen</li>
+    <li><code>BAPI_FTR_HM_CREATE</code> — Hedge-Management-relevantes Sicherungsinstrument anlegen</li>
+    <li><code>FTR_CREATE</code> / <code>FTR_EDIT</code> / <code>FTR_COCREATE</code> — Trade-Anlage und kollaborative Erfassung</li>
+  </ul>
+  <h4>Threshold / Limit / Hedge</h4>
+  <ul>
+    <li><code>FTR_THRESHOLD_CALC</code> / <code>FTR_THRESHOLD_DISP</code> — Limit-Schwellen kalkulieren und anzeigen</li>
+    <li><code>FTR_THRESHOLD_RM_DER</code> — Risk-Management-Schwellen-Derivat</li>
+    <li><code>FTR_TARO_MONITOR</code> / <code>FTR_TARO_PROCESS</code> — Trade-Auto-Routing-Operation</li>
+    <li><code>FTR_TR_DEFAULT_TRADE_ID</code> — Trade-ID-Default-Bestimmung</li>
+  </ul>
+  <h4>Position / Migration</h4>
+  <ul>
+    <li><code>TPM_HREL_INIT</code> — Hedge-Relation initialisieren</li>
+    <li><code>TPM_MIG_HEDGING_CLASS</code> / <code>TPM_MIG_TRADED_CURR</code> — Migrations-Bausteine bei Stammdaten-Umstellungen</li>
+    <li><code>TPM_CCO_MANAGE</code> — Position-Schließungsmechanik</li>
+  </ul>
+
+  <h2 id="s11"><span class="num">11</span>Tabellen-Skelett: das Daten-Modell</h2>
+  <p>
+    Der Transaction Manager hat ein klassisches Header/Item-Modell für
+    Trades, dazu Cashflow- und Position-Tabellen:
+  </p>
+  <div class="data-box">
+    <strong>VTBFHA</strong> — Geschäfts-Kopf (Trade Header). Eine Zeile
+    pro Geschäft: Trade-Nummer, Geschäftspartner, Buchungskreis, Product
+    Type, Transaction Type, aktuelle Activity, Konditionen-Verweis.
+  </div>
+  <div class="data-box">
+    <strong>VTBFHAPO</strong> — Geschäfts-Aktivitäten (Trade Activities).
+    Eine Zeile pro Activity-Sprung: Order → Contract → Settlement → …
+    Mit Verweis auf den auslösenden User, Activity Category, Datum.
+  </div>
+  <p>
+    Daneben lebt eine ganze Familie von Flow- und Cashflow-Tabellen
+    (VTBZAHLST, VTBFINKO, VTBZL, VTBNT etc.) — im KG aktuell nur grob
+    indexiert. Konventionell beginnen Treasury-Tabellen mit
+    <code>VT*</code> für Trades und <code>T*</code> für Customizing.
+  </p>
+
+  <h2 id="s12"><span class="num">12</span>Customizing-Pfade (IMG)</h2>
+  <p>
+    Die wichtigsten Einstiegspunkte im IMG (SPRO). Pfade jeweils unterhalb
+    von <em>Financial Supply Chain Management → Treasury and Risk
+    Management</em>:
+  </p>
+  <span class="img-path">
+    Transaction Manager → General Settings → Define Company Code
+    Additional Data
+  </span>
+  <span class="img-path">
+    Transaction Manager → General Settings → Accounting → Settings for
+    Position Management → Define Position Management Procedure
+  </span>
+  <span class="img-path">
+    Transaction Manager → General Settings → Accounting → Parallel
+    Valuation Areas → Assign Position Management Procedure
+  </span>
+  <span class="img-path">
+    Transaction Manager → General Settings → Accounting → Settings for
+    Position Management → Key Date Valuation → Define Foreign Currency
+    Valuation Procedure
+  </span>
+  <span class="img-path">
+    Transaction Manager → General Settings → Accounting → Update Types
+    → Define Update Types and Assign Usages
+  </span>
+  <span class="img-path">
+    Transaction Manager → <em>Asset-spezifisch</em>: Foreign Exchange /
+    Money Market / Derivatives / Securities → Transaction Management →
+    Transaction Types
+  </span>
+
+  <h2 id="s13"><span class="num">13</span>Verbindungen zu den Nachbar-Modulen</h2>
+  <ul>
+    <li>
+      <strong>→ Hedge Management of FX Risks (E-HA)</strong>:
+      Sicherungsinstrumente (FX-Termin, -Swap, -Option) leben hier als
+      Geschäfte. Hedge Mgmt verknüpft sie mit Exposure-Posten und bucht
+      Effektivitätsergebnisse zurück auf TM-Positionen über
+      Update Types in den Bewertungsbereichen.
+    </li>
+    <li>
+      <strong>→ Exposure Management 2.0</strong>: Exposure-Positionen
+      (Product Category 990) werden teils als Geschäfte im TM
+      gespiegelt — über den Transfer to E-HA wandern sie in die
+      Hedge-Welt.
+    </li>
+    <li>
+      <strong>→ Risk Management</strong>: Market Risk Analyzer (TPM60,
+      RMV0), Credit Risk Analyzer (TPM60CVA, RMC0), Portfolio Analyzer
+      und Accounting Analyzer lesen TM-Positionen als Eingangsdaten —
+      schreiben aber nichts zurück. Reine Analyse-Schicht.
     </li>
     <li>
       <strong>→ APM (Payments)</strong>: Settlement-Zahlungen aus
-      Geschäftsvorfällen (TPM18 → TBB1 → Zahlungsvorschlag) werden über
-      APM zur Bankdatei.
+      Geschäftsvorfällen werden über Zahlungsläufe an APM übergeben.
+      In-House-Bank-Konten greifen, wenn der Geschäftspartner intern
+      ist (Intercompany Trading + Mirror Transactions).
+    </li>
+    <li>
+      <strong>→ Treasury Analytics</strong>: Cash Position, Maturity
+      Profile, FX Overview lesen direkt aus dem Cashflow der
+      TM-Positionen — meist über CDS Views.
+    </li>
+    <li>
+      <strong>→ Market Data</strong>: NPV-Berechnung (TPM60) ist ohne
+      Yield Curve und FX-Kurs blind. Market Data Management ist die
+      <em>kritische</em> Vorbedingung.
     </li>
   </ul>
 
+  <h2 id="s14"><span class="num">14</span>Stolperdrähte</h2>
   <blockquote>
     <p>
-      <strong>Stolperdraht:</strong> „Geschäft anlegen" (FTR_CREATE) bucht
-      noch nichts. Erst Settlement (TPM18) erzeugt fällige Geschäftsvorfälle,
-      und erst TBB1 macht daraus FI-Belege. Die Trennung von <em>fachlichem
-      Vorgang</em> und <em>buchhalterischer Wirkung</em> ist absichtlich —
-      sie erlaubt Korrekturen vor der Buchung.
+      <strong>Anlage ≠ Buchung.</strong> <code>FTR_CREATE</code> erzeugt
+      ein Geschäft im Status <em>Order</em> oder <em>Contract</em> — bucht
+      aber nichts. Erst die Settlement-Activity (TPM18) erzeugt fällige
+      Flows, und erst TBB1 macht daraus FI-Belege. Die Trennung von
+      fachlichem Vorgang und buchhalterischer Wirkung ist absichtlich,
+      damit Korrekturen vor der Buchung möglich sind.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Flow Types sind Contract-Type-skopiert.</strong> Flow Type
+      1000 unter Contract Type 2 (Securities) ist nicht derselbe wie
+      Flow Type 1000 unter Contract Type 4 (FX). Bei Reports und
+      Auswertungen gerne übersehen.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Update Types vs Flow Types.</strong> Beide sehen ähnlich
+      aus. Aber Update Types greifen bei der <em>parallelen
+      Positionsführung</em> in zusätzlichen Bewertungsbereichen — und
+      sind dort nicht Contract-Type-skopiert. Verwechslung führt zu
+      doppelten Buchungen oder fehlenden Bewertungen.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Position Management Procedure greift erst bei der
+      Zuordnung.</strong> Eine PMP zu definieren reicht nicht — sie muss
+      über <em>Assign Position Management Procedure</em> für die
+      Kombination Buchungskreis × Bewertungsbereich × Position-Schlüssel
+      aktiv gemacht werden. Sonst nimmt das System einen Default und
+      wundert sich, warum FX-Bewertung „nicht greift".
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Mirror Transactions bei Intercompany.</strong> Wenn der
+      Geschäftspartner ein interner Buchungskreis ist, erzeugt das System
+      eine Mirror-Transaction im Gegen-BUK — automatisch. Bei NDFs:
+      <em>Fix Settlement</em> beeinflusst das Mirroring-Verhalten. Wenn
+      sich nur eine Seite ändert, läuft die Spiegelung schief.
+    </p>
+  </blockquote>
+  <blockquote>
+    <p>
+      <strong>Anwendungs-Log (SLG1) ist dein erster Reflex.</strong>
+      Wenn ein TPM18-Settlement-Lauf „ok" sagt, aber TBB1 nichts findet,
+      schau ins SLG1 mit Objekt <code>TPM</code>. Da stehen die echten
+      Gründe (Konditionssatz fehlt, PMP-Schritt failed, Update Type
+      nicht gemappt).
     </p>
   </blockquote>
 
   <hr class="soft">
   <p class="meta">
     Stand: Knowledge-Graph-Snapshot vom 2026-06-14 (buildNo 1779, 14
-    Sub-Bereiche, ~40 TM-spezifische Transaktionen indexiert). Diese
-    Landkarte ist ein Entwurfsgerüst — sie soll dir helfen, das mentale
-    Modell zu prüfen und mit eigener Stimme zu überschreiben.
+    Sub-Bereiche, ~40 TPM*-Transaktionen, VTBFHA/VTBFHAPO indexiert,
+    BAPIs <code>BAPI_FTR_*</code>, FMs <code>FTR_*</code>,
+    <code>TPM_*</code>). Diese Landkarte ist ein Entwurfsgerüst —
+    Struktur und Vokabular validiert gegen SAP Help, Stimme noch zu
+    überarbeiten.
   </p>
 </div>
 </body>

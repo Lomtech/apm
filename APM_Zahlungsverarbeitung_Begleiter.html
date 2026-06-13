@@ -175,7 +175,7 @@
         border-top: 1px solid var(--rule);
         margin: 40px 0;
       }
-      @media (max-width: 600px) {
+      @media (max-width: 700px) {
         body {
           font-size: 16.5px;
         }
@@ -187,6 +187,22 @@
         }
         .wrap {
           padding: 48px 18px 80px;
+        }
+        figure {
+          padding: 14px 10px 10px;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        figure svg {
+          min-width: 620px;
+        }
+        p,
+        .lede {
+          max-width: 100%;
+        }
+        ul,
+        ol {
+          max-width: 100%;
         }
       }
     </style>
@@ -751,9 +767,9 @@
             </marker>
           </defs>
           <rect
-            x="270"
+            x="250"
             y="20"
-            width="140"
+            width="180"
             height="46"
             rx="8"
             fill="#EEEDFE"
